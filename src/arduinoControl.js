@@ -1,23 +1,23 @@
-var arduino = new function(){
+/*var arduino = new function(){
 	var self= this;
 	this.handlers =[];
 
 	this.digitalWrite = function(pin,dir){
-		webSockClient.send("r|digitalWrite("+pin+","+dir+")");
+		//webSockClient.send("r|digitalWrite("+pin+","+dir+")");
 	}
 	
 	this.watchPin = function(pin,handler){
-		webSockClient.send("r|watchPin("+pin+")");
+		//webSockClient.send("r|watchPin("+pin+")");
 		self.handlers[pin] = handler;
 	}
 	
 	this.analogReport = function(pin,interval,handler){
-		webSockClient.send("r|analogReport("+pin+","+interval+")");
+		//webSockClient.send("r|analogReport("+pin+","+interval+")");
 		self.handlers[pin] = handler;
 	}
 	
 	this.stopReport = function(pin){
-		webSockClient.send("r|stopReport("+pin+")");
+		//webSockClient.send("r|stopReport("+pin+")");
 	}
 	
 	this.onMessage = function(data){
@@ -35,4 +35,11 @@ var arduino = new function(){
 				break;
 		}
 	}
-}
+	
+	var onGetDevices = function(ports) {
+  		for (var i=0; i<ports.length; i++) {
+    		console.log(ports[i].path);
+  		}
+	}
+	//chrome.serial.getDevices(onGetDevices);
+}*/

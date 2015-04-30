@@ -115,3 +115,32 @@ function trackChange(init){
 		else return false;
 	}
 }
+
+function aveCont(points){
+	if(points===undefined) points=5;
+	var samps = [];
+	this.ave=0;
+	var ind=0;
+	var tot=0;
+	for(var i=0; i<points; i++){
+		samps.push(0.0);
+	}
+	
+	this.changeNumSamps = function(num){
+		samps.length=0;
+		for(var i=0; i<num; i++){
+			samps.push(0.0);
+		}
+	}
+	
+	this.addSample=function(val){
+		tot-=samps[ind];
+		samps[ind]=val;
+		tot+=val;
+		this.ave=tot/samps.length;
+		ind=(ind+1)%samps.length;
+		return this.ave;
+	}
+	
+	return this;
+}

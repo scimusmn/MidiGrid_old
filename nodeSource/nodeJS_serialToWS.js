@@ -54,15 +54,21 @@ wss.on('connection', function(ws) {
 var com = require("serialport");
 var bufSize = 512;
 
-sp = new com.SerialPort("/dev/tty.usbserial-A900ceAX", {
+sp = new com.SerialPort("/dev/tty.usbmodemfa131", {
     baudrate: 9600,
     parser: com.parsers.readline('\r\n'),
-    buffersize:bufSize
+    buffersize:bufSize,
+    encoding:'iso-8859-1'
   });
+  
 
 sp.on('open',function() {
   sp.on('data', function(data) {
     if(webSock) webSock.send(data);
+    //console.log(data);
+    //for(var i=0; i<data.length; i++){
+	//	console.log(data.charCodeAt(i));    
+    //}
   });
 
   /*function writeThenDrainThenWait(duration) {
