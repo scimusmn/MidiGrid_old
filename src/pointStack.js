@@ -24,11 +24,6 @@ function pointStack(maxPnts){
 					points.push({x:sampsX.ave,y:sampsY.ave});
 				}
 				else points.push(pnt);
-				/*if(pnt.x>.95) lowBool=true;
-				else if(pnt.x<.95&&lowBool){
-					lowBool=false;
-					self.clear();
-				}*/
 				if(points.length>=maxPoints) points.splice(0,1);
 			}
 		}
