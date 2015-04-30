@@ -4,22 +4,13 @@
 	var drawTimer;
 	var refreshRate = 20; //fps
 	
-	/*var PING = itoa(5)
-	var ACK  = itoa(6)
-	var LF   = itoa(10)
-	var START = itoa(2)
-	var ANALOG_READ = 'a'
-	var DIGITAL_READ = 'd'
-	var DIGITAL_WRITE = 'D'
-	var PIN_WATCH = 'p'*/
+	var cool = new pointTrace($("cool"));
+	var warm = new pointTrace($("warm"));
 	
-	var trace = new pointTrace($("trace"));
-	
-	
-	$("trace").width = window.innerWidth*.75;
-	$("trace").height = window.innerHeight*.75;
-	
-	trace.resize();
+	warm.resize(window.innerWidth*.50,window.innerHeight*.75);
+	cool.resize(window.innerWidth*.50,window.innerHeight*.75);
+	warm.canvas.style.top=cool.canvas.style.top;
+	warm.canvas.style.left=cool.width+cool.canvas.style.left;
  
     /*$("button").onmousedown = function(e){
         e.preventDefault();
@@ -31,13 +22,13 @@
         arduino.digitalWrite(13,0);
 	}*/
 
-	document.onkeydown = function(e) {
-		switch (e.which) { 
+	document.onkeydown = function (e) {
+		switch (e.which) {
 			case charCode('S'):				//if the send button was pressed
 				//webSockClient.send("PING");
 				break;
 			case charCode('B'):				//if the send button was pressed
-				blinkState = ((blinkState)?0:1);
+				blinkState = ((blinkState) ? 0 : 1);
 				//webSockClient.send("digitalWrite(13,"+blinkState+")");
 				break;
 			case 56:
@@ -50,7 +41,7 @@
 				//webSockClient.send("stopReport(0)");
 				break;
 			case 32:
-				trace.clear();
+				cool.clear();
 				break;
 			default:
 				break;
@@ -66,11 +57,11 @@
 		switch(dataRay[0]){
 			case "pinChange":
 				$("titleLine").innerHTML = "Pin "+dataRay[1]+" is "+((extractNumber(dataRay[2]))?"HIGH":"LOW");
-				trace.clear();
+				cool.clear();
 				break;
 			case "analogRead":
 				//$("analogLine").innerHTML = "Pin "+dataRay[1]+" is "+extractNumber(dataRay[2]);
-				trace.addPoint({x:extractNumber(dataRay[2])/1024.,y:(Math.cos(inc)+1)/2});
+				cool.addPoint({x:extractNumber(dataRay[2])/1024.,y:(Math.cos(inc)+1)/2});
 				console.log("cos(inc)="+((Math.cos(inc)+1)/2)+"  inc="+inc);
 				inc+=Math.PI/100.;
 				if(inc>Math.PI*2) inc=0;
@@ -93,7 +84,8 @@
 			}
 		}
 		if(!isNaN(ray[0])&&!isNaN(ray[1])){
-			trace.addPoint({x:(ray[0]*1)/1024.,y:(ray[1]*1)/1024.});
+			cool.addPoint({x:(ray[0]*1)/1024.,y:(ray[1]*1)/1024.});
+			warm.addPoint({x:(ray[0]*1)/1024.,y:(ray[1]*1)/1024.});
 		}
 		//console.log("Pin 0 is "+ray[0]);
 		//console.log("Pin 1 is "+ray[1]);
@@ -101,7 +93,8 @@
 	}
 	
 	app.draw = function(){
-		trace.draw(0,0);
+		cool.draw(0,0);
+		warm.draw(0,0);
 	}
 	
 	drawTimer = setInterval(app.draw, 1000/refreshRate);

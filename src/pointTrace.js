@@ -10,8 +10,8 @@ function pointTrace(elem){
 	this.width;
 	this.height;
 	
-	var canvas = elem;
-	var ctx = canvas.getContext("2d");
+	this.canvas = elem;
+	var ctx = this.canvas.getContext("2d");
 	
 	ctx.globalCompositeOperation = "lighter";
 	
@@ -48,12 +48,14 @@ function pointTrace(elem){
 	this.color="#f00";
 	
 	this.resize = function(wid,hgt){
-		this.width=canvas.width;
-		this.height=canvas.height;
+		this.canvas.width=wid;
+		this.canvas.height=hgt;
+		this.width=this.canvas.width;
+		this.height=this.canvas.height;
 	}
 	
 	this.draw = function(x,y){
-		canvas.width=this.width;
+		this.canvas.width=this.width;
 		/*ctx.beginPath();
       	ctx.rect(0,0,this.width,this.height);
       	ctx.fillStyle = "rgba(255, 255, 255, 0.1)";

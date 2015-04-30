@@ -24,7 +24,7 @@ function pointStack(maxPnts){
 					points.push({x:sampsX.ave,y:sampsY.ave});
 				}
 				else points.push(pnt);
-				if(points.length>=maxPoints) points.splice(0,1);
+				if(points.length>=maxPnts) points.splice(0,1);
 			}
 		}
 		else points.push({x:pnt.x,y:pnt.y});
