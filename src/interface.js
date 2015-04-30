@@ -7,10 +7,11 @@
 	var cool = new pointTrace($("cool"));
 	var warm = new pointTrace($("warm"));
 	
+	cool.canvas.style.top=window.innerHeight*.125+'px';
 	warm.resize(window.innerWidth*.50,window.innerHeight*.75);
 	cool.resize(window.innerWidth*.50,window.innerHeight*.75);
 	warm.canvas.style.top=cool.canvas.style.top;
-	warm.canvas.style.left=cool.width+cool.canvas.style.left;
+	warm.canvas.style.left=cool.width+cool.canvas.style.left+'px';
  
     /*$("button").onmousedown = function(e){
         e.preventDefault();
@@ -93,8 +94,8 @@
 	}
 	
 	app.draw = function(){
-		cool.draw(0,0);
-		warm.draw(0,0);
+		cool.draw("Cool Compressor");
+		warm.draw("Warm Compressor");
 	}
 	
 	drawTimer = setInterval(app.draw, 1000/refreshRate);

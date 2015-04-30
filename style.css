@@ -1,6 +1,4 @@
 body {
-	background-image: url('imgs/backgroundTile.jpg');
-	background-repeat: repeat;
 	margin: 0px;
 	color: #fff;
 	font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
@@ -18,12 +16,10 @@ div.body {
 	text-align: right;
 }
 
-#trace {
+.trace {
   position: absolute;
   top: 0;
   left: 0;
-  bottom: 0;
-  right: 0;
   z-index: -1000;
 }
 
@@ -59,8 +55,6 @@ h1 {
 
 #footer
 {
-	position: absolute;
-	top:650px;
     clear: both;
     width:100%;
     color:#777;
