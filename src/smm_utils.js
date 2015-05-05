@@ -144,3 +144,7 @@ function aveCont(points){
 	
 	return this;
 }
+
+function map(val,inMin,inMax,outMin,outMax){
+	return (val-inMin)*(outMax-outMin)/(inMax-inMin)+outMin;
+}

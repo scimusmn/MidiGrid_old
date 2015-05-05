@@ -8,10 +8,11 @@
 	var warm = new pointTrace($("warm"));
 	
 	cool.canvas.style.top=window.innerHeight*.125+'px';
-	warm.resize(window.innerWidth*.50,window.innerHeight*.75);
-	cool.resize(window.innerWidth*.50,window.innerHeight*.75);
+	warm.resize(window.innerWidth*.49,window.innerHeight*.75);
+	cool.resize(window.innerWidth*.49,window.innerHeight*.75);
 	warm.canvas.style.top=cool.canvas.style.top;
 	warm.canvas.style.left=cool.width+cool.canvas.style.left+'px';
+	cool.canvas.style.left=window.innerWidth*.01+'px';
  
     /*$("button").onmousedown = function(e){
         e.preventDefault();
@@ -27,19 +28,6 @@
 		switch (e.which) {
 			case charCode('S'):				//if the send button was pressed
 				//webSockClient.send("PING");
-				break;
-			case charCode('B'):				//if the send button was pressed
-				blinkState = ((blinkState) ? 0 : 1);
-				//webSockClient.send("digitalWrite(13,"+blinkState+")");
-				break;
-			case 56:
-				//webSockClient.send("watchPin("+(e.which-48)+")");
-				break;
-			case 49:
-				//webSockClient.send("analogReport(0,20)");
-				break;
-			case 50:
-				//webSockClient.send("stopReport(0)");
 				break;
 			case 32:
 				cool.clear();
