@@ -1,20 +1,22 @@
 var $ = function( id ) { 
-
-	switch(id.charAt(0)){
+	var ret;
+	var spl = id.split(">");
+	switch(spl[0].charAt(0)){
 		case '#':
-			return document.getElementById( id.substr(1) );
+			ret= document.getElementById( spl[0].substr(1) );
 			break;
 		case '.':
-			return document.getElementsByClassName( id.substr(1) );
+			ret= document.getElementsByClassName(spl[0].substr(1) );
 			break;
 		case '$': 
-			return document.getElementsByTagName( id.substr(1) );
+			ret= document.getElementsByTagName( spl[0].substr(1) );
 			break;
 		default:
-			return document.getElementById( id );
+			ret= document.getElementById( spl[0] );
 			break;
 	}
-
+	if(spl.length<=1) return ret;
+	else return ret.getAttribute(spl[1]);
 };
 
 function b64toBlobURL(b64Data, contentType, sliceSize) {
@@ -92,28 +94,8 @@ Array.prototype.last = function(){
 
 function getPos(el) {
     // yay readability
-    for (var lx=0, ly=0;
-         el != null;
-         lx += el.offsetLeft, ly += el.offsetTop, el = el.offsetParent);
+    for (var lx=0, ly=0; el != null; lx += el.offsetLeft, ly += el.offsetTop, el = el.offsetParent);
     return {x: lx,y: ly};
-}
-
-/*Number.prototype.oldValue = null;
-
-Number.prototype.hasChanged = function(){
-	if(this.oldValue!=this){
-		this.oldValue=this;
-		return true;
-	}
-	else return false;
-}*/
-
-function trackChange(init){
-	var oldVal = init;
-	this.check = function(val){
-		if(val!==oldVal) return true, oldVal=val;
-		else return false;
-	}
 }
 
 function aveCont(points){

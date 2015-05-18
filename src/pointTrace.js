@@ -1,53 +1,65 @@
 function pointTrace(elem){
+	this.canvas = elem;
+	var ctx = this.canvas.getContext("2d");
+	
 	var self = this;
 	var traceWidth = 3;
 	
 	this.width;
 	this.height;
 	
-	//var graph = {x:0,y:0,w:0,h:0};
-	var graph = new smmGraph();//{x:0,y:0,w:0,h:0};
+	var getString = function (attr) {
+		return elem.getAttribute(attr);
+	}
+	
+	var getNum = function (attr) {
+		return parseInt(getString(attr));
+	}
+	
+	this.gauge = new tempGraph($(getString("temp")));
+	
+	var graph = new smmGraph();
 	
 	
 	graph.bot = function(){
 		return this.y+this.h;
 	};
 	
-	this.canvas = elem;
-	var ctx = this.canvas.getContext("2d");
 	
 	ctx.globalCompositeOperation = "lighter";
 	
-	graph.setScale({min:0.0,max:1},{min:0,max:18},{min:.1,max:.9},{min:200,max:0});
+	graph.setScale({min:0,max:1023.},{min:0,max:18},{min:102,max:920},{min:0,max:200});
 	
-	graph.setRange(0,18,-20,180);
-	
-	
+	graph.setup(this.canvas.querySelector(".graph"));
 	
 	this.addPoint = function(pnt){
 		//self.points.addPoint(scalePoint(pnt));
 		graph.addPoint(pnt);
 		self.autoClear(.95);
+		
+		//console.log(graph.transPoint());
+	}
+	
+	this.lastPoint = function () {
+		return graph.lastPoint();
 	}
 	
 	var lowBool = false;
-	
-	/*this.calcPoint = function () {
-		return {x:xMap.convert(self.points.last().x),y:yMap.convert(self.points.last().y)};
-	}*/
 	
 	this.autoClear = function (thresh) {
 		if (graph.points.last().x > thresh) lowBool = true;
 		else if ( lowBool) {
 			lowBool = false;
-			graph.clear();
+			this.clear();
 		}
 	}
 	
 	this.color="#f00";
 	
-	this.resize = function(wid,hgt){
+	this.refresh = function(){
+		var wid = elem.clientWidth;
 		this.canvas.width=wid;
+		var hgt = elem.clientHeight;
 		this.canvas.height=hgt;
 		this.width=wid;
 		this.height=hgt;
@@ -55,9 +67,12 @@ function pointTrace(elem){
 		graph.h = hgt*.75;
 		graph.x = wid-graph.w-traceWidth/2;
 		graph.y = (hgt-graph.h)/2;
+		
+		this.gauge.refresh();
 	}
 	
 	var ave = new aveCont();
+	graph.fontColor = "#ddd";
 	
 	graph.drawColorIntegral = function(ctx){
 		var wid=this.w;
@@ -68,6 +83,12 @@ function pointTrace(elem){
 		var sectAve=0;
 		var lastPos={x:0,y:0};
 		var firstPos={x:0,y:0};
+		
+		ctx.beginPath();
+		ctx.fillStyle = "#fff";
+		ctx.rect(x,y,wid,hgt);
+		ctx.closePath();
+		ctx.fill();
 		
 		for (var i = 0; i < graph.points.length - 1; i++) {
 			ave.addSample((graph.points[i].x - graph.points[i + 1].x));
@@ -83,7 +104,7 @@ function pointTrace(elem){
 				if (sign(ave.ave) == sign(graph.points[i].x - graph.points[i + 1].x)) {
 					ctx.lineTo(x + graph.points[i].x * wid, y + graph.points[i].y * hgt);
 					lastPos = graph.points[i];
-					ctx.globalAlpha = i / graph.points.length;
+					//ctx.globalAlpha = i / graph.points.length;
 				}
 			}
 			else {
@@ -105,61 +126,40 @@ function pointTrace(elem){
 		ctx.closePath();
 	};
 	
-	graph.draw = function () {
-		graph.drawColorIntegral(ctx);
-		ctx.lineWidth=traceWidth;
-		ctx.strokeStyle = "#000";
-		graph.drawTrace(ctx);
-      
-	  	ctx.lineWidth=1;
-		ctx.strokeStyle = "rgba(0,0,0, 0.1)";
-		graph.drawGrid(ctx,18,10);
-		
-		ctx.lineWidth=traceWidth;
-		ctx.strokeStyle = "#000";
-		graph.drawFrame(ctx);
-		
-		ctx.fillStyle = "#000";
-		ctx.font = "12pt Arial";
-		graph.drawXLabels(ctx,9);
-		graph.drawYLabels(ctx,5);
-		
-	}
-	
-	this.draw = function(label){
+	this.draw = function(){
 		this.canvas.width=this.width;				//clear the canvas.
+		
+		if(graph.points.length) this.gauge.draw(this.lastPoint());
+		
+		graph.drawColorIntegral(ctx);
+		graph.draw(ctx);
 		  
-		graph.draw();
-		  
-		ctx.font = "30pt Arial";
-		ctx.fillStyle = "#000";
+		 var label = this.canvas.getAttribute("title");
+		ctx.font = ""+(this.height-graph.h)/4+"pt Arial";
+		ctx.fillStyle = "#ddd";
 		var txtSz = ctx.measureText(label);
-		ctx.fillText(label,graph.x+(graph.w-txtSz.width)/2,graph.y-20);
+		ctx.fillText(label,graph.x+(graph.w-txtSz.width)/2,graph.y-parseInt(ctx.font)/2);
 		
-		ctx.font = "20pt Arial";
+		ctx.font = ""+(this.height-graph.h)/6+"pt Arial";
 		var xLabel = "Air Volume (Cubic Inches)";
-		ctx.fillStyle = "#000";
+		ctx.fillStyle = "#ddd";
 		txtSz = ctx.measureText(xLabel);
-		ctx.fillText(xLabel,graph.x+(graph.w-txtSz.width)/2,12+parseInt(ctx.font)+graph.bot());
+		ctx.fillText(xLabel,graph.x+(graph.w-txtSz.width)/2,2*parseInt(ctx.font)+graph.bot());
 		
-		//this.drawXLabels(graph.x,graph.y,graph.w,graph.h,9,0,18);
-		
-		ctx.font = "20pt Arial";
+		ctx.font = ""+(this.height-graph.h)/6+"pt Arial";
 		var yLabel = "Pressure in Cylinder (PSI)";
-		ctx.fillStyle = "#000";
+		ctx.fillStyle = "#ddd";
 		txtSz = ctx.measureText(yLabel);
 		ctx.save();
 		ctx.translate(graph.x-40,graph.y+(graph.h+txtSz.width)/2);
 		ctx.rotate(3*Math.PI/2);
 		ctx.fillText(yLabel,0,0);
 		ctx.restore();
-		
-		//this.drawYLabels(graph.x,graph.y,graph.w,graph.h,5,yParam.max,yParam.min);
 	};
 	
 	this.clear = function(){
-		self.points.length=0;
-		//ctx.clearRect(0,0,canvas.width,canvas.height);
+		graph.clear();
+		this.gauge.clear();
 	}
 	
 }

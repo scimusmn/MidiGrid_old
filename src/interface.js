@@ -2,27 +2,15 @@
 
 	var blinkState = 0;
 	var drawTimer;
-	var refreshRate = 20; //fps
+	var refreshRate = 30; //fps
 	
 	var cool = new pointTrace($("cool"));
 	var warm = new pointTrace($("warm"));
 	
-	cool.canvas.style.top=window.innerHeight*.125+'px';
-	warm.resize(window.innerWidth*.49,window.innerHeight*.75);
-	cool.resize(window.innerWidth*.49,window.innerHeight*.75);
-	warm.canvas.style.top=cool.canvas.style.top;
-	warm.canvas.style.left=cool.width+cool.canvas.style.left+'px';
-	cool.canvas.style.left=window.innerWidth*.01+'px';
- 
-    /*$("button").onmousedown = function(e){
-        e.preventDefault();
-        arduino.digitalWrite(13,1);
-        console.log("clicked");
-    }*/
+	cool.refresh();
+	warm.refresh();
 	
-	/*$("button").onmouseup = function(){
-        arduino.digitalWrite(13,0);
-	}*/
+	//warmTemp.setInitialParams($("p1").innerHTML,$("v1").innerHTML,$("t1").innerHTML,$("maxT").innerHTML);
 
 	document.onkeydown = function (e) {
 		switch (e.which) {
@@ -31,6 +19,8 @@
 				break;
 			case 32:
 				cool.clear();
+				warm.clear();
+				warmTemp.clear();
 				break;
 			default:
 				break;
@@ -73,8 +63,8 @@
 			}
 		}
 		if(!isNaN(ray[0])&&!isNaN(ray[1])){
-			cool.addPoint({x:(ray[0]*1)/1024.,y:(ray[1]*1)/1024.});
-			warm.addPoint({x:(ray[0]*1)/1024.,y:(ray[1]*1)/1024.});
+			cool.addPoint({x:(ray[0]),y:(ray[1])});
+			warm.addPoint({x:(ray[0]),y:(ray[1])});
 		}
 		//console.log("Pin 0 is "+ray[0]);
 		//console.log("Pin 1 is "+ray[1]);
@@ -82,8 +72,16 @@
 	}
 	
 	app.draw = function(){
-		cool.draw("Cool Compressor");
-		warm.draw("Warm Compressor");
+		cool.draw();
+		warm.draw();
+		
+		//if(warm.lastPoint()!==undefined) warmTemp.draw(warm.lastPoint());
+	}
+	
+	window.onresize = function (x,y) {
+		warm.refresh();
+		cool.refresh();
+		$(".body").style.fontSize = window.innerHeight/100+'px';
 	}
 	
 	drawTimer = setInterval(app.draw, 1000/refreshRate);

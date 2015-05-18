@@ -4,22 +4,39 @@
 	<meta charset="utf-8">
 	<title>Arduino Test</title>
 	<link rel="stylesheet" href="style.css" />
+	
 </head>
 <body>
 	<div class="body">
-		<canvas class="trace" id="cool" width="640" height="240"></canvas>
-		<canvas class="trace" id="warm" width="640" height="240"></canvas>
-		<canvas class="temp" id="coolTemp" width="640" height="20"></canvas>
-		<canvas class="temp" id="warmTemp" width="640" height="20"></canvas>
+		<div id="title"><h1>Efficient Air Compression</h1></div>
+		<div class="divider"></div>
+		<div class="graphCont" id="coolCont">
+			<br />
+			<br />
+			<canvas class="trace"title="Cool Compressor" id="cool" temp="warmTemp">
+				<div class="graph" xMin="0" xMax="18" yMin="0" yMax="180" xDiv="18" yDiv="10"></div>
+			</canvas>
+			<canvas class="temp" id="warmTemp" t1="72" p1="15" v1="17.5" tMax="120"></canvas>
+		</div>
+		<div class="divider"></div>
+		<div class="graphCont" id="warmCont">
+			<br />
+			<br />
+			<canvas class="trace"  title="Warm Compressor" id="warm" temp="coolTemp">
+				<div class="graph" xMin="0" xMax="18" yMin="0" yMax="180" xDiv="18" yDiv="10"></div>
+			</canvas>
+			<canvas class="temp" id="coolTemp" t1="72" p1="15" v1="17.5" tMax="120"></canvas>
+		</div>
         <div id="content">
             <div style="width: 100% height:10px display: inline-block;"></div>
         </div>
+		<div class="divider"></div>
 	</div>
-	<!--<h1 id="analogLine">Analog<h1>-->
 	<h2 id="footer"></h2>
 
 	<script src="src/smm_utils.js"></script>
 	<script src="src/smm_graph.js"></script>
+	<script src="src/tempGraph.js"></script>
 	<script src="src/pointStack.js"></script>
 	<script src="src/pointTrace.js"></script>
 	<script src="src/webSockets.js"></script>
