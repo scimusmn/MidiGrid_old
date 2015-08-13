@@ -2,16 +2,16 @@ function mapObj() {
 	var self =this;
 	this.in = {min:0,max:0};
 	this.out = {min:0,max:0};
-	
+
 	this.set = function(inp,outp){
 		self.in = inp;
 		self.out = outp;
 	};
-	
+
 	this.convert = function (val) {
 		return (val-this.in.min)*(this.out.max-this.out.min)/(this.in.max-this.in.min)+this.out.min;
 	};
-	
+
 	this.invert = function (val) {
 		return (val-this.out.min)*(this.in.max-this.in.min)/(this.out.max-this.out.min)+this.in.min;
 	};
@@ -20,7 +20,7 @@ function mapObj() {
 function range(){
 	this.min=0;
 	this.max=0;
-	
+
 	this.bound = function (val) {
 		return Math.min(this.max,Math.max(this.min,val));
 	};
@@ -32,21 +32,21 @@ function axisParams(){
 	this.min=0;
 	this.max=0;
 	var flipped = 0;
-	
+
 	this.setScale = function (inp,outp) {
 		this.in = inp;
 		this.out = outp;
 	};
-	
+
 	this.setRange = function (mn,mx) {
 		this.min=mn;
 		this.max=mx;
 	};
-	
+
 	this.flipAxis = function (val) {
 		flipped = val;
 	};
-	
+
 	this.convert = function (val,flp) {
 		var ret = map(val,this.in.min,this.in.max,this.out.min,this.out.max);
 		ret = map(ret,this.min,this.max,0,1);
@@ -54,7 +54,7 @@ function axisParams(){
 		if(flipped) ret=1-ret;
 		return ret;
 	};
-	
+
 	this.invert = function (val) {
 		if(flipped) return map(val,1,0,this.min,this.max);
 		else return map(val,0,1,this.min,this.max);
@@ -67,8 +67,8 @@ function smmGraph() {
 	this.y=0;
 	this.w=0;
 	this.h=0;
-	
-	this.labelFont = "1em Arial";
+
+	this.labelFont = "lighter 2vh sans-serif";
 	this.fontColor = "#000";
 	this.lineWidth = 3;
 	this.lineColor = "#000";
@@ -76,61 +76,61 @@ function smmGraph() {
 	this.gridColor = "rgba(0,0,0,.1)";
 	this.frameWidth = 3;
 	this.frameColor = "#000";
-	
+
 	this.points = new pointStack(2500);
-	
+
 	var divs = {x:18,y:10}
-	
+
 	var xParam = new axisParams();
 	var yParam = new axisParams();
 	yParam.flipAxis(true);
-	
+
 	this.resize= function (nx,ny,nw,nh) {
 		this.x=nx;
 		this.y=ny;
 		this.w=nw;
 		this.h=nh;
 	}
-	
+
 	this.setNumDivs = function(xDivs,yDivs){
 		divs.x=xDivs;
 		divs.y=yDivs;
 	}
-	
+
 	this.setScale = function (xIn,xOut,yIn,yOut) {
 		xParam.setScale(xIn,xOut);
 		yParam.setScale(yIn,yOut);
 	};
-	
+
 	this.setRange = function (xMin,xMax,yMin,yMax) {
 		xParam.setRange(xMin,xMax);
 		yParam.setRange(yMin,yMax);
 	};
-	
+
 	this.addPoint = function (pnt) {
 		this.points.addPoint({x:xParam.convert(pnt.x),y:yParam.convert(pnt.y)});
 	};
-	
+
 	this.lastPoint = function(){
 		if(this.points.length) return {x:xParam.invert(this.points.last().x),y:yParam.invert(this.points.last().y)};
 	}
-	
+
 	var atr = function (el,w) {
 		return el.getAttribute(w);
 	}
-	
+
 	this.setup = function (elem) {
 		console.log(elem);
 		this.setRange(atr(elem,"xMin"),atr(elem,"xMax"),atr(elem,"yMin"),atr(elem,"yMax"));
 		this.setNumDivs(atr(elem,"xDiv"),atr(elem,"yDiv"));
 	};
-	
+
 	this.drawTrace = function (ctx) {
 		if(self.points.length>2){
 			//console.log("drawing");
 			var xc = this.x+this.w*(self.points[0].x + self.points[1].x) / 2;
 			var yc = this.y+this.h*(self.points[0].y + self.points[1].y) / 2;
-			
+
 			//ctx.lineWidth=traceWidth;
 
 			ctx.beginPath();
@@ -145,7 +145,7 @@ function smmGraph() {
 			ctx.closePath();
 		}
 	};
-	
+
 	this.drawGrid = function(ctx){
 		//ctx.lineWidth = 1;
 		//ctx.strokeStyle = "rgba(0,0,0, 0.1)";
@@ -164,16 +164,16 @@ function smmGraph() {
 			ctx.stroke();
 		}
 	};
-	
+
 	this.drawFrame = function(ctx){
 		ctx.beginPath();
 		ctx.rect(this.x,this.y,this.w,this.h);
 		ctx.stroke();
 		ctx.closePath();
 	}
-	
+
 	this.drawXLabels = function (ctx) {
-		var txtSz; 
+		var txtSz;
 		var xDiv=divs.x/2;
 		for(var i=0; i<xDiv; i++){
 			var lbl = ""+(xParam.min*1+i*(xParam.max-xParam.min)/xDiv);
@@ -181,9 +181,9 @@ function smmGraph() {
 			ctx.fillText(lbl,this.x+i*this.w/xDiv-txtSz.width/2,parseInt(ctx.font)+this.y+this.h);
 		}
 	};
-	
+
 	this.drawYLabels = function (ctx) {
-		var txtSz; 
+		var txtSz;
 		var yDiv=divs.y/2;
 		for(var i=0; i<yDiv+1; i++){
 			var lbl = (""+(yParam.max*1+i*(yParam.min-yParam.max)/yDiv)).slice(0,(""+yParam.max).length);
@@ -191,26 +191,26 @@ function smmGraph() {
 			ctx.fillText(lbl,this.x-(txtSz.width+5),this.y+i*this.h/yDiv+parseInt(ctx.font)/2);
 		}
 	};
-	
+
 	this.draw = function (ctx) {
 		ctx.lineWidth=this.lineWidth;
 		ctx.strokeStyle = this.lineColor;
 		this.drawTrace(ctx);
-      
+
 	  	ctx.lineWidth=this.gridWidth;
 		ctx.strokeStyle = this.gridColor;
 		this.drawGrid(ctx,18,10);
-		
+
 		ctx.lineWidth=this.frameWidth;
 		ctx.strokeStyle = this.frameColor;
 		this.drawFrame(ctx);
-		
+
 		ctx.fillStyle = this.fontColor;
 		ctx.font = this.labelFont;
 		this.drawXLabels(ctx,9);
 		this.drawYLabels(ctx,5);
 	};
-	
+
 	this.clear = function(){
 		this.points.length=0;
 	};

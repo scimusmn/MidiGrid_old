@@ -1,6 +1,6 @@
-// Set the address and port of the Camera control computer server
-//var HOST = '10.75.135.37';
-//var PORT = 11999;
+// Set the name of the serial port here:
+var portName = "/dev/tty.usbmodemfd121";
+
 
 /*********************************************************
 / You should not have to edit below this point 
@@ -54,7 +54,7 @@ wss.on('connection', function(ws) {
 var com = require("serialport");
 var bufSize = 512;
 
-sp = new com.SerialPort("/dev/tty.usbmodemfa131", {
+sp = new com.SerialPort(portName, {
     baudrate: 9600,
     parser: com.parsers.readline('\r\n'),
     buffersize:bufSize,

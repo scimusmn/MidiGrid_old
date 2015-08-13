@@ -1,23 +1,37 @@
-var $ = function( id ) { 
+var $ = function( id, elem ) {
 	var ret;
+	var root = ((elem)?elem:document);
 	var spl = id.split(">");
 	switch(spl[0].charAt(0)){
 		case '#':
-			ret= document.getElementById( spl[0].substr(1) );
+			ret= root.getElementById( spl[0].substr(1) );
 			break;
 		case '.':
-			ret= document.getElementsByClassName(spl[0].substr(1) );
+			ret= root.getElementsByClassName(spl[0].substr(1) )[0];
 			break;
-		case '$': 
-			ret= document.getElementsByTagName( spl[0].substr(1) );
+		case '$':
+			ret= root.getElementsByTagName( spl[0].substr(1) )[0];
 			break;
 		default:
-			ret= document.getElementById( spl[0] );
+			ret= root.getElementById( spl[0] );
 			break;
 	}
 	if(spl.length<=1) return ret;
 	else return ret.getAttribute(spl[1]);
 };
+
+Function.prototype.inherits = function(parent) {
+  this.prototype = Object.create(parent.prototype);
+};
+
+/* declare your extended class like:
+
+Monkey.inherits(Monster);
+function Monkey() {
+  Monster.apply(this, arguments);
+}
+
+*/
 
 function b64toBlobURL(b64Data, contentType, sliceSize) {
 	var parts = b64Data.match(/data:([^;]*)(;base64)?,([0-9A-Za-z+/]+)/);
@@ -65,14 +79,14 @@ function degToRad(d) {
 }
 
 function itoa(i)
-{ 
+{
    return String.fromCharCode(i);
 }
 
 function extractNumber(value)
 {
     var n = parseInt(value);
-	
+
     return n == null || isNaN(n) ? 0 : n;
 }
 
@@ -107,14 +121,14 @@ function aveCont(points){
 	for(var i=0; i<points; i++){
 		samps.push(0.0);
 	}
-	
+
 	this.changeNumSamps = function(num){
 		samps.length=0;
 		for(var i=0; i<num; i++){
 			samps.push(0.0);
 		}
 	}
-	
+
 	this.addSample=function(val){
 		tot-=samps[ind];
 		samps[ind]=val;
@@ -123,7 +137,7 @@ function aveCont(points){
 		ind=(ind+1)%samps.length;
 		return this.ave;
 	}
-	
+
 	return this;
 }
 
