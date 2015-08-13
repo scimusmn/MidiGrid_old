@@ -17,14 +17,14 @@ function mapObj() {
 	};
 }
 
-function range(){
+/*function range(){
 	this.min=0;
 	this.max=0;
 
 	this.bound = function (val) {
 		return Math.min(this.max,Math.max(this.min,val));
 	};
-};
+};*/
 
 function axisParams(){
 	this.in = {min:0,max:0};
@@ -120,7 +120,6 @@ function smmGraph() {
 	}
 
 	this.setup = function (elem) {
-		console.log(elem);
 		this.setRange(atr(elem,"xMin"),atr(elem,"xMax"),atr(elem,"yMin"),atr(elem,"yMax"));
 		this.setNumDivs(atr(elem,"xDiv"),atr(elem,"yDiv"));
 	};
