@@ -14,13 +14,6 @@
   })
 });*/
 
-var focii = new function () {
-  var foci = document.getElementsByClassName('smm-focii');
-
-}
-
-var fociiProto = Object.create(HTMLElement.prototype);
-
 fociiAttr.inherits(Array)
 function fociiAttr() {
   var self =this;
@@ -47,99 +40,99 @@ function fociiActions() {
   }
 }
 
-fociiProto.hasFocus = false;
-fociiProto.lockout = false;
-fociiProto.ready = false;
-fociiProto.prepActions = null;
-fociiProto.moveActions = null;
-fociiProto.endActions = null;
-
-fociiProto.addActs = function (selector,item) {
-  /*switch (selector) {
-    case 'prep':
-
-      break;
-    case 'move':
-        this.moveActions.addItem(item);
-      break;
-    case 'end':
-        this.endActions.addItem(item);
-      break;
-    default:
-  }*/
-  return this[selector+"Actions"].addItem(item);
-}
-
-fociiProto.generateMoves = function (arr,inOut,fxn) {
-  for (var i = 0; i < arr.length; i++) {
-    if (typeof arr[i] === "function"){
-      arr[i](inOut=="in");
-      if(i>=arr.length-1&&typeof fxn === "function")  fxn();
-    }
-    else {
-      var mv = move(arr[i].elem);
-      for (var j = 0; j < arr[i].attr.length; j++) {
-        mv = mv.set(arr[i].attr[j].name,arr[i].attr[j][inOut]);
-      }
-      mv = mv.ease('out');
-      if(i>=arr.length-1) mv.end(fxn);
-      else mv.end();
-    }
-  }
-  if(arr.length==0){
-    if(typeof fxn === "function") fxn();
-  }
-}
-
-fociiProto.focus = function (fxnFocus) {
-  var self=this;
+var smmFocii = inheritFrom(HTMLElement,function () {
+  this.hasFocus = false;
+  this.lockout = false;
   this.ready = false;
-  this.lockout =true;
-  var endFunc = function () {
-    if(typeof fxnFocus === "function") fxnFocus();
-    self.hasFocus = true;
-    self.lockout=false;
-    self.ready = true;
-  }
-  self.generateMoves(self.moveActions,'in',function () {
-    self.generateMoves(self.prepActions,'in',function () {
-      self.generateMoves(self.endActions,'in',endFunc);
-    })
-  });
-}
+  this.prepActions = null;
+  this.moveActions = null;
+  this.endActions = null;
 
-fociiProto.loseFocus = function (fxnEnd){
-  if(this.hasFocus){
-    var self = this;
-    this.ready = false;
-    this.lockout = true;
+  this.addActs = function (selector,item) {
+    return this[selector+"Actions"].addItem(item);
+  }
+
+  this.generateMoves = function (arr,inOut,fxn) {
+    for (var i = 0; i < arr.length; i++) {
+      if (typeof arr[i] === "function"){
+        arr[i](inOut=="in");
+        if(i>=arr.length-1&&typeof fxn === "function")  fxn();
+      }
+      else {
+        var mv = move(arr[i].elem);
+        for (var j = 0; j < arr[i].attr.length; j++) {
+          mv = mv.set(arr[i].attr[j].name,arr[i].attr[j][inOut]);
+        }
+        mv = mv.ease('out');
+        if(i>=arr.length-1) mv.end(fxn);
+        else mv.end();
+      }
+    }
+    if(arr.length==0){
+      if(typeof fxn === "function") fxn();
+    }
+  }
+
+  this.focus = function (fxnFocus) {
+    var self=this;
+    self.ready = false;
+    self.lockout =true;
     var endFunc = function () {
-      if(typeof fxnEnd === "function") fxnEnd();
-      self.hasFocus = false;
+      if(typeof fxnFocus === "function") fxnFocus();
+      self.hasFocus = true;
       self.lockout=false;
       self.ready = true;
     }
-    self.generateMoves(self.prepActions,'out',function () {
-      self.generateMoves(self.moveActions,'out',function () {
-        self.generateMoves(self.endActions,'out',endFunc);
+    self.generateMoves(self.moveActions,'in',function () {
+      self.generateMoves(self.prepActions,'in',function () {
+        self.generateMoves(self.endActions,'in',endFunc);
       })
     });
   }
-}
 
-fociiProto.reset = function (fxn) {
-  this.loseFocus(fxn);
-}
-
-fociiProto.createdCallback = function () {
-  var self =this;
-  this.prepActions = new fociiActions();
-  this.moveActions = new fociiActions();
-  this.endActions = new fociiActions();
-
-  this.onmousedown = function (){
-    if(!self.hasFocus&&!self.lockout) self.focus();
+  this.loseFocus = function (fxnEnd){
+    var self =this;
+    if(self.hasFocus){
+      self.ready = false;
+      self.lockout = true;
+      var endFunc = function () {
+        if(typeof fxnEnd === "function") fxnEnd();
+        self.hasFocus = false;
+        self.lockout=false;
+        self.ready = true;
+      }
+      self.generateMoves(self.prepActions,'out',function () {
+        self.generateMoves(self.moveActions,'out',function () {
+          self.generateMoves(self.endActions,'out',endFunc);
+        })
+      });
+    }
   }
-}
 
-var smmFocii = document.registerElement('smm-focii', {prototype: fociiProto});
+  this.reset = function (fxn) {
+    this.loseFocus(fxn);
+  }
+
+  this.createdCallback = function () {
+    var self =this;
+    this.prepActions = new fociiActions();
+    this.moveActions = new fociiActions();
+    this.endActions = new fociiActions();
+
+    this.onmousedown = function (){
+      if(!self.hasFocus&&!self.lockout) self.focus();
+    }
+  }
+});
+
+document.registerElement('smm-focii', smmFocii);
+
+var focii = function () {
+  var foci = document.getElementsByTagName('smm-focii');
+  this.reset = function () {
+    for (var i = 0; i < foci.length; i++) {
+      foci[i].reset();
+    }
+  }
+  return this;
+}();

@@ -20,9 +20,9 @@ var $ = function( id, elem ) {
 	else return ret.getAttribute(spl[1]);
 };
 
-Function.prototype.inherits = function(parent) {
+/*Function.prototype.inherits = function(parent) {
   this.prototype = Object.create(parent.prototype);
-};
+};*/
 
 /* declare your extended class like:
 
@@ -32,6 +32,77 @@ function Monkey() {
 }
 
 */
+
+function inheritFrom(parent,addMethods){
+	var _parent = parent;
+  var ret = function() {
+    if (_parent) {
+      _parent.apply(this, arguments);
+    }
+  };
+
+  ret.prototype = Object.create(_parent && _parent.prototype, {
+    constructor: {
+      value: ret,
+      enumerable: false,
+      writable: true,
+      configurable: true
+    }
+  });
+  if (_parent) ret.__proto__ = _parent;
+
+	if(typeof addMethods === 'function')
+		addMethods.call(ret.prototype);
+
+  return ret;
+}
+
+Function.prototype.inherits = function (parent) {
+  this.prototype = Object.create(parent && parent.prototype, {
+    constructor: {
+      value: this,
+      enumerable: false,
+      writable: true,
+      configurable: true
+    }
+  });
+  if (parent) this.__proto__ = parent;
+};
+
+/***************************************
+these work like this:
+
+For custom elements:
+-----------------------------------------
+var DateSpan = inheritFrom(HTMLSpanElement);
+
+DateSpan.prototype.createdCallback = function () {
+    this.textContent = "Today's date: " + new Date().toJSON().slice(0, 10);
+  };
+
+  document.registerElement('date-today', DateSpan);
+
+for extending functions:
+------------------------------------------
+fociiActions.inherits(Array);
+function fociiActions() {
+  Array.apply(this,arguments);
+  var self = this;
+  this.addElement = function (el) {
+    this.push({'elem':el,'attr':new fociiAttr()})
+    return this.last().attr;
+  }
+  this.addFxn = function (fxn) {
+    this.push(fxn);
+  }
+  this.addItem = function (item) {
+    if(typeof item === 'function') self.addFxn(item);
+    else return self.addElement(item);
+  }
+}
+
+******************************************/
+
 
 function b64toBlobURL(b64Data, contentType, sliceSize) {
 	var parts = b64Data.match(/data:([^;]*)(;base64)?,([0-9A-Za-z+/]+)/);

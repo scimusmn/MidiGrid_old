@@ -18,18 +18,7 @@
 	$("warm").refresh();
 
 	$("#reset").onmousedown = function () {
-		/*move($(".instPanel",$("#dualInst"))).set('opacity','0')
-		.end(function () {
-			move('#dualInst').set('height','0%')
-			.end();
-			//$("coolCont").reset();
-			//$("warmCont").reset();
-			$("#reset").style.display = "none";
-		});*/
-		var foci = document.getElementsByTagName("smm-focii");
-		for (var i = 0; i < foci.length; i++) {
-			foci[i].reset();
-		}
+		focii.reset();
 		$("#reset").style.display = "none";
 	}
 
@@ -87,9 +76,6 @@
 			cool.addPoint({x:(ray[0]),y:(ray[1])});
 			warm.addPoint({x:(ray[0]),y:(ray[1])});
 		}
-		//console.log("Pin 0 is "+ray[0]);
-		//console.log("Pin 1 is "+ray[1]);
-		//console.log("end of message");
 	}
 
 	app.draw = function(){
@@ -102,14 +88,14 @@
 	window.onresize = function (x,y) {
 		$("cool").refresh();
 		$("warm").refresh();
-		//$("$body").style.fontSize = window.innerHeight/100+'px';
 	}
 
 	window.onresize();
 
 	drawTimer = setInterval(app.draw, 1000/refreshRate);
 
-	wsClient.setMsgCallback(app.onMessage);
+	//wsClient.setMsgCallback(app.onMessage);
+	$("$web-socket").customCallback = app.onMessage;
 
-	wsClient.connect();
+	//wsClient.connect();
 }(window.app = window.app || {}));

@@ -8,8 +8,10 @@
 	<script src="src/smm_utils.js"></script>
 	<script src="src/smm_focii.js"></script>
 	<script src="src/flipBook.js"></script>
+	<script src="src/web-socket.js"></script>
 </head>
 <body>
+	<web-socket serialport="/dev/tty.usbmodemfd121"></web-socket>
 	<div id="title">Efficient Air Compression</div>
 	<div id="reset">New User?</div>
 	<smm-focii class="graphCont card" id="coolCont" side="right">
@@ -74,7 +76,6 @@
 	<script src="src/pointStack.js"></script>
 	<script src="src/pointTrace.js"></script>
 	<script src="src/compCont.js"></script>
-	<script src="src/webSockets.js"></script>
 	<script src="src/arduinoControl.js"></script>
 	<script src="src/interface.js"></script>
 

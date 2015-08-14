@@ -3,8 +3,8 @@ var flipProto = Object.create(HTMLElement.prototype);
 //flipProto.
 flipProto.createdCallback = function () {
   var self = this;
-  this.currentPage = this.getElementsByClassName("instPage")[0];
-  this.button = this.getElementsByClassName("button")[0];
+  this.currentPage = $(".instPage",self);
+  this.button = $(".button",self);
   /*this.onmousedown = function (e) {
     if(!this.hasFocus&&!this.lockout) this.focus();
   }*/
@@ -12,7 +12,7 @@ flipProto.createdCallback = function () {
 
   this.resetPages = function () {
     self.currentPage.style.display = "none";
-    self.currentPage = self.getElementsByClassName("instPage")[0];
+    self.currentPage = $(".instPage",self);
     self.currentPage.style.display = "block";
   }
 
@@ -28,10 +28,7 @@ flipProto.createdCallback = function () {
       self.parentElement.loseFocus(function () {$("#"+spl[1]).focus();});
     }
     else if(targ=="none"){
-      var foci = document.getElementsByTagName("smm-focii");
-      for (var i = 0; i < foci.length; i++) {
-        foci[i].reset();
-      }
+      focii.reset();
     }
   }
 }
