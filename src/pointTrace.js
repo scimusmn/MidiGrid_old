@@ -35,7 +35,7 @@ function pointTrace(elem){
 	this.addPoint = function(pnt){
 		//self.points.addPoint(scalePoint(pnt));
 		graph.addPoint(pnt);
-		self.autoClear(.95);
+		self.autoClear(.98);
 
 		//console.log(graph.transPoint());
 	}
@@ -122,12 +122,12 @@ function pointTrace(elem){
 				ctx.lineTo(x + graph.points[i].x * wid, y + graph.points[i].y * hgt);
 				sectAve = sign(ave.ave);
 			}
+
 		}
 		if (sectAve < 0) ctx.fillStyle = "#49f";//"#333";//
 		else ctx.fillStyle = "#f44";//"#ccc";//
 		ctx.lineTo(x+lastPos.x * wid, y + hgt);
 		ctx.fill();
-		ctx.closePath();
 	};
 
 	this.draw = function(){
