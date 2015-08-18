@@ -64,13 +64,15 @@ function tempGraph(elem){
 
 	this.draw = function (pnt) {
 		this.canvas.width=this.width;
-		var t2 = (t1*((parseInt(pnt.y)+15)*pnt.x)/(p1*v1));
+		//console.log(pnt.x);
+		var left = (p1*v1)/(t1);
+		var t2 = (t1*(pnt.y+p1)*pnt.x)/(p1*v1);
+		console.log(pnt.x);
 		//var rel = .75*(t2-t1)/(maxTemp-t1)+1/4;
 		var rel = (t2-minTemp)/(maxTemp-minTemp);
 		if(rel>highTemp) highTemp=rel;
 		if(rel<0) rel=0;
 		else if (rel>1) rel=1;
-		//console.log(((parseInt(pnt.y)+15)*pnt.x)/(p1*v1));
 		ctx.fillStyle = "#fff";
 		ctx.beginPath();
 		ctx.rect(graph.x,graph.y,graph.w,graph.h);

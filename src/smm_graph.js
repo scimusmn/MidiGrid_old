@@ -116,7 +116,7 @@ function smmGraph() {
 	}
 
 	var atr = function (el,w) {
-		return el.getAttribute(w);
+		return parseInt(el.getAttribute(w));
 	}
 
 	this.setup = function (elem) {
@@ -147,6 +147,21 @@ function smmGraph() {
 				ctx.quadraticCurveTo(this.x+self.points[i].x*this.w, this.y+self.points[i].y*this.h, xc, yc);
 			}
 			ctx.stroke();
+			ctx.closePath();
+
+			ctx.strokeStyle = "#000";
+			ctx.fillStyle = "#ff0";
+			ctx.lineWidth=this.lineWidth;
+			ctx.beginPath();
+			ctx.arc(this.x+self.points.last().x*this.w,this.y+self.points.last().y*this.h,5,0,2*Math.PI);
+			ctx.stroke();
+			ctx.fill();
+			ctx.closePath();
+
+			ctx.fillStyle = "#000";
+			ctx.beginPath();
+			ctx.arc(this.x+self.points.last().x*this.w,this.y+self.points.last().y*this.h,1,0,2*Math.PI);
+			ctx.fill();
 			ctx.closePath();
 		}
 	};

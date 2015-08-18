@@ -82,11 +82,11 @@
 			}
 		}
 		if(pins[0].isNew&&pins[1].isNew){
-			warm.addPoint({x:pins[0].val,y:pins[1].val});
+			cool.addPoint({x:pins[0].val,y:pins[1].val});
 			pins[0].isNew=pins[1].isNew=false;
 		}
 		if(pins[2].isNew&&pins[3].isNew){
-			cool.addPoint({x:pins[2].val,y:pins[3].val});
+			warm.addPoint({x:pins[2].val,y:pins[3].val});
 			pins[2].isNew=pins[3].isNew=false;
 		}
 	}
