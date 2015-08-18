@@ -5,6 +5,7 @@ function compCont(elem) {
   //elem.hasFocus = false;
 
   elem.graph = null;
+  elem.seen = false;
 
   elem.bind = function (other,graf,grapf) {
     self.other = other;
@@ -21,68 +22,35 @@ function compCont(elem) {
 }
 
 function bottomTray(elem){
-  /*elem.focus = function (fxn) {
-    $("#reset").style.display = "block";
-    $("warmCont").shrink();
-    $("coolCont").shrink();
-    move(elem).set('height','26%')
-    .end(function () {
-      move($(".instPanel",elem)).set('opacity','1')
-      .set('width','96%')
-      .end();
-      elem.hasFocus=true;
-    });
-  }*/
-
-  function trayMoves(elem){
-    var self = elem;
-    var warm = $("warmCont");
-    var cool = $("coolCont");
-    elem.addActs("move",
-      function (In) {
-        $("#reset").style.display = ((In)?"block":"none");
-        warm.lockout = In;
-        cool.lockout = In;
-      }
-    );
-    elem.addActs("move",warm).add('height','60%','80%');
-    elem.addActs("move",$(".graphSub",warm)).add('opacity','0','1');
-    elem.addActs("move",cool).add('height','60%','80%');
-    elem.addActs("move",$(".graphSub",cool)).add('opacity','0','1');
-    elem.addActs("move",elem).add('height','26%','0%');
-    elem.addActs("prep",
-      function (In) {
-        $("cool").refresh();
-      	$("warm").refresh();
-      }
-    );
-    elem.addActs("prep",$(".instPanel",elem)).add('opacity','1','0');
-
-    return elem;
-  }
-
-  elem = trayMoves(elem);
-
-  /*elem.loseFocus = function (fxn) {
-    $("#reset").style.display = "block";
-    move($(".instPanel",elem)).set('opacity','0')
-    .ease('out')
-    .end(function () {
-      move(elem).set('height','0%')
-      .ease('out')
-      .end(function () {
-        $("warmCont").reset();
-        $("coolCont").reset();
-        if(this.hasFocus&&typeof fxn == "function"){ fxn(); }
-        this.hasFocus = false;
-      });
-    });
-  }*/
+  var self = elem;
+  var warm = $("warmCont");
+  var cool = $("coolCont");
+  elem.addActs("move",
+    function (In) {
+      $("#reset").style.display = ((In)?"block":"none");
+      warm.lockout = In;
+      cool.lockout = In;
+      if(!In) warm.seen=cool.seen=false;
+    }
+  );
+  elem.addActs("move",warm).add('height','60%','80%');
+  elem.addActs("move",$(".graphSub",warm)).add('opacity','0','1');
+  elem.addActs("move",cool).add('height','60%','80%');
+  elem.addActs("move",$(".graphSub",cool)).add('opacity','0','1');
+  elem.addActs("move",elem).add('height','26%','0%');
+  elem.addActs("prep",
+    function (In) {
+      $("cool").refresh();
+    	$("warm").refresh();
+    }
+  );
+  elem.addActs("prep",$(".instPanel",elem)).add('opacity','1','0');
 
   return elem;
 }
 
 var setMoves = function (elem) {
+  var self = elem;
   function opposite (side){
     return ((side=="left")?'right':'left');
   };
@@ -91,11 +59,19 @@ var setMoves = function (elem) {
   var title = $(".graphTitle",elem);
   var data = $(".data",elem);
   var inst = $(".instPanel",elem);
+  var pages= inst.querySelectorAll(".instPage");
+  var lastPage  = pages[pages.length-1];
+  console.log(lastPage);
   var button = $(".instButton",inst);
   var side = elem.getAttribute("side");
 
   elem.addActs("move",
-    function (In) {$("#reset").style.display = ((In)?"block":"none");}
+    function (In) {
+      $("#reset").style.display = ((In)?"block":"none");
+      $("cool").refresh();
+    	$("warm").refresh();
+      if(In) self.seen=true;
+    }
   );
   elem.addActs("move",elem.other).add(opposite(side),'-50%','2%');
 
@@ -116,6 +92,13 @@ var setMoves = function (elem) {
     function (In) {
       if(In){
         inst.resetPages();
+        if(self.seen&&self.other.seen){
+          lastPage.setAttribute("target","id:dualInst");
+          console.log(lastPage.getAttribute("target"));
+        }
+        else if(!self.other.seen){ lastPage.setAttribute("target","id:"+self.other.id);
+          console.log(lastPage.getAttribute("target"));
+        }
       }
     }
   );
