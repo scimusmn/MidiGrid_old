@@ -10,10 +10,9 @@ var bufSize = 512;
 function openSerial(portName) {
 	console.log("Opening serialport "+portName);
 	var ser = new com.SerialPort(portName, {
-	  baudrate: 9600,
-	  parser: com.parsers.readline('\r\n'),
-	  buffersize:bufSize,
-	  encoding:'iso-8859-1'
+	  baudrate: 115200,
+	  parser: com.parsers.readline('\r\n','binary'),
+	  buffersize:bufSize
 	});
 
 	ser.on('open',function() {
@@ -49,14 +48,14 @@ wss.on('connection', function(ws) {
        console.log("connected");
 
     ws.on('message', function(message) {
-			var spl = message.split("=");
+			var spl = message.split("|");
     	switch(spl[0]){
 				case "sp":
 						if(!sp||!sp.isOpen()){
 							openSerial(spl[1]);
 						}
 					break;
-				default:
+				case"r":
 					if(sp) sp.write(message+"|");
 					break;
 				}

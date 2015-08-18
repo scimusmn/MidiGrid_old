@@ -20,19 +20,6 @@ var $ = function( id, elem ) {
 	else return ret.getAttribute(spl[1]);
 };
 
-/*Function.prototype.inherits = function(parent) {
-  this.prototype = Object.create(parent.prototype);
-};*/
-
-/* declare your extended class like:
-
-Monkey.inherits(Monster);
-function Monkey() {
-  Monster.apply(this, arguments);
-}
-
-*/
-
 function inheritFrom(parent,addMethods){
 	var _parent = parent;
   var ret = function() {
@@ -159,6 +146,11 @@ function extractNumber(value)
     var n = parseInt(value);
 
     return n == null || isNaN(n) ? 0 : n;
+}
+
+
+function bitRead(num,pos){
+	return (num&Math.pow(2,pos))>>pos;
 }
 
 function distance(p1,p2){

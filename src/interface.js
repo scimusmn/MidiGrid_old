@@ -57,24 +57,37 @@
 
 	var inc =0;
 
+	var pins = [];
+	for (var i = 0; i < 4; i++) {
+		pins.push({val:0,isNew:false});
+	}
+
 	app.onMessage = function(evt){
 		var msg = evt.data;
 		var ray=[];
 		//console.log(msg);
+		var msg = evt.data;
 		for(var i=0; i<msg.length-1; i++){
 			var chr = msg.charCodeAt(i);
-			//console.log(chr);
-			if(chr&64&&i<msg.length-2){
-				//if(chr & 64){
-					ray[((chr & 48)>>4)]=((chr & 15)<<6)+(msg.charCodeAt(i+1)&63)
-					//console.log("Pin " + ((chr & 48)>>4) + " is "+(((chr & 15)<<6)+(msg.charCodeAt(i+1)&63)));
-				//}
-				i++;
+			if(chr&192){  //if the packet is analogRead
+				var pin = ((chr & 56)>>3);				//extract the pin number
+				var val = ((chr & 7)<<7)+(msg.charCodeAt(++i)&127); //extract the value
+				//console.log(val);
+				pins[pin].val = val;
+				pins[pin].isNew = true;
+			}
+			else if(chr&128){			//if the packet is digitalRead
+				var pin = ((chr & 62)>>1);
+				var val = chr&1;
 			}
 		}
-		if(!isNaN(ray[0])&&!isNaN(ray[1])){
-			cool.addPoint({x:(ray[0]),y:(ray[1])});
-			warm.addPoint({x:(ray[0]),y:(ray[1])});
+		if(pins[0].isNew&&pins[1].isNew){
+			warm.addPoint({x:pins[0].val,y:pins[1].val});
+			pins[0].isNew=pins[1].isNew=false;
+		}
+		if(pins[2].isNew&&pins[3].isNew){
+			cool.addPoint({x:pins[2].val,y:pins[3].val});
+			pins[2].isNew=pins[3].isNew=false;
 		}
 	}
 

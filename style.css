@@ -11,7 +11,7 @@ html, body {
 	width:100%;
 	height:100%;
 	text-align: center;
-  /*cursor: none;*/
+  cursor: none;
 }
 
 .buttons{
@@ -56,7 +56,7 @@ flip-book {
 .invBut {
 	color:#083E84;
 	background-color: #fff;
-	font-size: 2vh;
+	font-size: 3vh;
 }
 
 .button {
@@ -128,6 +128,7 @@ flip-book {
 #warmCont {
 	background-color: #C93C00;
 	/*background-color: #C93300;*/
+  background: linear-gradient(#920c00,#C93C00);
 	left:2%;
 }
 
