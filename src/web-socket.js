@@ -24,7 +24,7 @@ var web_socket = inheritFrom(HTMLElement,function(){
                 };
                 if(self.serialport.length){
                   console.log("Attempting connection to "+self.serialport+"...");
-                  ws.send("sp="+self.serialport)
+                  ws.send("sp|"+self.serialport)
                 }
             };
             ws.onerror = function ( error ) {

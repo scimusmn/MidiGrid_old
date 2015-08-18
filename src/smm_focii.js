@@ -119,7 +119,8 @@ var smmFocii = inheritFrom(HTMLElement,function () {
     this.moveActions = new fociiActions();
     this.endActions = new fociiActions();
 
-    this.onmousedown = function (){
+    this.onmousedown = function (e){
+      e.preventDefault();
       if(!self.hasFocus&&!self.lockout) self.focus();
     }
   }

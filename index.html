@@ -9,9 +9,10 @@
 	<script src="src/smm_focii.js"></script>
 	<script src="src/flipBook.js"></script>
 	<script src="src/web-socket.js"></script>
+
+	<web-socket serialport="/dev/tty.usbmodem1411"></web-socket>
 </head>
 <body>
-	<web-socket serialport="/dev/tty.usbmodemfd121"></web-socket>
 	<div id="title">Efficient Air Compression</div>
 	<div id="reset">New User?</div>
 	<smm-focii class="graphCont card" id="coolCont" side="right">
@@ -21,7 +22,7 @@
 		<div class="bar"></div>
 		<div class="data right">
 			<canvas class="trace" title="Pressure vs. Air Volume" id="cool" temp="coolTemp">
-				<div class="graph" xMin="0" xMax="18" yMin="0" yMax="180" xDiv="18" yDiv="10"></div>
+				<div class="graph" xLow="250" xHi="1023" yLow="102" yHi="920" xMin="0" xMax="18" yMin="0" yMax="180" xDiv="18" yDiv="10"></div>
 			</canvas>
 			<canvas class="temp" id="coolTemp" t1="72" p1="15" v1="17.5" tMin="40" tMax="120" divs="10"></canvas>
 		</div>
@@ -45,7 +46,7 @@
 		<div class="bar"></div>
 		<div class="data left">
 			<canvas class="trace"  title="Pressure vs. Air Volume" id="warm" temp="warmTemp">
-				<div class="graph" xMin="0" xMax="18" yMin="0" yMax="180" xDiv="18" yDiv="10"></div>
+				<div class="graph" xLow="250" xHi="1023" yLow="102" yHi="920" xMin="0" xMax="18" yMin="0" yMax="180" xDiv="18" yDiv="10"></div>
 			</canvas>
 			<canvas class="temp" id="warmTemp" t1="72" p1="15" v1="17.5" tMin="40" tMax="120" divs="10"></canvas>
 		</div>

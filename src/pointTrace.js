@@ -28,7 +28,7 @@ function pointTrace(elem){
 
 	ctx.globalCompositeOperation = "lighter";
 
-	graph.setScale({min:0,max:1023.},{min:0,max:18},{min:102,max:920},{min:0,max:200});
+	//graph.setScale({min:250,max:1023.},{min:0,max:18},{min:102,max:920},{min:0,max:200});
 
 	graph.setup(this.canvas.querySelector(".graph"));
 

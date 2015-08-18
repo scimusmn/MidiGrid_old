@@ -116,11 +116,17 @@ function smmGraph() {
 	}
 
 	var atr = function (el,w) {
-		return el.getAttribute(w);
+		return parseInt(el.getAttribute(w));
 	}
 
 	this.setup = function (elem) {
-		this.setRange(atr(elem,"xMin"),atr(elem,"xMax"),atr(elem,"yMin"),atr(elem,"yMax"));
+
+		var xR = {min:atr(elem,"xMin"),max:atr(elem,"xMax")};
+		var yR = {min:atr(elem,"yMin"),max:atr(elem,"yMax")};
+		if(atr(elem,"xLow")){
+			 this.setScale({min:atr(elem,"xLow"),max:atr(elem,"xHi")},xR,{min:atr(elem,"yLow"),max:atr(elem,"yHi")},yR);
+		}
+		this.setRange(xR.min,xR.max,yR.min,yR.max);
 		this.setNumDivs(atr(elem,"xDiv"),atr(elem,"yDiv"));
 	};
 
