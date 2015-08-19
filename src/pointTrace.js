@@ -54,6 +54,11 @@ function pointTrace(elem){
 		}
 	}
 
+	this.efficiency = function () {
+		graph.efficiency();
+		return (1-graph.energyTot/graph.energyIn)*100;
+	}
+
 	this.color="#f00";
 
 	elem.refresh = function(){
@@ -77,6 +82,26 @@ function pointTrace(elem){
 	graph.lineWidth = "2";
 	graph.frameColor = "#666";
 	graph.frameWidth = "2px";
+
+	graph.energyIn = 0;
+	graph.energyOut = 0;
+	graph.energyTot = 0;
+
+	graph.efficiency = function () {
+		graph.energyIn = 0;
+		graph.energyOut = 0;
+		graph.energyTot = 0;
+		for (var i = 0; i < graph.points.length-1; i++) {
+			var diff = graph.points[i].x - graph.points[i + 1].x;
+			var aPlusB = (graph.points[i].y + graph.points[i + 1].y)/2;
+			if(sign(diff)>0) graph.energyOut-=diff*aPlusB;
+			else if(sign(diff)<0) graph.energyIn+=diff*aPlusB;
+			graph.energyTot+=diff*aPlusB;
+		}
+		console.log("Energy in was: "+graph.energyIn);
+		console.log("Energy out was: "+graph.energyOut);
+		console.log("Efficiency was: "+(1-graph.energyTot/graph.energyIn));
+	}
 
 	graph.drawColorIntegral = function(ctx){
 		var wid=this.w;

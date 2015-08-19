@@ -34,6 +34,10 @@
 			$("cool").refresh();
 			$("warm").refresh();
 				break;
+			case charCode('E'):				//if the send button was pressed
+			$("#coolEff").innerHTML = cool.efficiency();
+			$("#warmEff").innerHTML = warm.efficiency();
+				break;
 			case charCode('W'):				//if the send button was pressed
 				if(coolCont.hasFocus) coolCont.loseFocus(function () {
 						warmCont.focus();

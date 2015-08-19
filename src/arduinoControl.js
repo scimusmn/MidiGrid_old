@@ -5,10 +5,12 @@ var arduino = inheritFrom(HTMLElement,function(){
 	this.anaHandlers =[];
 	var START = 128;
 	var DIGI_READ = 0;
-	var ANA_READ = 32;
-	var ANA_WRITE = 64;
-	var DIGI_WRITE = 96;
-	var REPORT_TIME = 2;
+	var DIGI_WRITE = 32;	//pins 2-13
+	var ANA_READ = 64;
+	var DIGI_WATCH_2 = 72; //pins 14-19
+	var ANA_REPORT = 80;
+	var ANA_WRITE = 96;		//pins 3,5,6,9,10,11
+	var DIGI_WATCH = 112;	//pins 2-13
 
 	var wsClient = $("$web-socket");
 
@@ -16,13 +18,13 @@ var arduino = inheritFrom(HTMLElement,function(){
 		msg = evt.data
 		for(var i=0; i<msg.length-1; i++){
 			var chr = msg.charCodeAt(i);
-			if(chr&192){  //if the packet is analogRead
+			if(chr&(START+ANA_READ)){  //if the packet is analogRead
 				var pin = ((chr & 56)>>3);				//extract the pin number
 				var val = ((chr & 7)<<7)+(msg.charCodeAt(++i)&127); //extract the value
 
 				if(typeof self.anaHandlers[pin] == 'function') self.anaHandlers[pin](val);
 			}
-			else if(chr&128){			//if the packet is digitalRead
+			else if(chr&(START+DIGI_READ)){			//if the packet is digitalRead
 				var pin = ((chr & 62)>>1);
 				var val = chr&1;
 
@@ -36,28 +38,29 @@ var arduino = inheritFrom(HTMLElement,function(){
 	}
 
   arduino.digitalWrite = function(pin, state) {
-		if(pin<=17) wsClient.send(asChar(START+DIGI_WRITE+((pin-2)<<1)+(state&1)));
-		else console.log("Pin must be less than 17");
+		if(pin<=13) wsClient.send("r|"+asChar(START+DIGI_WRITE+((pin&15)<<1)+(state&1)));
+		else console.log("Pin must be less than 13");
   };
 
   arduino.digitalRead = function(pin) {
-    wsClient.send(asChar(START+DIGI_READ+(pin&31)));
+    wsClient.send("r|"+asChar(START+DIGI_READ+(pin&31)));
   };
 
   arduino.analogWrite = function(pin, val) {
 		if(val>=0&&val<256)
-    	wsClient.send(asChar(START+ANA_WRITE+((pin&7)<<2)+(val>>7))+asChar(val&127));
+    	wsClient.send("r|"+asChar(START+ANA_WRITE+((pin&7)<<1)+(val>>7))+asChar(val&127));
   };
 
   arduino.watchPin = function(pin, handler) {
-    //wsClient.send('r|watchPin(' + pin + ')');
+    if(pin<13) wsClient.send("r|"+asChar(START+DIGI_WATCH+(pin&15)));
+		else wsClient.send("r|"+asChar(START+DIGI_WATCH_2+((pin-13)&7)));
     arduino.handlers[pin] = handler;
   };
 
   this.analogReport = function(pin, interval, handler) {
 		interval/=2;
 		if(interval<256){
-			wsClient.send(asChar(START+ANA_READ+((pin&7)<<2)+REPORT_TIME+(interval>>7))+asChar(interval&127));
+			wsClient.send(asChar(START+ANA_REPORT+((pin&7)<<1)+(interval>>7))+asChar(interval&127));
     	arduino.handlers[pin] = handler;
 		}
 		else console.log("interval must be less than 512");
@@ -68,11 +71,11 @@ var arduino = inheritFrom(HTMLElement,function(){
   };
 
   arduino.analogRead = function(pin) {
-    wsClient.send(asChar(START+ANA_READ+((pin&7)<<2)));
+    wsClient.send(asChar(START+ANA_READ+((pin&7))));
   };
 
   arduino.stopReport = function(pin) {
-    wsClient.send(asChar(START+ANA_READ+((pin&7)<<2)+REPORT_TIME)+asChar(0));
+    wsClient.send(asChar(START+ANA_REPORT+((pin&7)<<1))+asChar(0));
   };
 
 	this.createdCallback = function () {
