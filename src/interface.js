@@ -31,8 +31,7 @@
 				else coolCont.focus();
 				break;
 			case charCode('R'):				//if the send button was pressed
-			$("cool").refresh();
-			$("warm").refresh();
+				var on=false;
 				break;
 			case charCode('E'):				//if the send button was pressed
 			$("#coolEff").innerHTML = cool.efficiency();
@@ -48,6 +47,15 @@
 				console.log(coolCont.hasFocus);
 				if(coolCont.hasFocus) coolCont.loseFocus();
 				if(warmCont.hasFocus) warmCont.loseFocus();
+				break;
+			// case charCode('O'):				//if the send button was pressed
+			// 	$("$web-arduino").digitalWrite(13,0);
+			// 	break;
+			case charCode('O'):				//if the send button was pressed
+				$("$web-arduino").digitalWrite(13,0);
+				break;
+			case charCode('L'):				//if the send button was pressed
+				$("$web-arduino").digitalWrite(13,1);
 				break;
 			case 32:
 				cool.clear();
@@ -66,7 +74,7 @@
 		pins.push({val:0,isNew:false});
 	}
 
-	app.onMessage = function(evt){
+	/*app.onMessage = function(evt){
 		var msg = evt.data;
 		var ray=[];
 		//console.log(msg);
@@ -93,6 +101,25 @@
 			warm.addPoint({x:pins[2].val,y:pins[3].val});
 			pins[2].isNew=pins[3].isNew=false;
 		}
+	}*/
+	function setReport(j,interval,last) {
+		$("$web-arduino").analogReport(j,500,function (pin,val) {
+			pins[pin] = val;
+			pins[pin].isNew=true;
+			console.log("pin is "+pin);
+
+			if((!(pin%2))&&pins[pin].isNew&&pins[pin+1].isNew){
+				var graph = ((pin)?warm:cool);
+				graph.addPoint({x:pins[pin].val,y:pins[pin+1].val});
+				pins[pin].isNew=pins[pin+1].isNew=false;
+			}
+		});
+
+		if(j<last){ setTimeout(function(){setReport(j+1,interval,last);},50);}
+	}
+
+	$("$web-socket").onArduinoConnect = function () {
+		setReport(0,1000/refreshRate,3);
 	}
 
 	app.draw = function(){
@@ -112,7 +139,8 @@
 	drawTimer = setInterval(app.draw, 1000/refreshRate);
 
 	//wsClient.setMsgCallback(app.onMessage);
-	$("$web-socket").customCallback = app.onMessage;
+	//$("$web-socket").customCallback = app.onMessage;
+
 
 	//wsClient.connect();
 }(window.app = window.app || {}));

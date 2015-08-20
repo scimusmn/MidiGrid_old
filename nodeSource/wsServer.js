@@ -7,20 +7,20 @@ var sp = null;
 var com = require("serialport");
 var bufSize = 512;
 
-function openSerial(portName) {
+function openBackend(portName){
 	console.log("Opening serialport "+portName);
 	var ser = new com.SerialPort(portName, {
-	  baudrate: 115200,
-	  parser: com.parsers.readline('\r\n','binary'),
-	  buffersize:bufSize
+		baudrate: 115200,
+		parser: com.parsers.readline('\r\n','binary'),
+		buffersize:bufSize
 	});
 
 	ser.on('open',function() {
 		sp=ser;
 		if(webSock) webSock.send("sp=ack");
-	  sp.on('data', function(data) {
-	    if(webSock) webSock.send(data);
-	  });
+		sp.on('data', function(data) {
+			if(webSock) webSock.send(data);
+		});
 
 	});
 
@@ -29,6 +29,19 @@ function openSerial(portName) {
 		sp = null;
 		if(webSock) webSock.send("sp=err");
 	});
+}
+
+function openSerial(portName) {
+	if(portName[0]!='/')
+		com.list(function (err, ports) {
+		  ports.forEach(function(port) {
+		    if(port.comName.indexOf(portName)>-1){
+					portName=port.comName;
+					openBackend(portName);
+				}
+		  });
+		});
+	else openBackend(portName);
 }
 
 /*******************************************
@@ -56,7 +69,8 @@ wss.on('connection', function(ws) {
 						}
 					break;
 				case"r":
-					if(sp) sp.write(message+"|");
+					console.log(spl[1].charCodeAt(0));
+					if(sp) sp.write(spl[1]+"|");
 					break;
 				}
     });

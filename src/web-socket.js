@@ -1,6 +1,8 @@
 var web_socket = inheritFrom(HTMLElement,function(){
   this.address = "ws://localhost:8080/",
   this.customCallback = function (evt) {},
+  this.connectCallback = function () {};
+  this.onArduinoConnect = function () {};
   this.connectInterval = null,
   this.serialport = "",
   this.send = function(msg){},
@@ -12,13 +14,16 @@ var web_socket = inheritFrom(HTMLElement,function(){
             {
                 // Web Socket is connected, send data using send()
                 clearInterval(self.connectInterval);
+                self.connectCallback();
                 ws.onmessage = function (evt) {
                     var spl = evt.data.split("=")
                     if(spl[0]=="sp"){
                       if(spl[1]=="err")
                         console.log(self.serialport+" does not exist");
-                      else if(spl[1]=="ack")
+                      else if(spl[1]=="ack"){
+                        setTimeout(self.onArduinoConnect,1500);
                         console.log("Connection successful");
+                      }
                     }
                     else self.customCallback(evt);
                 };

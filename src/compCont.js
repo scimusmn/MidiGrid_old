@@ -61,7 +61,6 @@ var setMoves = function (elem) {
   var inst = $(".instPanel",elem);
   var pages= inst.querySelectorAll(".instPage");
   var lastPage  = pages[pages.length-1];
-  console.log(lastPage);
   var button = $(".instButton",inst);
   var side = elem.getAttribute("side");
 
@@ -94,10 +93,8 @@ var setMoves = function (elem) {
         inst.resetPages();
         if(self.seen&&self.other.seen){
           lastPage.setAttribute("target","id:dualInst");
-          console.log(lastPage.getAttribute("target"));
         }
         else if(!self.other.seen){ lastPage.setAttribute("target","id:"+self.other.id);
-          console.log(lastPage.getAttribute("target"));
         }
       }
     }

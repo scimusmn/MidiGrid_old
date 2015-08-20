@@ -9,8 +9,10 @@
 	<script src="src/smm_focii.js"></script>
 	<script src="src/flipBook.js"></script>
 	<script src="src/web-socket.js"></script>
+	<script src="src/arduinoControl.js"></script>
 
-	<web-socket serialport="/dev/tty.usbmodem1411"></web-socket>
+	<web-socket serialport="usbmodem"></web-socket>
+	<web-arduino></web-arduino>
 </head>
 <body>
 	<div id="title">Efficient Air Compression</div>
@@ -79,7 +81,6 @@
 	<script src="src/pointStack.js"></script>
 	<script src="src/pointTrace.js"></script>
 	<script src="src/compCont.js"></script>
-	<script src="src/arduinoControl.js"></script>
 	<script src="src/interface.js"></script>
 
 </body>
