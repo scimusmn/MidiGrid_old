@@ -66,6 +66,10 @@ var webArduino = inheritFrom(HTMLElement,function(){
 		else console.log("interval must be less than 512");
   };
 
+	arduino.setAnalogHandler = function(pin, handler) {
+    arduino.anaHandlers[pin] = handler;
+  };
+
   arduino.setHandler = function(pin, handler) {
     arduino.handlers[pin] = handler;
   };
