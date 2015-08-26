@@ -103,11 +103,10 @@ function pointTrace(elem){
 		console.log("Efficiency was: "+(1-graph.energyTot/graph.energyIn));
 	}
 
-	graph.drawColorIntegral = function(ctx){
-		var wid=this.w;
-		var hgt=this.h;
-		var y=this.y;
-		var x=this.x;
+	graph.customBGDraw = function(){
+		var ctx = this.getContext("2d");
+		var wid=this.width;
+		var hgt=this.height;
 
 		var sectAve=0;
 		var lastPos={x:0,y:0};
@@ -124,14 +123,14 @@ function pointTrace(elem){
 			ctx.fillStyle = ctx.strokeStyle;
 			if (!sectAve) {
 				ctx.beginPath();
-				ctx.moveTo(x + graph.points[i].x * wid, y + hgt);
-				ctx.lineTo(x + graph.points[i].x * wid, y + graph.points[i].y * hgt);
+				ctx.moveTo(graph.points[i].x * wid, hgt);
+				ctx.lineTo(graph.points[i].x * wid, graph.points[i].y * hgt);
 				firstPos = graph.points[i];
 				lastPos = graph.points[i];
 			}
 			if (sign(ave.ave) == sectAve) {
 				if (sign(ave.ave) == sign(graph.points[i].x - graph.points[i + 1].x)) {
-					ctx.lineTo(x + graph.points[i].x * wid, y + graph.points[i].y * hgt);
+					ctx.lineTo(graph.points[i].x * wid, graph.points[i].y * hgt);
 					lastPos = graph.points[i];
 					//ctx.globalAlpha = i / graph.points.length;
 				}
@@ -139,19 +138,19 @@ function pointTrace(elem){
 			else {
 				if (sectAve < 0) ctx.fillStyle = "#49f";//"#aaa";//
 				else ctx.fillStyle = "#f44";
-				ctx.lineTo(x + lastPos.x * wid, y + hgt);
+				ctx.lineTo(lastPos.x * wid, hgt);
 				ctx.fill();
 				ctx.closePath();
 				ctx.beginPath();
-				ctx.moveTo(x + graph.points[i].x * wid, y + hgt);
-				ctx.lineTo(x + graph.points[i].x * wid, y + graph.points[i].y * hgt);
+				ctx.moveTo(graph.points[i].x * wid, hgt);
+				ctx.lineTo( graph.points[i].x * wid, graph.points[i].y * hgt);
 				sectAve = sign(ave.ave);
 			}
 
 		}
 		if (sectAve < 0) ctx.fillStyle = "#49f";//"#333";//
 		else ctx.fillStyle = "#f44";//"#ccc";//
-		ctx.lineTo(x+lastPos.x * wid, y + hgt);
+		ctx.lineTo(lastPos.x * wid,hgt);
 		ctx.fill();
 	};
 
@@ -161,8 +160,9 @@ function pointTrace(elem){
 		if(graph.points.length) this.gauge.draw(this.lastPoint());
 
 
-		graph.drawColorIntegral(ctx);
-		graph.draw(ctx);
+		//graph.drawColorIntegral(ctx);
+		//graph.draw(ctx);
+		ctx.drawImage(graph);
 
 		//var em1 = window.innerHeight/100;
 

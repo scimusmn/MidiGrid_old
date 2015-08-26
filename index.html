@@ -12,7 +12,12 @@
 	<script src="src/arduinoControl.js"></script>
 
 	<web-socket serialport="usbmodem"></web-socket>
-	<web-arduino></web-arduino>
+	<web-arduino>
+		<!-- <input-pin type="analog" pin="0" report="30" low="175" hi="1023" result="#cool.x"/>
+		<input-pin type="analog" pin="1" report="30" low="90" hi="986" result="#cool.y"/>
+		<input-pin type="analog" pin="2" report="30" low="175" hi="1023" result="#warm.x"/>
+		<input-pin type="analog" pin="3" report="30" low="90" hi="986" result="#warm.y"/> -->
+	</web-arduino>
 </head>
 <body>
 	<div id="title">Efficient Air Compression</div>

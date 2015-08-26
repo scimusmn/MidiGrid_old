@@ -55,7 +55,7 @@
 	}
 
 	function setReport(pinNum,interval,last) {
-		$("$web-arduino").setAnalogHandler(pinNum,function (pin,val) {
+		$("$web-arduino").analogReport(pinNum,30,function (pin,val) {
 			pins[pin].val = val;
 			pins[pin].isNew=true;
 			if(((pin%2)==0)&&pins[pin].isNew&&pins[pin+1].isNew){

@@ -16,7 +16,8 @@ var webArduino = inheritFrom(HTMLElement,function(){
 
   this.onMessage = function(evt) {
 		msg = evt.data;
-		//console.log("message is " +msg+"and length is " +msg.length);
+		if(msg.length>1)
+			console.log("message is " +msg);
 		for(var i=0; i<msg.length; i++){
 			var chr = msg.charCodeAt(i);
 			if(chr&ANA_READ){  //if the packet is analogRead
