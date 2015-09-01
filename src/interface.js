@@ -17,6 +17,8 @@
 	$("cool").refresh();
 	$("warm").refresh();
 
+	$(".graph",$("warm")).range.y.flip=false;
+
 	$("#reset").onmousedown = function () {
 		focii.reset();
 		$("#reset").style.display = "none";
@@ -47,7 +49,7 @@
 		}
 	}
 
-	var inc =0;
+	/*var inc =0;
 
 	var pins = [];
 	for (var i = 0; i < 4; i++) {
@@ -66,11 +68,11 @@
 		});
 
 		if(pinNum<last){ setTimeout(function(){setReport(pinNum+1,interval,last);},50);}
-	}
+	}*/
 
-	$("$web-socket").onArduinoConnect = function () {
-		setReport(0,100,3);
-	}
+	//$("$web-socket").onArduinoConnect = function () {
+		//setReport(0,100,3);
+	//}
 
 	app.draw = function(){
 		cool.draw();

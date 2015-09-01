@@ -12,6 +12,9 @@ var $ = function( id, elem ) {
 		case '$':
 			ret= root.getElementsByTagName( spl[0].substr(1) )[0];
 			break;
+		case '|':
+			ret= root;
+			break;
 		default:
 			ret= root.getElementById( spl[0] );
 			break;
@@ -27,6 +30,8 @@ function inheritFrom(parent,addMethods){
       _parent.apply(this, arguments);
     }
   };
+
+	//console.log(_parent);
 
   ret.prototype = Object.create(_parent && _parent.prototype, {
     constructor: {

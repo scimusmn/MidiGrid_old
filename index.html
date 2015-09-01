@@ -6,6 +6,8 @@
 	<link rel="stylesheet" href="style.css" />
 
 	<script src="src/smm_utils.js"></script>
+	<script src="src/pointStack.js"></script>
+	<script src="src/smm_graph.js"></script>
 	<script src="src/smm_focii.js"></script>
 	<script src="src/flipBook.js"></script>
 	<script src="src/web-socket.js"></script>
@@ -13,10 +15,10 @@
 
 	<web-socket serialport="usbmodem"></web-socket>
 	<web-arduino>
-		<!-- <input-pin type="analog" pin="0" report="30" low="175" hi="1023" result="#cool.x"/>
+		<input-pin type="analog" pin="0" report="30" low="175" hi="1023" result="#cool.x"/>
 		<input-pin type="analog" pin="1" report="30" low="90" hi="986" result="#cool.y"/>
 		<input-pin type="analog" pin="2" report="30" low="175" hi="1023" result="#warm.x"/>
-		<input-pin type="analog" pin="3" report="30" low="90" hi="986" result="#warm.y"/> -->
+		<input-pin type="analog" pin="3" report="30" low="90" hi="986" result="#warm.y"/>
 	</web-arduino>
 </head>
 <body>
@@ -30,7 +32,7 @@
 		<div class="bar"></div>
 		<div class="data right">
 			<canvas class="trace" title="Pressure vs. Air Volume" id="cool" temp="coolTemp">
-				<div class="graph" xLow="175" xHi="1023" yLow="90" yHi="986" xMin="0" xMax="14" yMin="0" yMax="200" xDiv="14" yDiv="10"></div>
+				<canvas is="smm-graph" class="graph" xMin="0" xMax="14" yMin="0" yMax="200" xDiv="14" yDiv="10"></canvas>
 			</canvas>
 			<canvas class="temp" id="coolTemp" t1="72" p1="15" v1="14" tMin="40" tMax="100" divs="10"></canvas>
 		</div>
@@ -55,7 +57,7 @@
 		<div class="bar"></div>
 		<div class="data left">
 			<canvas class="trace"  title="Pressure vs. Air Volume" id="warm" temp="warmTemp">
-				<div class="graph" xLow="175" xHi="1023" yLow="90" yHi="937" xMin="0" xMax="14" yMin="0" yMax="200" xDiv="14" yDiv="10"></div>
+				<canvas is="smm-graph" class="graph" xMin="0" xMax="14" yMin="0" yMax="200" xDiv="14" yDiv="10"></canvas>
 			</canvas>
 			<canvas class="temp" id="warmTemp" t1="72" p1="15" v1="14" tMin="40" tMax="100" divs="10"></canvas>
 		</div>
@@ -81,9 +83,7 @@
 	</smm-focii>
 
   <script src="src/move.min.js"></script>
-	<script src="src/smm_graph.js"></script>
 	<script src="src/tempGraph.js"></script>
-	<script src="src/pointStack.js"></script>
 	<script src="src/pointTrace.js"></script>
 	<script src="src/compCont.js"></script>
 	<script src="src/interface.js"></script>

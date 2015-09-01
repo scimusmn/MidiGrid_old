@@ -67,6 +67,16 @@ flip-book {
 	border-radius: 2px;
 }
 
+.graph {
+  position: absolute;
+  left:15%;
+  top:15%;
+	width:80%;
+	height:75%;
+  border-radius: 0px;
+  border: solid 2px black;
+}
+
 .graphCont {
 	position: absolute;
 	top: 10%;

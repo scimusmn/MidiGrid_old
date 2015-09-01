@@ -1,3 +1,22 @@
+var inputPin = inheritFrom(HTMLElement,function(){
+	this.createdCallback = function () {
+    this.type = this.getAttribute("type");
+		this.pin = this.getAttribute("pin");
+		if(this.type == "analog"){
+			this.min = $("|>low",this);
+			this.max = $("|>hi",this);
+			this.report = this.getAttribute("report");
+			var result = this.getAttribute("result").split(".");
+			if(result.length>1){
+				this.target = $(result[0])
+				this.which = result[1];
+			}
+		}
+  }
+});
+
+document.registerElement('input-pin', inputPin);
+
 var webArduino = inheritFrom(HTMLElement,function(){
 	var self= this;
 	var arduino = this;
@@ -17,7 +36,6 @@ var webArduino = inheritFrom(HTMLElement,function(){
   this.onMessage = function(evt) {
 		msg = evt.data;
 		if(msg.length>1)
-			console.log("message is " +msg);
 		for(var i=0; i<msg.length; i++){
 			var chr = msg.charCodeAt(i);
 			if(chr&ANA_READ){  //if the packet is analogRead
@@ -52,7 +70,6 @@ var webArduino = inheritFrom(HTMLElement,function(){
   };
 
   arduino.watchPin = function(pin, handler) {
-		console.log(START+DIGI_WATCH+(pin&15));
     if(pin<=13) wsClient.send("r|"+asChar(START+DIGI_WATCH+(pin&15)));
 		else wsClient.send("r|"+asChar(START+DIGI_WATCH_2+((pin-13)&7)));
     arduino.digiHandlers[pin] = handler;
@@ -85,15 +102,25 @@ var webArduino = inheritFrom(HTMLElement,function(){
 
 	arduino.onConnect = function(){};
 	arduino.connectCB = function () {
-		console.log("callback");
+		var inputPins = [].slice.call(this.querySelectorAll("input-pin"));
+		inputPins.forEach(function(item, i, arr) {
+			if(item.type === "analog"){
+				self.analogReport(item.pin,item.report,function (pin,val) {
+					item.target.newValue(map(val,item.min,item.max,0,1),item.which);
+				});
+			}
+		});
+
 		arduino.onConnect();
 	}
 
 	this.createdCallback = function () {
-		$("$web-socket").arduinoConnectCB = arduino.connectCB.bind(arduino);
+		var self = this;
+		$("$web-socket").onArduinoConnect = arduino.connectCB.bind(self);
 		wsClient = $("$web-socket");
     if(typeof $("$web-socket") === 'object')
 			$("$web-socket").customCallback = this.onMessage.bind(this);
+
   }
 });
 

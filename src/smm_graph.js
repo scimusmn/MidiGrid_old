@@ -1,4 +1,4 @@
-function mapObj() {
+/*function mapObj() {
 	var self =this;
 	this.in = {min:0,max:0};
 	this.out = {min:0,max:0};
@@ -15,7 +15,7 @@ function mapObj() {
 	this.invert = function (val) {
 		return (val-this.out.min)*(this.in.max-this.in.min)/(this.out.max-this.out.min)+this.in.min;
 	};
-}
+}*/
 
 /*function range(){
 	this.min=0;
@@ -26,7 +26,7 @@ function mapObj() {
 	};
 };*/
 
-function axisParams(){
+/*function axisParams(){
 	this.in = {min:0,max:0};
 	this.out = {min:0,max:0};
 	this.min=0;
@@ -59,39 +59,41 @@ function axisParams(){
 		if(flipped) return map(val,1,0,this.min,this.max);
 		else return map(val,0,1,this.min,this.max);
 	};
+}*/
+
+function param(){
+	this.x = {
+		min:0,
+		max:0,
+		divs:10,
+		flip:false
+	}
+	this.y = {
+		min:0,
+		max:0,
+		divs:10,
+		flip:true
+	}
 }
 
-var smm_Graph = inheritFrom(HTMLCanvasElement,function {
+var smm_Graph = inheritFrom(HTMLCanvasElement,function() {
 	var self =this;
-	var ctx = this.getContext("2d");
-
-	this.labelFont = "lighter 2vh sans-serif";
-	this.fontColor = "#000";
-	this.lineWidth = 3;
-	this.lineColor = "#000";
-	this.gridWidth = 1;
-	this.gridColor = "rgba(0,0,0,.1)";
-	this.frameWidth = 3;
-	this.frameColor = "#000";
-	this.refreshRate = 30;
+	//var ctx = null;
 
 	this.points = null;
 
-	this.range = {
+	this.newPoint = {
 		x:{
-			min:0,
-			max:1000,
-			divs:10,
-			flip:false
+			val:0,
+			new:false
 		},
 		y:{
-			min:0,
-			max:1000,
-			divs:10,
-			flip:true
+			val:0,
+			new:false
 		}
 	}
-	yParam.flipAxis(true);
+
+	this.range = new param();
 
 	this.resize= function (nx,ny,nw,nh) {
 		this.left=nx;
@@ -113,34 +115,37 @@ var smm_Graph = inheritFrom(HTMLCanvasElement,function {
 	};
 
 	this.convert = function (val,which) {
-		return map(ret,0,1,this.range[which].min,this.range[which].max);
+		return map(val,0,1,this.range[which].min,this.range[which].max);
 	}
 
 	this.addPoint = function (pnt) {
+		if(this.range.x.flip) pnt.x=1-pnt.x;
+		if(this.range.y.flip) pnt.y=1-pnt.y;
 		this.points.addPoint(pnt);
 	};
 
-	this.lastPoint = function(){
-		if(this.points.length) return {x:this.convert(this.points.last().x),y:this.convert(this.points.last().y)};
-	}
-
-	var atr = function (el,w) {
-		return parseInt(el.getAttribute(w));
-	}
-
-	this.setup = function (elem) {
-
-		var xR = {min:atr(elem,"xMin"),max:atr(elem,"xMax")};
-		var yR = {min:atr(elem,"yMin"),max:atr(elem,"yMax")};
-		this.setRange(xR.min,xR.max,yR.min,yR.max);
-		this.setNumDivs(atr(elem,"xDiv"),atr(elem,"yDiv"));
+	this.newValue = function (val,which) {
+		//this.points.addPoint(pnt);
+		this.newPoint[which].val = val;
+		this.newPoint[which].new = true;
+		if(this.newPoint.x.new&&this.newPoint.y.new){
+			this.addPoint({x:this.newPoint.x.val,y:this.newPoint.y.val});
+		}
 	};
 
+	this.lastPoint = function(){
+		if(this.points.length) return {x:this.convert(this.points.last().x,"x"),y:this.convert(this.points.last().y,"y")};
+	}
+
 	this.drawTrace = function () {
-		if(self.points.length>2){
+		var ctx = this.getContext("2d");
+		ctx.lineWidth=this.lineWidth;
+		ctx.strokeStyle = this.lineColor;
+		var self =this;
+		if(this.points.length>2){
 			//console.log("drawing");
-			var xc = this.x+this.w*(self.points[0].x + self.points[1].x) / 2;
-			var yc = this.y+this.h*(self.points[0].y + self.points[1].y) / 2;
+			var xc = this.width*(this.points[0].x + this.points[1].x) / 2;
+			var yc = this.height*(this.points[0].y + this.points[1].y) / 2;
 
 			//ctx.lineWidth=traceWidth;
 
@@ -148,55 +153,34 @@ var smm_Graph = inheritFrom(HTMLCanvasElement,function {
 			ctx.moveTo(xc, yc);
 			for (var i = 0; i < self.points.length - 1; i ++){
 				ctx.strokeStyle="rgba(0,0,0,"+(i/self.points.length)+");"
-				xc = this.x+this.w*(self.points[i].x + self.points[i + 1].x) / 2;
-				yc = this.y+this.h*(self.points[i].y + self.points[i + 1].y) / 2;
-				ctx.quadraticCurveTo(this.x+self.points[i].x*this.w, this.y+self.points[i].y*this.h, xc, yc);
+				xc = this.width*(self.points[i].x + self.points[i + 1].x) / 2;
+				yc = this.height*(self.points[i].y + self.points[i + 1].y) / 2;
+				ctx.quadraticCurveTo(self.points[i].x*this.width, self.points[i].y*this.height, xc, yc);
 			}
 			ctx.stroke();
-			ctx.closePath();
-
-			ctx.strokeStyle = "#000";
-			ctx.fillStyle = "#ff0";
-			ctx.lineWidth=this.lineWidth;
-			ctx.beginPath();
-			ctx.arc(this.x+self.points.last().x*this.w,this.y+self.points.last().y*this.h,5,0,2*Math.PI);
-			ctx.stroke();
-			ctx.fill();
-			ctx.closePath();
-
-			ctx.fillStyle = "#000";
-			ctx.beginPath();
-			ctx.arc(this.x+self.points.last().x*this.w,this.y+self.points.last().y*this.h,1,0,2*Math.PI);
-			ctx.fill();
 			ctx.closePath();
 		}
 	};
 
 	this.drawGrid = function(){
-		//ctx.lineWidth = 1;
-		//ctx.strokeStyle = "rgba(0,0,0, 0.1)";
+		var ctx = this.getContext("2d");
+		ctx.lineWidth=this.gridWidth;
+		ctx.strokeStyle = this.gridColor;
 		for(var i=0; i<this.range.x.divs; i++){
 			ctx.beginPath();
-			ctx.moveTo(this.x+i*this.w/this.range.x.divs,this.y);
-			ctx.lineTo(this.x+i*this.w/this.range.x.divs,this.y+this.h);
+			ctx.moveTo(i*this.width/this.range.x.divs,0);
+			ctx.lineTo(i*this.width/this.range.x.divs,this.height);
 			ctx.closePath();
 			ctx.stroke();
 		}
 		for(var i=0; i<this.range.y.divs; i++){
 			ctx.beginPath();
-			ctx.moveTo(this.x,this.y+i*this.h/this.range.y.divs);
-			ctx.lineTo(this.x+this.w,this.y+i*this.h/this.range.y.divs);
+			ctx.moveTo(0,i*this.height/this.range.y.divs);
+			ctx.lineTo(this.width,i*this.height/this.range.y.divs);
 			ctx.closePath();
 			ctx.stroke();
 		}
 	};
-
-	this.drawFrame = function(ctx){
-		ctx.beginPath();
-		ctx.rect(this.x,this.y,this.w,this.h);
-		ctx.stroke();
-		ctx.closePath();
-	}
 
 	/*this.drawXLabels = function (ctx) {
 		var txtSz;
@@ -227,22 +211,20 @@ var smm_Graph = inheritFrom(HTMLCanvasElement,function {
 	}
 
 	this.draw = function () {
+		var ctx = this.getContext("2d");
+		ctx.beginPath();
+		ctx.fillStyle = "#fff";
+		ctx.rect(0,0,this.width,this.height);
+		ctx.closePath();
+		ctx.fill();
 
 		this.customBGDraw();
 
-		ctx.lineWidth=this.lineWidth;
-		ctx.strokeStyle = this.lineColor;
 		this.drawTrace(ctx);
 
-	  	ctx.lineWidth=this.gridWidth;
-		ctx.strokeStyle = this.gridColor;
 		this.drawGrid(ctx,18,10);
 
-		ctx.lineWidth=this.frameWidth;
-		ctx.strokeStyle = this.frameColor;
-		this.drawFrame(ctx);
-
-		this.customBGDraw();
+		this.customFGDraw();
 
 		/*ctx.fillStyle = this.fontColor;
 		ctx.font = this.labelFont;
@@ -254,7 +236,28 @@ var smm_Graph = inheritFrom(HTMLCanvasElement,function {
 		this.points.length=0;
 	};
 
-	this.createdCallback = function(){
-		this.points = new pointStack(2500);
+	this.createdCallback = function () {
+		//this.shadow = this.createShadowRoot();
+		//this.canvas = document.createElement('canvas');
+		//this.setup(this);
+		var xR = {min:$("|>xMin",this),max:$("|>xMax",this)};
+		var yR = {min:$("|>yMin",this),max:$("|>yMax",this)};
+		this.setRange(xR.min,xR.max,yR.min,yR.max);
+		this.setNumDivs($("|>xDiv",this),$("|>yDiv",this));
+
+		ctx = this.getContext("2d");
+		this.points = new pointStack(500);
+
+		this.labelFont = "lighter 2vh sans-serif";
+		this.fontColor = "#000";
+		this.lineWidth = 3;
+		this.lineColor = "#000";
+		this.gridWidth = 1;
+		this.gridColor = "rgba(0,0,0,.1)";
+		this.refreshRate = 30;
+
+		this.range = new param();
 	}
 });
+
+document.registerElement('smm-graph', {prototype: smm_Graph.prototype, extends: 'canvas'});
