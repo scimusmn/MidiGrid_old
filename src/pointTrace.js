@@ -1,3 +1,5 @@
+include(["src/smm_graph.js","src/tempGraph.js"],function(){
+	console.log("trace loaded");
 function pointTrace(elem){
 	this.canvas = elem;
 	var ctx = this.canvas.getContext("2d");
@@ -32,16 +34,9 @@ function pointTrace(elem){
 
 	ctx.globalCompositeOperation = "lighter";
 
-	//graph.setScale({min:250,max:1023.},{min:0,max:18},{min:102,max:920},{min:0,max:200});
-
-	//graph.setup(this.canvas.querySelector(".graph"));
-
 	elem.addPoint = function(pnt){
-		//self.points.addPoint(scalePoint(pnt));
 		graph.addPoint(pnt);
 		self.autoClear(.98);
-
-		//console.log(graph.transPoint());
 	}
 
 	elem.newValue = function (val,which) {
@@ -249,3 +244,6 @@ function pointTrace(elem){
 	}
 
 }
+
+window.pointTrace = pointTrace;
+});

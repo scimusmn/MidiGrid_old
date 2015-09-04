@@ -1,4 +1,7 @@
-(function (app){
+include(["src/pointTrace.js","src/compCont.js","src/arduinoControl.js","src/flipBook.js"],function (){
+	console.log("here");
+	function app(){};
+
 	var drawTimer;
 	var refreshRate = 30; //fps
 
@@ -17,8 +20,6 @@
 	$("cool").refresh();
 	$("warm").refresh();
 
-	$(".graph",$("warm")).range.y.flip=false;
-
 	$("#reset").onmousedown = function () {
 		focii.reset();
 		$("#reset").style.display = "none";
@@ -26,18 +27,9 @@
 
 	document.onkeydown = function (e) {
 		switch (e.which) {
-			case charCode('C'):				//if the send button was pressed
-				if(warmCont.hasFocus) warmCont.loseFocus(function(){
-						coolCont.focus();
-						});
-				else coolCont.focus();
-				break;
-			case charCode('R'):				//if the send button was pressed
-				var on=false;
-				break;
 			case charCode('E'):				//if the send button was pressed
-			$("#coolEff").innerHTML = cool.efficiency();
-			$("#warmEff").innerHTML = warm.efficiency();
+				$("#coolEff").innerHTML = cool.efficiency();
+				$("#warmEff").innerHTML = warm.efficiency();
 				break;
 			case 32:
 				cool.clear();
@@ -49,32 +41,8 @@
 		}
 	}
 
-	/*var inc =0;
-
-	var pins = [];
-	for (var i = 0; i < 4; i++) {
-		pins.push({val:0,isNew:false});
-	}
-
-	function setReport(pinNum,interval,last) {
-		$("$web-arduino").analogReport(pinNum,30,function (pin,val) {
-			pins[pin].val = val;
-			pins[pin].isNew=true;
-			if(((pin%2)==0)&&pins[pin].isNew&&pins[pin+1].isNew){
-				var graph = ((pin)?warm:cool);
-				graph.addPoint({x:pins[pin].val,y:pins[pin+1].val});
-				pins[pin].isNew=pins[pin+1].isNew=false;
-			}
-		});
-
-		if(pinNum<last){ setTimeout(function(){setReport(pinNum+1,interval,last);},50);}
-	}*/
-
-	//$("$web-socket").onArduinoConnect = function () {
-		//setReport(0,100,3);
-	//}
-
 	app.draw = function(){
+		//console.log("draw");
 		cool.draw();
 		warm.draw();
 	}
@@ -87,5 +55,4 @@
 	window.onresize();
 
 	drawTimer = setInterval(app.draw, 1000/refreshRate);
-
-}(window.app = window.app || {}));
+});

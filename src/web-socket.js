@@ -21,7 +21,7 @@ var web_socket = inheritFrom(HTMLElement,function(){
                       if(spl[1]=="err")
                         console.log(self.serialport+" does not exist");
                       else if(spl[1]=="ack"){
-                        setTimeout(self.onArduinoConnect,1500);
+                        setTimeout(self.onArduinoConnect,2000);
                         console.log("Connection successful");
                       }
                     }

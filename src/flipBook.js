@@ -1,4 +1,5 @@
-var flipProto = Object.create(HTMLElement.prototype);
+include(["src/smm_focii.js"],function(){
+  var flipProto = Object.create(HTMLElement.prototype);
 
 //flipProto.
 flipProto.createdCallback = function () {
@@ -34,3 +35,4 @@ flipProto.createdCallback = function () {
 }
 
 var flipBook = document.registerElement('flip-book', {prototype: flipProto});
+});
