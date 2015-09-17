@@ -93,8 +93,10 @@ var setMoves = function (elem) {
         inst.resetPages();
         if(self.seen&&self.other.seen){
           lastPage.setAttribute("target","id:dualInst");
+          inst.skipPages();
         }
-        else if(!self.other.seen){ lastPage.setAttribute("target","id:"+self.other.id);
+        else if(!self.other.seen){
+          lastPage.setAttribute("target","id:"+self.other.id);
         }
       }
     }
