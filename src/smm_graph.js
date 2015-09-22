@@ -116,7 +116,9 @@ include(["src/pointStack.js"],function () {
 		};
 
 		this.convert = function (val,which) {
-			return map(val,0,1,this.range[which].min,this.range[which].max);
+			if(!this.range[which].flip)
+				return map(val,0,1,this.range[which].min,this.range[which].max);
+			else return map(val,1,0,this.range[which].min,this.range[which].max);
 		}
 
 		this.addPoint = function (pnt) {
@@ -255,7 +257,7 @@ include(["src/pointStack.js"],function () {
 
 
 			ctx = this.getContext("2d");
-			this.points = new pointStack(500);
+			this.points = new pointStack(1000);
 
 			this.labelFont = "lighter 2vh sans-serif";
 			this.fontColor = "#000";
@@ -264,6 +266,17 @@ include(["src/pointStack.js"],function () {
 			this.gridWidth = 1;
 			this.gridColor = "rgba(0,0,0,.1)";
 			this.refreshRate = 30;
+
+			this.newPoint = {
+                        	x:{
+                                	val:0,
+                                	new:false
+                        	},
+                        	y:{
+                                	val:0,
+                                	new:false
+                        	}
+                	}
 		}
 	});
 

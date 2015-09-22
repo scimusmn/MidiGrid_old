@@ -106,7 +106,9 @@ include(["src/web-socket.js"],function(){
 			var inputPins = [].slice.call(this.querySelectorAll("input-pin"));
 			inputPins.forEach(function(item, i, arr) {
 				if(item.type === "analog"){
+					//console.log(item.pin);
 					self.analogReport(item.pin,item.report,function (pin,val) {
+						//console.log(pin + " is " + val);
 						item.target.newValue(map(val,item.min,item.max,0,1),item.which);
 					});
 				}

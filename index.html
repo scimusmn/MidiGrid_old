@@ -8,10 +8,10 @@
 
   	<web-socket serialport="usbmodem"></web-socket>
   	<web-arduino>
-  		<input-pin type="analog" pin="0" report="30" low="175" hi="1023" result="#cool.x"/>
-  		<input-pin type="analog" pin="1" report="30" low="90" hi="986" result="#cool.y"/>
-  		<input-pin type="analog" pin="2" report="30" low="175" hi="1023" result="#warm.x"/>
-  		<input-pin type="analog" pin="3" report="30" low="90" hi="986" result="#warm.y"/>
+  		<input-pin type="analog" pin="0" report="30" low="150" hi="1011" result="#cool.x"/>
+  		<input-pin type="analog" pin="1" report="30" low="90" hi="986" result="#cool.y" />
+  		<input-pin type="analog" pin="2" report="30" low="150" hi="1011" result="#warm.x" />
+  		<input-pin type="analog" pin="3" report="30" low="90" hi="986" result="#warm.y" />
   	</web-arduino>
   </head>
   <body>
@@ -25,9 +25,9 @@
   		<div class="bar"></div>
   		<div class="data right">
   			<canvas class="trace rightNull" title="Pressure vs. Air Volume" id="cool" temp="coolTemp">
-  				<canvas is="smm-graph" class="graph" xMin="0" xMax="14" yMin="0" yMax="200" xDiv="14" yDiv="10"></canvas>
+  				<canvas is="smm-graph" class="graph" xMin="0" xMax="20" yMin="0" yMax="200" xDiv="10" yDiv="10"></canvas>
   			</canvas>
-  			<canvas class="temp leftNull" id="coolTemp" t1="72" p1="15" v1="14" tMin="40" tMax="100" divs="10"></canvas>
+  			<canvas class="temp leftNull" id="coolTemp" t1="72" p1="15" v1="20" tMin="40" tMax="120" divs="10"></canvas>
   		</div>
   		<flip-book class="instPanel left">
         <div class="instPage skip" target="nextPage">
@@ -126,12 +126,12 @@
   		<div class="bar"></div>
   		<div class="data left">
   			<canvas class="trace leftNull"  title="Pressure vs. Air Volume" id="warm" temp="warmTemp">
-  				<canvas is="smm-graph" class="graph" xMin="0" xMax="14" yMin="0" yMax="200" xDiv="14" yDiv="10"></canvas>
+  				<canvas is="smm-graph" class="graph" xMin="0" xMax="20" yMin="0" yMax="200" xDiv="10" yDiv="10"></canvas>
   			</canvas>
-  			<canvas class="temp rightNull" id="warmTemp" t1="72" p1="15" v1="14" tMin="40" tMax="100" divs="10"></canvas>
+  			<canvas class="temp rightNull" id="warmTemp" t1="72" p1="15" v1="20" tMin="40" tMax="120" divs="10"></canvas>
   		</div>
   		<flip-book class="instPanel right">
-        <div class="instPage skip" target="nextPage">
+        <!--<div class="instPage skip" target="nextPage">
           Compressed air energy storage is a promising technology which may allow us to store energy gathered from renewable sources
           for later use. <br/><br/>However, it's not a perfect storage solution; compressing air generates heat which might be lost, and expanding
           compressed air to reclaim energy requires heat to reach max efficiency. <br/><br/>If the heat from compression can be stored
@@ -139,7 +139,7 @@
           <br/>
           <br/>
           Use the air compressors to either side to explore one way that researchers are trying to store heat for later use.
-        </div>
+        </div>-->
         <div class="instPage" target="nextPage">
           <img class="right" src="img/compressLeft.png"></img>
           <b>Compress air in the Left Compressor…</b><br/><br/> and hold

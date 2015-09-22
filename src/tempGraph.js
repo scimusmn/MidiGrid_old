@@ -64,9 +64,10 @@ function tempGraph(elem){
 
 	this.draw = function (pnt) {
 		this.canvas.width=this.width;
-		//console.log(pnt.x);
 		var left = (p1*v1)/(t1);
-		var t2 = (t1*(pnt.y+p1)*pnt.x)/(p1*v1);
+		var t2 = (t1*(p1+parseFloat(pnt.y))*parseFloat(pnt.x))/(p1*v1);
+		console.log(t2);
+		//console.log((pnt.x/v1) + " v | p " + (p1+parseFloat(pnt.y)));
 		//var rel = .75*(t2-t1)/(maxTemp-t1)+1/4;
 		var rel = (t2-minTemp)/(maxTemp-minTemp);
 		if(rel>highTemp) highTemp=rel;

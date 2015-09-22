@@ -24,6 +24,12 @@ include(['src/pointTrace.js','src/compCont.js','src/arduinoControl.js','src/flip
     if (!this.hasFocus && !this.lockout) warmCont.focus();
   };
 
+	$("$web-arduino").watchPin(18,function(val){
+	        console.log("clear");
+		cool.clear();
+        	warm.clear();
+	});
+
   warmCont.onmousedown = function(e) {
     e.preventDefault();
     if (!this.hasFocus && !this.lockout) this.focus();
