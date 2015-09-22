@@ -81,7 +81,7 @@ function pointTrace(elem){
 	}
 
 	var ave = new aveCont();
-	graph.fontColor = "#666";
+	graph.fontColor = "#000";
 	graph.lineColor = "#333";
 	graph.lineWidth = "2";
 	graph.frameColor = "#666";

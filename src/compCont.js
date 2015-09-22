@@ -1,3 +1,4 @@
+console.log("compCont");
 function compCont(elem) {
   var self = elem;
   elem.other = null;
@@ -14,9 +15,9 @@ function compCont(elem) {
     self.graph=graf;
   }
 
-  $(".backButton",elem).onmousedown = function () {
+  /*$(".backButton",elem).onmousedown = function () {
     if(self.hasFocus) self.loseFocus();
-  }
+  }*/
 
   return elem;
 }
@@ -25,6 +26,14 @@ function bottomTray(elem){
   var self = elem;
   var warm = $("warmCont");
   var cool = $("coolCont");
+  elem.addActs("prep",
+    function (In) {
+      if(In){
+        $("cool").refresh();
+      	$("warm").refresh();
+      }
+    }
+  );
   elem.addActs("move",
     function (In) {
       $("#reset").style.display = ((In)?"block":"none");
@@ -34,16 +43,19 @@ function bottomTray(elem){
     }
   );
   elem.addActs("move",warm).add('height','60%','80%');
-  elem.addActs("move",$(".graphSub",warm)).add('opacity','0','1');
+  elem.addActs("move",$(".graphSub",warm)).add('opacity','0','1')
+  .end($("warm").refresh.bind($("warm")));;
   elem.addActs("move",cool).add('height','60%','80%');
-  elem.addActs("move",$(".graphSub",cool)).add('opacity','0','1');
+  elem.addActs("move",$(".graphSub",cool)).add('opacity','0','1')
+  .end($("cool").refresh.bind($("cool")));
   elem.addActs("move",elem).add('height','26%','0%');
-  elem.addActs("prep",
+  /*elem.addActs("end",
     function (In) {
+      console.log("resize");
       $("cool").refresh();
     	$("warm").refresh();
     }
-  );
+  );*/
   elem.addActs("prep",$(".instPanel",elem)).add('opacity','1','0');
 
   return elem;
@@ -74,18 +86,13 @@ var setMoves = function (elem) {
   );
   elem.addActs("move",elem.other).add(opposite(side),'-50%','2%');
 
-  elem.addActs("move",data).add('width','47%','96%')
-  .add(side,'1%','2%');
+  //elem.addActs("move",title).add('left','4vw','1vw');
 
-  elem.addActs("move",title).add('left','6.5vh','2%');
+  //elem.addActs("move",$(".backButton",elem)).add('width','4.5vh','0px');
 
-  elem.addActs("move",$(".backButton",elem)).add('width','auto','0px');
+  elem.addActs("move",elem).add('width','96vw','47vw');
 
-  elem.addActs("move",elem).add(side,'2%','2%')
-  .add('width','96%','47%');
-
-  elem.addActs("prep",subtitle)
-  .add('opacity','0','1');
+  elem.addActs("prep",subtitle).add('opacity','0','1');
 
   elem.addActs("prep",
     function (In) {

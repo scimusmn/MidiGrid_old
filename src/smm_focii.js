@@ -14,13 +14,16 @@
   })
 });*/
 
-include(["src/move.min.js"],function(){
-  fociiAttr.inherits(Array)
+include(['src/move.min.js','src/smmAnim.js'], function() {
+  fociiAttr.inherits(Array);
   function fociiAttr() {
     var self =this;
     this.add = function (attr,In,Out) {
       this.push({'name':attr,'in':In,'out':Out});
       return this;
+    }
+    this.end = function (fxn) {
+      this.push({'name':'fxn','fxn':fxn});
     }
   }
 
@@ -62,11 +65,15 @@ include(["src/move.min.js"],function(){
         else {
           var mv = move(arr[i].elem);
           for (var j = 0; j < arr[i].attr.length; j++) {
-            mv = mv.set(arr[i].attr[j].name,arr[i].attr[j][inOut]);
+            if(arr[i].attr[j].name!='fxn')
+              mv = mv.set(arr[i].attr[j].name,arr[i].attr[j][inOut]);
           }
           mv = mv.ease('out');
-          if(i>=arr.length-1) mv.end(fxn);
-          else mv.end();
+          var temp = {'i':i};
+          mv.end(function () {
+            if (arr[this.i].attr.last().name=='fxn') arr[this.i].attr.last().fxn();
+            if(this.i>=arr.length-1) fxn();
+          }.bind(temp));
         }
       }
       if(arr.length==0){
@@ -119,11 +126,6 @@ include(["src/move.min.js"],function(){
       this.prepActions = new fociiActions();
       this.moveActions = new fociiActions();
       this.endActions = new fociiActions();
-
-      this.onmousedown = function (e){
-        e.preventDefault();
-        if(!self.hasFocus&&!self.lockout) self.focus();
-      }
     }
   });
 

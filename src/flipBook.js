@@ -17,8 +17,7 @@ flipProto.createdCallback = function () {
     self.currentPage.style.display = "block";
   }
 
-  this.skipPages = function(){
-    console.log(self.currentPage.className.indexOf("skip"))
+  this.skipPages = function() {
     while (~self.currentPage.className.indexOf("skip")){
       self.currentPage.style.display = "none";
       self.currentPage = self.currentPage.nextElementSibling;

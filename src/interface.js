@@ -1,58 +1,67 @@
-include(["src/pointTrace.js","src/compCont.js","src/arduinoControl.js","src/flipBook.js"],function (){
-	console.log("here");
-	function app(){};
+include(['src/pointTrace.js','src/compCont.js','src/arduinoControl.js','src/flipBook.js'], function() {
+  function app() {};
 
-	var drawTimer;
-	var refreshRate = 30; //fps
+  var drawTimer;
+  var refreshRate = 30; //fps
 
-	var cool = new pointTrace($("cool"));
-	var warm = new pointTrace($("warm"));
+  var cool = new pointTrace($('cool'));
+  var warm = new pointTrace($('warm'));
 
-	var coolCont = compCont($("coolCont"));
-	var warmCont = compCont($("warmCont"));
-	var botTray = bottomTray($("dualInst"));
+  var coolCont = compCont($('coolCont'));
+  var warmCont = compCont($('warmCont'));
+  var botTray = bottomTray($('dualInst'));
 
-	coolCont.bind(warmCont,cool,warm);
+  coolCont.bind(warmCont, cool, warm);
 
-	setMoves(coolCont);
-	setMoves(warmCont);
+  setMoves(coolCont);
+  setMoves(warmCont);
 
-	$("cool").refresh();
-	$("warm").refresh();
+  $('cool').refresh();
+  $('warm').refresh();
 
-	$("#reset").onmousedown = function () {
-		focii.reset();
-		$("#reset").style.display = "none";
-	}
+  coolCont.onmousedown = function(e) {
+    e.preventDefault();
+    if (!this.hasFocus && !this.lockout) warmCont.focus();
+  };
 
-	document.onkeydown = function (e) {
-		switch (e.which) {
-			case charCode('E'):				//if the send button was pressed
-				$("#coolEff").innerHTML = cool.efficiency();
-				$("#warmEff").innerHTML = warm.efficiency();
-				break;
-			case 32:
-				cool.clear();
-				warm.clear();
-				warmTemp.clear();
-				break;
-			default:
-				break;
-		}
-	}
+  warmCont.onmousedown = function(e) {
+    e.preventDefault();
+    if (!this.hasFocus && !this.lockout) this.focus();
+  };
 
-	app.draw = function(){
-		//console.log("draw");
-		cool.draw();
-		warm.draw();
-	}
+  $('#reset').onmousedown = function() {
+    focii.reset();
+    $('#reset').style.display = 'none';
+  };
 
-	window.onresize = function (x,y) {
-		$("cool").refresh();
-		$("warm").refresh();
-	}
+  document.onkeydown = function(e) {
+    switch (e.which) {
+      case charCode('E'):        //if the send button was pressed
+        $('#coolEff').innerHTML = cool.efficiency();
+        $('#warmEff').innerHTML = warm.efficiency();
+        break;
+      case 32:
+        cool.clear();
+        warm.clear();
+        warmTemp.clear();
+        break;
+      default:
+        break;
+    }
+  };
 
-	window.onresize();
+  app.draw = function() {
+    //console.log('draw');
+    cool.draw();
+    warm.draw();
+  };
 
-	drawTimer = setInterval(app.draw, 1000/refreshRate);
+  window.onresize = function(x,y) {
+    $('cool').refresh();
+    $('warm').refresh();
+  };
+
+  window.onresize();
+
+  drawTimer = setInterval(app.draw, 1000 / refreshRate);
 });

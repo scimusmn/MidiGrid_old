@@ -56,6 +56,7 @@ var includeManager = new function() {
           var noDone = (typeof next.done == 'undefined');
           if (debug) console.log(next.src + ' is ' + ((next.done || (!next.loading && noDone)) ? 'done' : 'not done'));
           if (!(next.done || (!next.loading && noDone))) {
+            //if (!next.done) {
             loaded = false;
             if (next.dependents.indexOf(src) == -1) next.dependents.push(src);
           }
@@ -83,7 +84,20 @@ function include(srcLocations,onLoaded) {
   var loaded = function() {
     if (this.src) {
       var src = includeManager.shorten(this.src);
-      if (src) includeManager.includes[src].loading = false;
+      if (debug) console.log('just loaded ' + src);
+
+      if (src) {
+        var that = includeManager.includes[src];
+        that.loading = false;
+        if (typeof that.done == 'undefined') {
+          that.done = true;
+          if (debug) console.log(src + ' is done and has no dependents');
+          /*for (var i = 0; i < that.dependents.length; i++) {
+            if (debug) console.log('recheck ' + that.dependents[i]);
+            includeManager.checkIncludes(that.dependents[i]);
+          }*/
+        }
+      }
     }
 
     if (++numLoaded >= srcLocations.length) {
@@ -99,6 +113,7 @@ function include(srcLocations,onLoaded) {
       if (item.getAttribute('src') == srcLocations[i]) found = true;
     });
 
+    if (found) console.log(srcLocations[i] + 'has been found');
     if (!found) {
       var scrpt = document.createElement('script');
       var src = includeManager.shorten(srcLocations[i]);
@@ -110,7 +125,8 @@ function include(srcLocations,onLoaded) {
 
     //in case another module loaded the script just before and
     //it hasn't loaded fully
-    else if (includeManager.includes[srcLocations[i]]) {
+    else if (includeManager.includes[srcLocations[i]] && !includeManager.includes[srcLocations[i]].done) {
+      console.log(curScript + ' is dependent on ' + srcLocations[i]);
       includeManager.includes[srcLocations[i]].dependents.push(curScript);
     } else loaded();
   }

@@ -39,10 +39,10 @@ function tempGraph(elem){
 		this.canvas.width=w;
 		this.canvas.height=h;
 		//graph.w=w;
-		graph.h=h*.75;
-		graph.y=.13*h;
-		graph.w=w/3;
-		graph.x=w/3+w/4;
+		graph.w=w*.9;
+		graph.x=.05*w;
+		graph.h=h/3;
+		graph.y=h/3;
 		this.width=w;
 		this.height=h;
 	}
@@ -79,7 +79,7 @@ function tempGraph(elem){
 		ctx.closePath();
 		ctx.fillStyle = "rgba("+Math.floor((rel*255))+",0,"+Math.floor(((1-rel)*255))+",1)";
 		ctx.beginPath();
-		ctx.rect(graph.x,graph.y+graph.h,graph.w,-graph.h*rel);
+		ctx.rect(graph.x,graph.y,graph.w*rel,graph.h);
 		ctx.fill();
 		ctx.closePath();
 		ctx.strokeStyle="#666";
@@ -87,20 +87,16 @@ function tempGraph(elem){
 		this.drawFrame();
 		ctx.fillStyle = "#f00";
 		ctx.beginPath();
-		ctx.rect(graph.x,graph.y+graph.h*(1-highTemp),graph.w,2);
+		ctx.rect(graph.x+graph.w*highTemp,graph.y,2,graph.h);
 		ctx.closePath();
 		ctx.fill();
 
-		var label = "Air";
+		var label = "Air Temperature (degrees Fahrenheit)";
 		ctx.font = "lighter 5vh sans-serif";
 		//console.log(""+(this.height-graph.h)/3+"pt Arial");
 		ctx.fillStyle = "#666";
 		var txtSz = ctx.measureText(label);
-		ctx.fillText(label,(this.width-txtSz.width)/2,parseInt(ctx.font));
-
-		label = "Temperature";
-		txtSz = ctx.measureText(label);
-		ctx.fillText(label,(this.width-txtSz.width)/2,parseInt(ctx.font)*2);
+		ctx.fillText(label,graph.x+(graph.w-txtSz.width)/2,graph.y-parseInt(ctx.font)/2);
 
 		ctx.font = "lighter 4vh sans-serif";
 		ctx.fillStyle = "#666";
@@ -109,12 +105,11 @@ function tempGraph(elem){
 
 	this.drawLabels = function () {
 		var txtSz;
-		var div=divs/2;
-		for(var i=0; i<div+1; i++){
-			var lbl = ""+(minTemp+i*(maxTemp-minTemp)/div)+"°";
+		var xDiv=divs/2;
+		for(var i=0; i<xDiv+1; i++){
+			var lbl = ""+(minTemp+i*(maxTemp-minTemp)/xDiv)+"°";
 			txtSz = ctx.measureText(lbl);
-			//ctx.fillText(lbl,graph.x-txtSz.width,graph.y+graph.h-(i*graph.h/div-txtSz.height/2));
-			ctx.fillText(lbl,graph.x-txtSz.width-graph.w/10,graph.y+graph.h-i*graph.h/div+parseInt(ctx.font)/2);
+			ctx.fillText(lbl,graph.x+i*graph.w/xDiv-txtSz.width/2,parseInt(ctx.font)+graph.y+graph.h);
 		}
 	};
 
