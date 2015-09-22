@@ -36,12 +36,12 @@ function pointTrace(elem){
 
 	elem.addPoint = function(pnt){
 		graph.addPoint(pnt);
-		//self.autoClear(.98);
+		self.autoClear(.98);
 	}
 
 	elem.newValue = function (val,which) {
 		graph.newValue(val,which);
-		//self.autoClear(.98);
+		self.autoClear(.98);
 	}
 
 	this.lastPoint = function () {
