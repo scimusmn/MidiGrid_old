@@ -49,16 +49,32 @@ function bottomTray(elem){
   elem.addActs("move",$(".graphSub",cool)).add('opacity','0','1')
   .end($("cool").refresh.bind($("cool")));
   elem.addActs("move",elem).add('height','26%','0%');
-  /*elem.addActs("end",
-    function (In) {
-      console.log("resize");
-      $("cool").refresh();
-    	$("warm").refresh();
-    }
-  );*/
   elem.addActs("prep",$(".instPanel",elem)).add('opacity','1','0');
 
   return elem;
+}
+
+$("#attract").setup = function () {
+  var _this = this;
+  var dim = $("#dimScreen");
+
+  _this.addActs("move",function(In) {
+    if(In) dim.style.display = 'block';
+    else dim.style.display = 'none';
+  });
+
+  _this.addActs("prep",_this).add('top',"5%","-100%");
+  _this.addActs("prep",dim).add('opacity','0.5','0');
+
+  _this.hasFocus=true;
+
+  _this.onmousedown = function (e) {
+    e.preventDefault();
+    console.log("clicked");
+    _this.loseFocus(function () {
+      $("warmCont").focus();
+    });
+  };
 }
 
 var setMoves = function (elem) {
@@ -67,48 +83,47 @@ var setMoves = function (elem) {
     return ((side=="left")?'right':'left');
   };
 
-  var subtitle = $(".graphSub",elem);
+  //var subtitle = $(".graphSub",elem);
   var title = $(".graphTitle",elem);
   var data = $(".data",elem);
   var inst = $(".instPanel",elem);
-  var pages= inst.querySelectorAll(".instPage");
-  var lastPage  = pages[pages.length-1];
+  //var pages= inst.querySelectorAll(".instPage");
+  //var lastPage  = pages[pages.length-1];
   var button = $(".instButton",inst);
   var side = elem.getAttribute("side");
 
   elem.addActs("move",
     function (In) {
-      $("#reset").style.display = ((In)?"block":"none");
+      //$("#reset").style.display = ((In)?"block":"none");
       $("cool").refresh();
     	$("warm").refresh();
       if(In) self.seen=true;
     }
   );
-  elem.addActs("move",elem.other).add(opposite(side),'-50%','2%');
+  elem.addActs("move",elem.other).add(opposite(side),'-50%','1%');
 
   //elem.addActs("move",title).add('left','4vw','1vw');
 
   //elem.addActs("move",$(".backButton",elem)).add('width','4.5vh','0px');
 
-  elem.addActs("move",elem).add('width','96vw','47vw');
+  elem.addActs("move",elem).add('width','98vw','48.5vw');
 
-  elem.addActs("prep",subtitle).add('opacity','0','1');
+  //elem.addActs("prep",subtitle).add('opacity','0','1');
 
   elem.addActs("prep",
     function (In) {
       if(In){
         inst.resetPages();
         if(self.seen&&self.other.seen){
-          lastPage.setAttribute("target","id:dualInst");
+          //lastPage.setAttribute("target","id:dualInst");
           inst.skipPages();
         }
         else if(!self.other.seen){
-          lastPage.setAttribute("target","id:"+self.other.id);
+          //lastPage.setAttribute("target","id:"+self.other.id);
         }
       }
     }
   );
 
-  elem.addActs("prep",inst)
-  .add('opacity','1','0');
+  elem.addActs("prep",inst).add('opacity','1','0');
 }

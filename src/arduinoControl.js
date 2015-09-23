@@ -42,11 +42,13 @@ include(["src/web-socket.js"],function(){
 				if(chr&ANA_READ){  //if the packet is analogRead
 					var pin = ((chr & 56)>>3);				//extract the pin number
 					var val = ((chr & 7)<<7)+(msg.charCodeAt(++i)&127); //extract the value
+					//console.log(pin);
 					if(typeof self.anaHandlers[pin] == 'function') self.anaHandlers[pin](pin,val);
 				}
 				else if(chr&(START+DIGI_READ)){			//if the packet is digitalRead
 					var pin = ((chr & 62)>>1);
 					var val = chr&1;
+					//console.log(pin);
 					if(typeof self.digiHandlers[pin] == 'function') self.digiHandlers[pin](val);
 				}
 			}

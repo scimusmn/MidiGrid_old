@@ -50,10 +50,16 @@ include(['src/move.min.js','src/smmAnim.js'], function() {
     this.ready = false;
     this.prepActions = null;
     this.moveActions = null;
-    this.endActions = null;
 
     this.addActs = function (selector,item) {
       return this[selector+"Actions"].addItem(item);
+    }
+
+    function funGen(item,last,fxn) {
+      return function () {
+        if (item.attr.last().name=='fxn') item.attr.last().fxn();
+        if(last) fxn();
+      }
     }
 
     this.generateMoves = function (arr,inOut,fxn) {
@@ -63,17 +69,14 @@ include(['src/move.min.js','src/smmAnim.js'], function() {
           if(i>=arr.length-1&&typeof fxn === "function")  fxn();
         }
         else {
+          if(inOut=='in') console.log(i);
           var mv = move(arr[i].elem);
           for (var j = 0; j < arr[i].attr.length; j++) {
             if(arr[i].attr[j].name!='fxn')
               mv = mv.set(arr[i].attr[j].name,arr[i].attr[j][inOut]);
           }
           mv = mv.ease('out');
-          var temp = {'i':i};
-          mv.end(function () {
-            if (arr[this.i].attr.last().name=='fxn') arr[this.i].attr.last().fxn();
-            if(this.i>=arr.length-1) fxn();
-          }.bind(temp));
+          mv.end(funGen(arr[i],i>=arr.length-1,fxn));
         }
       }
       if(arr.length==0){
@@ -92,9 +95,7 @@ include(['src/move.min.js','src/smmAnim.js'], function() {
         self.ready = true;
       }
       self.generateMoves(self.moveActions,'in',function () {
-        self.generateMoves(self.prepActions,'in',function () {
-          self.generateMoves(self.endActions,'in',endFunc);
-        })
+        self.generateMoves(self.prepActions,'in',endFunc);
       });
     }
 
@@ -103,16 +104,18 @@ include(['src/move.min.js','src/smmAnim.js'], function() {
       if(self.hasFocus){
         self.ready = false;
         self.lockout = true;
-        var endFunc = function () {
+        var endFunc = function() {
           if(typeof fxnEnd === "function") fxnEnd();
           self.hasFocus = false;
           self.lockout=false;
           self.ready = true;
         }
+        console.log("unfocusing");
         self.generateMoves(self.prepActions,'out',function () {
-          self.generateMoves(self.moveActions,'out',function () {
+          self.generateMoves(self.moveActions,'out',endFunc);
+          /*function () {
             self.generateMoves(self.endActions,'out',endFunc);
-          })
+          })*/
         });
       }
     }
@@ -133,9 +136,9 @@ include(['src/move.min.js','src/smmAnim.js'], function() {
 
   window.focii = function () {
     var foci = document.getElementsByTagName('smm-focii');
-    this.reset = function () {
+    this.reset = function (fxn) {
       for (var i = 0; i < foci.length; i++) {
-        foci[i].reset();
+        if(foci[i].hasFocus) foci[i].reset(fxn);
       }
     }
     return this;

@@ -9,12 +9,15 @@ include(['src/pointTrace.js','src/compCont.js','src/arduinoControl.js','src/flip
 
   var coolCont = compCont($('coolCont'));
   var warmCont = compCont($('warmCont'));
-  var botTray = bottomTray($('dualInst'));
+
+  //var botTray = bottomTray($('dualInst'));
 
   coolCont.bind(warmCont, cool, warm);
 
   setMoves(coolCont);
   setMoves(warmCont);
+
+  $('attract').setup();
 
   $('cool').refresh();
   $('warm').refresh();
@@ -24,11 +27,11 @@ include(['src/pointTrace.js','src/compCont.js','src/arduinoControl.js','src/flip
     if (!this.hasFocus && !this.lockout) warmCont.focus();
   };
 
-	$("$web-arduino").watchPin(18,function(val){
-	        console.log("clear");
-		cool.clear();
-        	warm.clear();
-	});
+  $('$web-arduino').watchPin(18, function(val) {
+    console.log('clear');
+    cool.clear();
+    warm.clear();
+  });
 
   warmCont.onmousedown = function(e) {
     e.preventDefault();
@@ -36,7 +39,7 @@ include(['src/pointTrace.js','src/compCont.js','src/arduinoControl.js','src/flip
   };
 
   $('#reset').onmousedown = function() {
-    focii.reset();
+    focii.reset($('#attract').focus());
     $('#reset').style.display = 'none';
   };
 

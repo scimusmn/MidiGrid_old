@@ -61,6 +61,25 @@ Function.prototype.inherits = function (parent) {
   if (parent) this.__proto__ = parent;
 };
 
+function ajax(src,fxn){
+ 	var http = new XMLHttpRequest();
+ 	var ret =0;
+
+ 	http.open('get', src);
+ 	http.responseType = "document";
+	http.onreadystatechange = function ()
+	{
+		if (http.readyState == 4){
+			ret = http.responseXML;
+			fxn(ret);
+		}
+	}
+
+	http.send(null);
+
+	return ret;
+ }
+
 /***************************************
 these work like this:
 
