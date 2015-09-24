@@ -58,15 +58,23 @@ $("#attract").setup = function () {
   var _this = this;
   var dim = $("#dimScreen");
 
+  _this.timeout = null;
+
+  _this.refreshTimer = function () {
+    if(_this.timeout) clearTimeout(_this.timeout);
+    _this.timeout = setTimeout(_this.reset,120000);
+  }
+
   _this.addActs("move",function(In) {
     if(In) dim.style.display = 'block';
     else dim.style.display = 'none';
+    if(!In) _this.refreshTimer();
   });
 
   _this.addActs("prep",_this).add('top',"5%","-100%");
   _this.addActs("prep",dim).add('opacity','0.5','0');
 
-  _this.hasFocus=true;
+  _this.hasFocus = true;
 
   _this.onmousedown = function (e) {
     e.preventDefault();
@@ -75,6 +83,10 @@ $("#attract").setup = function () {
       $("warmCont").focus();
     });
   };
+
+  _this.reset = function () {
+    focii.reset($("#attract").focus());
+  }
 }
 
 var setMoves = function (elem) {

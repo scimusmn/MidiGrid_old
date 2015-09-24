@@ -15,11 +15,20 @@
   	</web-arduino>
   </head>
   <body>
-  	<div id="title">Efficient Air Compression</div>
-  	<div id="reset">Start Over</div>
+    <smm-focii id="attract" class="card">
+      <img src='img/anim.gif'></img>
+      <div class="first">Compressed Air could help us store energy from renewable sources, if
+        we can find ways to make it more efficient.</div>
+      <div class="sec">These compressors let you explore one method of increasing efficiency.</div>
+      <div class="title">Tap the screen to begin.</div>
+    </smm-focii>
+    <div id="dimScreen"></div>
+  	<div id="title">
+      <div id="reset" class="button">Start Over</div>
+    </div>
   	<smm-focii class="graphCont card right" id="coolCont" side="right">
   		<div id="coolEff"></div>
-  		<div class="graphTitle">Right Compressor </div>
+  		<div class="graphTitle">Experiment 2: Heat-Recovery Compressor</div>
   		<!-- <span class="graphSub">Tap to Explore</span> -->
   		<!-- <img class="backButton" src="img/back.png"></img> -->
   		<div class="bar"></div>
@@ -34,7 +43,7 @@
   	</smm-focii>
   	<smm-focii class="graphCont card left" id="warmCont" side="left">
   		<div id="warmEff"></div>
-  		<div class="graphTitle">Left Compressor</div>
+  		<div class="graphTitle">Experiment 1: Traditional Compressor</div>
   		<!-- <span class="graphSub">Tap to Explore</span> -->
   		<!-- <img class="backButton" src="img/back.png"></img> -->
   		<div class="bar"></div>
@@ -47,10 +56,7 @@
   		<flip-book class="instPanel right" src="data/warm.xml">
   		</flip-book>
   	</smm-focii>
-    <smm-focii id="attract" class="card">
-    </smm-focii>
-    <div id="dimScreen"></div>
-    <div id="legend">Legend:  <span class="swatch red"></span> work done during compression   <span class="swatch blue"></span> work done by air during expansion</div>
+    <div id="legend">Legend:  <span class="swatch red"></span> work done during compression<span class="swatch blue"></span> work done by air during expansion</div>
   	<!-- <smm-focii id="dualInst" class="card left">
   		<div class="graphTitle">Compare the Graphs</div>
   		<div class="bar"></div>

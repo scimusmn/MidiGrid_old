@@ -22,6 +22,10 @@ include(['src/pointTrace.js','src/compCont.js','src/arduinoControl.js','src/flip
   $('cool').refresh();
   $('warm').refresh();
 
+  document.onmousedown = function() {
+    $('#attract').refreshTimer();
+  }
+
   coolCont.onmousedown = function(e) {
     e.preventDefault();
     if (!this.hasFocus && !this.lockout) warmCont.focus();
@@ -38,10 +42,7 @@ include(['src/pointTrace.js','src/compCont.js','src/arduinoControl.js','src/flip
     if (!this.hasFocus && !this.lockout) this.focus();
   };
 
-  $('#reset').onmousedown = function() {
-    focii.reset($('#attract').focus());
-    $('#reset').style.display = 'none';
-  };
+  $('#reset').onmousedown = $('#attract').reset;
 
   document.onkeydown = function(e) {
     switch (e.which) {
