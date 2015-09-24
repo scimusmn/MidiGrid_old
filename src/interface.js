@@ -22,7 +22,8 @@ include(['src/pointTrace.js','src/compCont.js','src/arduinoControl.js','src/flip
   $('cool').refresh();
   $('warm').refresh();
 
-  document.onmousedown = function() {
+  document.onmousedown = function(e) {
+    e.preventDefault();
     $('#attract').refreshTimer();
   }
 

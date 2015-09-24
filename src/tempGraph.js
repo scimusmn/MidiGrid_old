@@ -66,7 +66,7 @@ function tempGraph(elem){
 		this.canvas.width=this.width;
 		var left = (p1*v1)/(t1);
 		var t2 = (t1*(p1+parseFloat(pnt.y))*parseFloat(pnt.x))/(p1*v1);
-		
+
 		//var rel = .75*(t2-t1)/(maxTemp-t1)+1/4;
 		var rel = (t2-minTemp)/(maxTemp-minTemp);
 		if(rel>highTemp) highTemp=rel;
@@ -92,7 +92,7 @@ function tempGraph(elem){
 		ctx.fill();
 
 		var label = "Air";
-		ctx.font = "lighter 5vh sans-serif";
+		ctx.font = "lighter 4vh sans-serif";
 		//console.log(""+(this.height-graph.h)/3+"pt Arial");
 		ctx.fillStyle = "#666";
 		var txtSz = ctx.measureText(label);
