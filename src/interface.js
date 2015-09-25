@@ -32,7 +32,7 @@ include(['src/pointTrace.js','src/compCont.js','src/arduinoControl.js','src/flip
     if (!this.hasFocus && !this.lockout) warmCont.focus();
   };
 
-  arduino.onConnect = function(){
+  $('$web-arduino').onConnect = function() {
     $('$web-arduino').watchPin(18, function(val) {
       console.log('clear');
       cool.clear();
