@@ -241,7 +241,7 @@ html, body {
 	display: block;
 	position: absolute;
 	top:0%;
-	width:80%;
+	width:85%;
 	height: 100%;
 	margin:0 auto;
 	background:  rgba(255,255,255, .75);
@@ -276,7 +276,16 @@ html, body {
   right:0;
 }
 
-/**/
+.temp {
+	display: block;
+	position: absolute;
+	height: 100%;
+	width:13%;
+	margin:0 auto;
+	background:  rgba(255,255,255, .75);
+	/*box-shadow:         inset 0 0 10px #888;*/
+	border-radius: 2px;
+}
 
 #dualInst {
 	position: absolute;
