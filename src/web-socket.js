@@ -39,7 +39,9 @@ var web_socket = inheritFrom(HTMLElement,function(){
                 //self.connectInterval = setInterval(self.connect.bind(self),2000);
             };
             this.send = function (msg) {
-                if(ws) ws.send(msg);
+                ws.send(msg,function () {
+                  console.log("Not connected yet!")
+                });
             }
         }
        else {
