@@ -95,10 +95,10 @@ var setMoves = function (elem) {
     return ((side=="left")?'right':'left');
   };
 
-  //var subtitle = $(".graphSub",elem);
   var title = $(".graphTitle",elem);
   var data = $(".data",elem);
   var inst = $(".instPanel",elem);
+  var tap = $(".graphTap",data);
   //var pages= inst.querySelectorAll(".instPage");
   //var lastPage  = pages[pages.length-1];
   var button = $(".instButton",inst);
@@ -138,4 +138,5 @@ var setMoves = function (elem) {
   );
 
   elem.addActs("prep",inst).add('opacity','1','0');
+  elem.addActs("prep",tap).add('opacity','0','1');
 }

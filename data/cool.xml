@@ -45,9 +45,6 @@
     compress it.
   </div>
   <div class="instPage" target="none">
-    <b>Expand the air in the Right Cylinder.</b><br/> Compare
-
-    the Right Graph to the Left Graph.<br/><br/>
 
     <b>Notice this:</b><br/> The area between the two
 
@@ -63,9 +60,9 @@
 
     heat you generate, resulting in less wasted
 
-    work.
+    work.<br/><br/>
 
-    <b>So what?</b> This experiment shows promise
+    <b>So what?</b><br/><br/> This experiment shows promise
 
     for heat-recycling research underway at the
 
@@ -84,5 +81,5 @@
   <!-- <div class="instPage" target="id:warmCont">
     More instructions!
   </div> -->
-  <div class="instBut button right" id="coolNext">NEXT STEP</div>
+  <div class="instBut button right" id="coolNext">NEXT</div>
 </flip-book>

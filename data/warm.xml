@@ -8,7 +8,7 @@
     <br/>
     Use the air compressors to either side to explore one way that researchers are trying to store heat for later use.
   </div>-->
-  <div class="instPage" target="id:coolCont">
+  <div class="instPage" target="none">
     <img class="right" src="img/compressLeft.png"></img>
     <b>Compress air in the Left Compressor…</b><br/><br/> and hold
 
@@ -35,7 +35,7 @@
 
     bit.
   </div>
-  <div class="instPage" target="id:coolCont">
+  <div class="instPage" target="none">
     <b>Expand air in the Left Cylinder.</b><br/> Watch the Left
 
     Graph respond.<br/><br/>
@@ -69,5 +69,5 @@
 
     heat.  Lost heat is wasted work.</b>
   </div>
-  <div class="instBut button right" id="warmNext">NEXT STEP</div>
+  <div class="instBut button right" id="warmNext">NEXT</div>
 </flip-book>
