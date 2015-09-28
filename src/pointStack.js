@@ -28,7 +28,7 @@ function pointStack(maxPnts) {
         return true;
       }
     } else points.push({x:pnt.x,y:pnt.y});
-  };
 
-  return false;
+    return false;
+  };
 }

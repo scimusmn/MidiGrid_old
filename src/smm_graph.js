@@ -124,11 +124,12 @@ include(["src/pointStack.js"],function () {
 		this.onNewPoint = function () {};
 
 		this.addPoint = function (pnt) {
+			var _this = this;
 			if(this.range.x.flip) pnt.x=1-pnt.x;
 			if(this.range.y.flip) pnt.y=1-pnt.y;
 
-			if(this.points.addPoint(pnt)){
-				this.onNewPoint();
+			if(_this.points.addPoint(pnt)){
+				_this.onNewPoint();
 			}
 		};
 
