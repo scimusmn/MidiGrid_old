@@ -150,13 +150,14 @@ html, body {
   right:0;
   margin: 0 auto;
   padding:4vw;
-  opacity: 0%;
   z-index: 1000;
   background-color:#333;
   border: 1vh solid #2a2a2a;
   font-size: 4vh;
   border-radius: 2vh;
   word-wrap: break-word;
+  opacity: 0%;
+  display: none;
 }
 
 .buttons{

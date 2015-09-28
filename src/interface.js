@@ -41,11 +41,14 @@ include(['src/pointTrace.js','src/compCont.js','src/arduinoControl.js','src/flip
     $('#attract').reset;
     if (coolCont.hasFocus && !coolCont.warned) {
       coolCont.warned = true;
+      $('#useRight').style.display = 'block';
       move('#useRight').set('opacity', 1).end();
       move('#dimScreen').set('opacity', .5).end();
       setTimeout(function() {
         move('#useRight').set('opacity', 0).end();
-        move('#dimScreen').set('opacity', 0).end();
+        move('#dimScreen').set('opacity', 0).end(function () {
+          $('#useRight').style.display = 'none';
+        });
       }, 4000);
 
       setTimeout(function() { coolCont.warned = false; }, 30000);
@@ -56,11 +59,14 @@ include(['src/pointTrace.js','src/compCont.js','src/arduinoControl.js','src/flip
     $('#attract').reset;
     if (warmCont.hasFocus && !warmCont.warned) {
       warmCont.warned = true;
+      $('#useLeft').style.display = 'block';
       move('#useLeft').set('opacity', 1).end();
       move('#dimScreen').set('opacity', .5).end();
       setTimeout(function() {
         move('#useLeft').set('opacity', 0).end();
-        move('#dimScreen').set('opacity', 0).end();
+        move('#dimScreen').set('opacity', 0).end(function () {
+          $('#useLeft').style.display = 'none';
+        });
       }, 4000);
 
       setTimeout(function() { warmCont.warned = false; }, 30000);
