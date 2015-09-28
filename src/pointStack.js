@@ -1,4 +1,4 @@
-console.log("pointStack");
+console.log('pointStack');
 function pointStack(maxPnts) {
   var _this = this;
   var points = [];
@@ -25,9 +25,10 @@ function pointStack(maxPnts) {
           points.push({x:sampsX.ave,y:sampsY.ave});
         } else points.push(pnt);
         if (points.length >= maxPnts) points.splice(0, 1);
+        return true;
       }
     } else points.push({x:pnt.x,y:pnt.y});
   };
 
-  return points;
+  return false;
 }

@@ -25,11 +25,46 @@ include(['src/pointTrace.js','src/compCont.js','src/arduinoControl.js','src/flip
   document.onmousedown = function(e) {
     e.preventDefault();
     $('#attract').refreshTimer();
-  }
+  };
 
   coolCont.onmousedown = function(e) {
     e.preventDefault();
     if (!this.hasFocus && !this.lockout) this.focus();
+  };
+
+  warmCont.onmousedown = function(e) {
+    e.preventDefault();
+    if (!this.hasFocus && !this.lockout) this.focus();
+  };
+
+  warmCont.onNewPoint = function() {
+    $('#attract').reset;
+    if (coolCont.hasFocus && !coolCont.warned) {
+      coolCont.warned = true;
+      move('#useRight').set('opacity', 1).end();
+      move('#dimScreen').set('opacity', .5).end();
+      setTimeout(function() {
+        move('#useRight').set('opacity', 0).end();
+        move('#dimScreen').set('opacity', 0).end();
+      }, 4000);
+
+      setTimeout(function() { coolCont.warned = false; }, 30000);
+    }
+  };
+
+  coolCont.onNewPoint = function() {
+    $('#attract').reset;
+    if (warmCont.hasFocus && !warmCont.warned) {
+      warmCont.warned = true;
+      move('#useLeft').set('opacity', 1).end();
+      move('#dimScreen').set('opacity', .5).end();
+      setTimeout(function() {
+        move('#useLeft').set('opacity', 0).end();
+        move('#dimScreen').set('opacity', 0).end();
+      }, 4000);
+
+      setTimeout(function() { warmCont.warned = false; }, 30000);
+    }
   };
 
   $('$web-arduino').onConnect = function() {
@@ -39,11 +74,6 @@ include(['src/pointTrace.js','src/compCont.js','src/arduinoControl.js','src/flip
       warm.clear();
     });
   }
-
-  warmCont.onmousedown = function(e) {
-    e.preventDefault();
-    if (!this.hasFocus && !this.lockout) this.focus();
-  };
 
   $('#reset').onmousedown = $('#attract').reset;
 

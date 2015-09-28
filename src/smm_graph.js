@@ -121,10 +121,15 @@ include(["src/pointStack.js"],function () {
 			else return map(val,1,0,this.range[which].min,this.range[which].max);
 		}
 
+		this.onNewPoint = function () {};
+
 		this.addPoint = function (pnt) {
 			if(this.range.x.flip) pnt.x=1-pnt.x;
 			if(this.range.y.flip) pnt.y=1-pnt.y;
-			this.points.addPoint(pnt);
+
+			if(this.points.addPoint(pnt)){
+				this.onNewPoint();
+			}
 		};
 
 		this.newValue = function (val,which) {
