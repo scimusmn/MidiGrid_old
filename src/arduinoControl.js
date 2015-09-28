@@ -111,7 +111,8 @@ include(["src/web-socket.js"],function(){
 					//console.log(item.pin);
 					self.analogReport(item.pin,item.report,function (pin,val) {
 						//console.log(pin + " is " + val);
-						item.target.newValue(map(val,item.min,item.max,0,1),item.which);
+						if(item.target)
+							item.target.newValue(map(val,item.min,item.max,0,1),item.which);
 					});
 				}
 			});

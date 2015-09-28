@@ -80,7 +80,7 @@ $("#attract").setup = function () {
     e.preventDefault();
     console.log("clicked");
     _this.loseFocus(function () {
-      $("warmCont").focus();
+      //$("warmCont").focus();
     });
   };
 
