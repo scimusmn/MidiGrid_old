@@ -37,8 +37,9 @@ include(['src/pointTrace.js','src/compCont.js','src/arduinoControl.js','src/flip
     if (!this.hasFocus && !this.lockout) this.focus();
   };
 
-  warmCont.onNewPoint = function() {
-    $('#attract').reset;
+  $('.graph',$('#warm')).onNewPoint = function() {
+    console.log("added new point");
+    $('#attract').refreshTimer();
     if (coolCont.hasFocus && !coolCont.warned) {
       coolCont.warned = true;
       $('#useRight').style.display = 'block';
@@ -51,12 +52,12 @@ include(['src/pointTrace.js','src/compCont.js','src/arduinoControl.js','src/flip
         });
       }, 4000);
 
-      setTimeout(function() { coolCont.warned = false; }, 30000);
+      setTimeout(function() { coolCont.warned = false; }, 5000);
     }
   };
 
-  coolCont.onNewPoint = function() {
-    $('#attract').reset;
+  $('.graph',$('#cool')).onNewPoint = function() {
+    $('#attract').refreshTimer();
     if (warmCont.hasFocus && !warmCont.warned) {
       warmCont.warned = true;
       $('#useLeft').style.display = 'block';
@@ -69,15 +70,15 @@ include(['src/pointTrace.js','src/compCont.js','src/arduinoControl.js','src/flip
         });
       }, 4000);
 
-      setTimeout(function() { warmCont.warned = false; }, 30000);
+      setTimeout(function() { warmCont.warned = false; }, 5000);
     }
   };
 
   $('$web-arduino').onConnect = function() {
     $('$web-arduino').watchPin(18, function(val) {
-      console.log('clear');
-      cool.clear();
-      warm.clear();
+        if(val&&!$('#attract').hasFocus){
+          $('#attract').reset();
+        }
     });
   }
 

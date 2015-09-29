@@ -71,13 +71,15 @@ $("#attract").setup = function () {
     if(!In) _this.refreshTimer();
   });
 
-  _this.addActs("prep",_this).add('top',"5%","-100%");
+  _this.addActs("prep",_this).add('top',"0%","-105%");
   _this.addActs("prep",dim).add('opacity','0.5','0');
 
   _this.hasFocus = true;
 
   _this.onmousedown = function (e) {
     e.preventDefault();
+    $('cool').clear();
+    $('warm').clear();
     console.log("clicked");
     _this.loseFocus(function () {
       //$("warmCont").focus();

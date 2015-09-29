@@ -103,8 +103,9 @@ include(["src/web-socket.js"],function(){
 	    wsClient.send(asChar(START+ANA_REPORT+((pin&7)<<1))+asChar(0));
 	  };
 
-		arduino.onConnect = function(){};
-		arduino.connectCB = function () {
+		this.onConnect = function(){console.log("woops");};
+		this.connectCB = function () {
+			this.onConnect();
 			var inputPins = [].slice.call(this.querySelectorAll("input-pin"));
 			inputPins.forEach(function(item, i, arr) {
 				if(item.type === "analog"){
@@ -116,8 +117,6 @@ include(["src/web-socket.js"],function(){
 					});
 				}
 			});
-
-			arduino.onConnect();
 		}
 
 		this.createdCallback = function () {

@@ -31,4 +31,6 @@ function pointStack(maxPnts) {
 
     return false;
   };
+
+  return points;
 }

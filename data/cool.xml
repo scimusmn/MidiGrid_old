@@ -1,13 +1,4 @@
 <flip-book>
-  <div class="instPage skip" target="nextPage">
-    Compressed air energy storage is a promising technology which may allow us to store energy gathered from renewable sources
-    for later use. <br/><br/>However, it's not a perfect storage solution; compressing air generates heat which might be lost, and expanding
-    compressed air to reclaim energy requires heat to reach max efficiency. <br/><br/>If the heat from compression can be stored
-    for use during expansion, the efficiency of the system can increase dramatically.
-    <br/>
-    <br/>
-    Use the air compressors to either side to explore one way that researchers are trying to store heat for later use.
-  </div>
   <div class="instPage" target="nextPage">
     <img class="right" src="img/compressRight.png"></img>
     <b>Compress air in the Right Compressor…</b><br/><br/> and hold

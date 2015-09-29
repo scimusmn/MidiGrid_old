@@ -238,10 +238,12 @@ function pointTrace(elem){
 		self.drawYLabels();
 	};
 
-	this.clear = function(){
+	elem.clear = function(){
 		graph.clear();
-		this.gauge.clear();
+		self.gauge.clear();
 	}
+
+	this.clear = elem.clear;
 
 }
 
