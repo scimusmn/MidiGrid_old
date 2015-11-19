@@ -1,30 +1,30 @@
-include(['src/pointTrace.js','src/compCont.js','src/arduinoControl.js','src/flipBook.js'], function() {
+include(['src/pointTrace.js', 'src/compCont.js', './hardware.js', 'src/flipBook.js'], function() {
   function app() {};
 
   var drawTimer;
   var refreshRate = 30; //fps
 
-  var cool = new pointTrace($('cool'));
-  var warm = new pointTrace($('warm'));
+  var cool = new pointTrace(µ('#cool'));
+  var warm = new pointTrace(µ('#warm'));
 
-  var coolCont = compCont($('coolCont'));
-  var warmCont = compCont($('warmCont'));
+  var coolCont = compCont(µ('#coolCont'));
+  var warmCont = compCont(µ('#warmCont'));
 
-  //var botTray = bottomTray($('dualInst'));
+  //var botTray = bottomTray(µ('dualInst'));
 
   coolCont.bind(warmCont, cool, warm);
 
   setMoves(coolCont);
   setMoves(warmCont);
 
-  $('attract').setup();
+  µ('#attract').setup();
 
-  $('cool').refresh();
-  $('warm').refresh();
+  µ('#cool').refresh();
+  µ('#warm').refresh();
 
   document.onmousedown = function(e) {
     e.preventDefault();
-    $('#attract').refreshTimer();
+    µ('#attract').refreshTimer();
   };
 
   coolCont.onmousedown = function(e) {
@@ -37,18 +37,18 @@ include(['src/pointTrace.js','src/compCont.js','src/arduinoControl.js','src/flip
     if (!this.hasFocus && !this.lockout) this.focus();
   };
 
-  $('.graph',$('#warm')).onNewPoint = function() {
-    console.log("added new point");
-    $('#attract').refreshTimer();
+  µ('.graph', µ('#warm')).onNewPoint = function() {
+    console.log('added new point');
+    µ('#attract').refreshTimer();
     if (coolCont.hasFocus && !coolCont.warned) {
       coolCont.warned = true;
-      $('#useRight').style.display = 'block';
+      µ('#useRight').style.display = 'block';
       move('#useRight').set('opacity', 1).end();
       move('#dimScreen').set('opacity', .5).end();
       setTimeout(function() {
         move('#useRight').set('opacity', 0).end();
-        move('#dimScreen').set('opacity', 0).end(function () {
-          $('#useRight').style.display = 'none';
+        move('#dimScreen').set('opacity', 0).end(function() {
+          µ('#useRight').style.display = 'none';
         });
       }, 4000);
 
@@ -56,17 +56,17 @@ include(['src/pointTrace.js','src/compCont.js','src/arduinoControl.js','src/flip
     }
   };
 
-  $('.graph',$('#cool')).onNewPoint = function() {
-    $('#attract').refreshTimer();
+  µ('.graph', µ('#cool')).onNewPoint = function() {
+    µ('#attract').refreshTimer();
     if (warmCont.hasFocus && !warmCont.warned) {
       warmCont.warned = true;
-      $('#useLeft').style.display = 'block';
+      µ('#useLeft').style.display = 'block';
       move('#useLeft').set('opacity', 1).end();
       move('#dimScreen').set('opacity', .5).end();
       setTimeout(function() {
         move('#useLeft').set('opacity', 0).end();
-        move('#dimScreen').set('opacity', 0).end(function () {
-          $('#useLeft').style.display = 'none';
+        move('#dimScreen').set('opacity', 0).end(function() {
+          µ('#useLeft').style.display = 'none';
         });
       }, 4000);
 
@@ -74,21 +74,19 @@ include(['src/pointTrace.js','src/compCont.js','src/arduinoControl.js','src/flip
     }
   };
 
-  $('$web-arduino').onConnect = function() {
-    $('$web-arduino').watchPin(18, function(val) {
-        if(val&&!$('#attract').hasFocus){
-          $('#attract').reset();
-        }
-    });
-  }
+  µ('#resetButton').onData = function(val) {
+    if (val && !µ('#attract').hasFocus) {
+      µ('#attract').reset();
+    }
+  };
 
-  $('#reset').onmousedown = $('#attract').reset;
+  µ('#reset').onmousedown = µ('#attract').reset;
 
   document.onkeydown = function(e) {
     switch (e.which) {
       case charCode('E'):        //if the send button was pressed
-        $('#coolEff').innerHTML = cool.efficiency();
-        $('#warmEff').innerHTML = warm.efficiency();
+        µ('#coolEff').innerHTML = cool.efficiency();
+        µ('#warmEff').innerHTML = warm.efficiency();
         break;
       case 32:
         cool.clear();
@@ -106,9 +104,9 @@ include(['src/pointTrace.js','src/compCont.js','src/arduinoControl.js','src/flip
     warm.draw();
   };
 
-  window.onresize = function(x,y) {
-    $('cool').refresh();
-    $('warm').refresh();
+  window.onresize = function(x, y) {
+    µ('#cool').refresh();
+    µ('#warm').refresh();
   };
 
   window.onresize();

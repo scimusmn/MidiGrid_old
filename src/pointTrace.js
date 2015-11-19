@@ -1,5 +1,4 @@
-include(["src/smm_graph.js","src/tempGraph.js"],function(){
-	console.log("trace loaded");
+include(["./graph.js","src/tempGraph.js"],function(){
 function pointTrace(elem){
 	this.canvas = elem;
 	var ctx = this.canvas.getContext("2d");
@@ -18,13 +17,13 @@ function pointTrace(elem){
 		return parseInt(getString(attr));
 	}
 
-	this.gauge = new tempGraph($(getString("temp")));
+	this.gauge = new tempGraph(µ(getString("temp")));
 
 	//var graph = new smmGraph();
 
-	var graph = $(".graph",this.canvas.parentElement);
+	var graph = µ(".graph",this.canvas.parentElement);
 
-	this.graph =$(".graph",this.canvas.parentElement);
+	this.graph =µ(".graph",this.canvas.parentElement);
 	//graph.style.display = "none";
 
 	graph.bot = function(){

@@ -13,6 +13,13 @@ include(["src/web-socket.js"],function(){
 					this.which = result[1];
 				}
 			}
+			else if(this.type == 'digital'){
+				var result = this.getAttribute("result").split(".");
+				if(result.length>1){
+					this.target = $(result[0])
+					this.which = result[1];
+				}
+			}
 	  }
 	});
 
@@ -115,6 +122,9 @@ include(["src/web-socket.js"],function(){
 						if(item.target)
 							item.target.newValue(map(val,item.min,item.max,0,1),item.which);
 					});
+				}
+				else if(item.type === 'digital'){
+					self.watchPin
 				}
 			});
 		}

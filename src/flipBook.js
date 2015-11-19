@@ -8,7 +8,7 @@ include(['src/smm_focii.js'], function() {
     ajax(this.getAttribute('src'), function(xml) {
       _this.innerHTML = xml.querySelector('flip-book').innerHTML;
 
-      _this.button = $('.button', _this);
+      _this.button = µ('.button', _this);
 
       _this.button.onmousedown = function() {
         var targ = _this.currentPage.getAttribute('target');
@@ -19,17 +19,17 @@ include(['src/smm_focii.js'], function() {
           _this.currentPage.style.display = 'block';
         } else if (spl.length > 1 && spl[0] == 'id') {
           console.log('clicked');
-          _this.parentElement.loseFocus(function() {$('#' + spl[1]).focus();});
+          _this.parentElement.loseFocus(function() {µ('#' + spl[1]).focus();});
         } else if (targ == 'none') {
           focii.reset();
         }
       };
 
-      _this.currentPage = $('.instPage', _this);
+      _this.currentPage = µ('.instPage', _this);
 
       _this.resetPages = function() {
         _this.currentPage.style.display = 'none';
-        _this.currentPage = $('.instPage', _this);
+        _this.currentPage = µ('.instPage', _this);
         _this.currentPage.style.display = 'block';
       };
 
@@ -46,8 +46,8 @@ include(['src/smm_focii.js'], function() {
       _this.currentPage = _this.currentPage.nextElementSibling;
       _this.currentPage.style.display = 'block';
     }
-  }
-  }
+  };
+  };
 
   var flipBook = document.registerElement('flip-book', {prototype: flipProto});
 });

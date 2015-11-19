@@ -15,7 +15,7 @@ function compCont(elem) {
     self.graph=graf;
   }
 
-  /*$(".backButton",elem).onmousedown = function () {
+  /*µ(".backButton",elem).onmousedown = function () {
     if(self.hasFocus) self.loseFocus();
   }*/
 
@@ -24,39 +24,39 @@ function compCont(elem) {
 
 function bottomTray(elem){
   var self = elem;
-  var warm = $("warmCont");
-  var cool = $("coolCont");
+  var warm = µ("#warmCont");
+  var cool = µ("#coolCont");
   elem.addActs("prep",
     function (In) {
       if(In){
-        $("cool").refresh();
-      	$("warm").refresh();
+        µ("#cool").refresh();
+      	µ("#warm").refresh();
       }
     }
   );
   elem.addActs("move",
     function (In) {
-      $("#reset").style.display = ((In)?"block":"none");
+      µ("#reset").style.display = ((In)?"block":"none");
       warm.lockout = In;
       cool.lockout = In;
       if(!In) warm.seen=cool.seen=false;
     }
   );
   elem.addActs("move",warm).add('height','60%','80%');
-  elem.addActs("move",$(".graphSub",warm)).add('opacity','0','1')
-  .end($("warm").refresh.bind($("warm")));;
+  elem.addActs("move",µ(".graphSub",warm)).add('opacity','0','1')
+  .end(µ("#warm").refresh.bind(µ("#warm")));;
   elem.addActs("move",cool).add('height','60%','80%');
-  elem.addActs("move",$(".graphSub",cool)).add('opacity','0','1')
-  .end($("cool").refresh.bind($("cool")));
+  elem.addActs("move",µ(".graphSub",cool)).add('opacity','0','1')
+  .end(µ("#cool").refresh.bind(µ("#cool")));
   elem.addActs("move",elem).add('height','26%','0%');
-  elem.addActs("prep",$(".instPanel",elem)).add('opacity','1','0');
+  elem.addActs("prep",µ(".instPanel",elem)).add('opacity','1','0');
 
   return elem;
 }
 
-$("#attract").setup = function () {
+µ("#attract").setup = function () {
   var _this = this;
-  var dim = $("#dimScreen");
+  var dim = µ("#dimScreen");
 
   _this.timeout = null;
 
@@ -78,16 +78,17 @@ $("#attract").setup = function () {
 
   _this.onmousedown = function (e) {
     e.preventDefault();
-    $('cool').clear();
-    $('warm').clear();
+    console.log('here');
+    µ('#cool').clear();
+    µ('#warm').clear();
     console.log("clicked");
     _this.loseFocus(function () {
-      //$("warmCont").focus();
+      //µ("warmCont").focus();
     });
   };
 
   _this.reset = function () {
-    focii.reset($("#attract").focus());
+    focii.reset(µ("#attract").focus());
   }
 }
 
@@ -97,20 +98,20 @@ var setMoves = function (elem) {
     return ((side=="left")?'right':'left');
   };
 
-  var title = $(".graphTitle",elem);
-  var data = $(".data",elem);
-  var inst = $(".instPanel",elem);
-  var tap = $(".graphTap",data);
+  var title = µ(".graphTitle",elem);
+  var data = µ(".data",elem);
+  var inst = µ(".instPanel",elem);
+  var tap = µ(".graphTap",data);
   //var pages= inst.querySelectorAll(".instPage");
   //var lastPage  = pages[pages.length-1];
-  var button = $(".instButton",inst);
+  var button = µ(".instButton",inst);
   var side = elem.getAttribute("side");
 
   elem.addActs("move",
     function (In) {
-      //$("#reset").style.display = ((In)?"block":"none");
-      $("cool").refresh();
-    	$("warm").refresh();
+      //µ("#reset").style.display = ((In)?"block":"none");
+      µ("#cool").refresh();
+    	µ("#warm").refresh();
       if(In) self.seen=true;
     }
   );
@@ -118,7 +119,7 @@ var setMoves = function (elem) {
 
   //elem.addActs("move",title).add('left','4vw','1vw');
 
-  //elem.addActs("move",$(".backButton",elem)).add('width','4.5vh','0px');
+  //elem.addActs("move",µ(".backButton",elem)).add('width','4.5vh','0px');
 
   elem.addActs("move",elem).add('width','98vw','48.5vw');
 
