@@ -38,7 +38,7 @@ include(['src/pointTrace.js', 'src/compCont.js', './hardware.js', 'src/flipBook.
   };
 
   µ('.graph', µ('#warm')).onNewPoint = function() {
-    console.log('added new point');
+    warm.autoClear(.95);
     µ('#attract').refreshTimer();
     if (coolCont.hasFocus && !coolCont.warned) {
       coolCont.warned = true;
@@ -57,6 +57,7 @@ include(['src/pointTrace.js', 'src/compCont.js', './hardware.js', 'src/flipBook.
   };
 
   µ('.graph', µ('#cool')).onNewPoint = function() {
+    cool.autoClear(.95);
     µ('#attract').refreshTimer();
     if (warmCont.hasFocus && !warmCont.warned) {
       warmCont.warned = true;

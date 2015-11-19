@@ -33,13 +33,7 @@ function pointTrace(elem){
 
 	ctx.globalCompositeOperation = "lighter";
 
-	elem.addPoint = function(pnt){
-		graph.addPoint(pnt);
-		self.autoClear(.95);
-	}
-
-	elem.newValue = function (val,which) {
-		graph.newValue(val,which);
+	graph.onNewPoint = function () {
 		self.autoClear(.95);
 	}
 
