@@ -8,9 +8,9 @@ then
     killall -9 node
 fi
 
-cd ~/Desktop/fluidPower/nodeSource
-nohup node ./wsServer.js &
+cd ~/Desktop/fluidPower/serialApp
+nohup node ./serialApp.js &
 
 ping -c 5 127.0.0.1
 
-open /Applications/Google\ Chrome.app --args --kiosk --user-data-dir="/Users/exhibits/Documents/chromeTemp" --allow-file-access-from-files "/Users/exhibits/Desktop/fluidPower/index.html"
+open /Applications/Google\ Chrome.app --args --kiosk --user-data-dir="/Users/admin/Documents/chromeTemp" --allow-file-access-from-files "/Users/admin/Desktop/fluidPower/index.html"
