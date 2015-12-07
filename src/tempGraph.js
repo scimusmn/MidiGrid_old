@@ -77,7 +77,7 @@ function tempGraph(elem){
 		ctx.rect(graph.x,graph.y,graph.w,graph.h);
 		ctx.fill();
 		ctx.closePath();
-		ctx.fillStyle = "rgba("+Math.floor((rel*255))+",0,"+Math.floor(((1-rel)*255))+",1)";
+		ctx.fillStyle = "#b0b";
 		ctx.beginPath();
 		ctx.rect(graph.x,graph.y+graph.h,graph.w,-graph.h*rel);
 		ctx.fill();

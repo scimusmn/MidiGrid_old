@@ -23,9 +23,9 @@
       <div class="title">Tap here to begin.</div>
     </smm-focii>
     <div id="dimScreen"></div>
-  	<div id="title">
+  	<!-- <div id="title">
       <div id="reset" class="button">Start Over</div>
-    </div>
+    </div> -->
     <div id="useRight">Please use the right compressor for this experiment</div>
     <div id="useLeft">Please use the left compressor for this experiment</div>
   	<smm-focii class="graphCont card right" id="coolCont" side="right">
@@ -60,7 +60,9 @@
   		<flip-book class="instPanel right" src="data/warm.xml">
   		</flip-book>
   	</smm-focii>
-    <div id="legend">Legend:  <span class="swatch red"></span> work done during compression<span class="swatch blue"></span> work done by air during expansion</div>
+    <div id="legend"><span class="swatch red"></span> work input during compression<span class="swatch blue"></span> work output during expansion
+      <div>Area between curves is wasted work.</div>
+    </div>
   	<!-- <smm-focii id="dualInst" class="card left">
   		<div class="graphTitle">Compare the Graphs</div>
   		<div class="bar"></div>

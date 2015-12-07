@@ -1,4 +1,14 @@
-include(['src/pointTrace.js', 'src/compCont.js', './hardware.js', 'src/flipBook.js'], function() {
+var localStore = null;
+var hardwareJS = '';
+if (window.isApp === true) {
+  localStore = chrome.storage.local;
+  hardwareJS = './hardwareApp.js';
+} else {
+  localStore  = localStorage;
+  hardwareJS = './hardware.js';
+}
+
+include(['src/pointTrace.js', 'src/compCont.js', hardwareJS, 'src/flipBook.js'], function() {
   function app() {};
 
   var drawTimer;
@@ -29,6 +39,7 @@ include(['src/pointTrace.js', 'src/compCont.js', './hardware.js', 'src/flipBook.
 
   coolCont.onmousedown = function(e) {
     e.preventDefault();
+    console.log('cool click');
     if (!this.hasFocus && !this.lockout) this.focus();
   };
 
@@ -81,7 +92,7 @@ include(['src/pointTrace.js', 'src/compCont.js', './hardware.js', 'src/flipBook.
     }
   };
 
-  µ('#reset').onmousedown = µ('#attract').reset;
+  //µ('#reset').onmousedown = µ('#attract').reset;
 
   document.onkeydown = function(e) {
     switch (e.which) {

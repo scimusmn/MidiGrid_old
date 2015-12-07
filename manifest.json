@@ -1,17 +1,23 @@
 {
-    "manifest_version": 2,
-    "name": "Arduino Buzz",
-    "short_name" : "Ardubuzz",
-    "description":"arduino interface program",
-    "minimum_chrome_version": "33",
-    "version": "0.1",
-    "offline_enabled": true,
-    "app": {
-        "launch": {
-      		"local_path": "index.html"
-    	}
-    },
-    "permissions": [
-        "serial"
-    ]
+  "manifest_version": 2,
+  "name": "Efficient Compression",
+  "short_name": "EffComp",
+  "description": "",
+  "version": "0.0.1",
+  "minimum_chrome_version": "38",
+
+  "icons": {
+    "128": "img/128.png"
+  },
+
+  "permissions": [
+    "serial",
+    "storage"
+  ],
+
+  "app": {
+    "background": {
+      "scripts": ["background.js"]
+    }
+  }
 }
