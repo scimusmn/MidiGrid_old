@@ -34,7 +34,7 @@ function pointTrace(elem){
 	ctx.globalCompositeOperation = "lighter";
 
 	graph.onNewPoint = function () {
-		self.autoClear(.95);
+		//self.autoClear(.95);
 	}
 
 	this.lastPoint = function () {
@@ -53,7 +53,7 @@ function pointTrace(elem){
 
 	this.efficiency = function () {
 		graph.efficiency();
-		return (1-graph.energyTot/graph.energyIn)*100;
+		return (1-graph.energyOut/graph.energyIn)*100;
 	}
 
 	this.color="#f00";
@@ -97,7 +97,7 @@ function pointTrace(elem){
 		}
 		console.log("Energy in was: "+graph.energyIn);
 		console.log("Energy out was: "+graph.energyOut);
-		console.log("Efficiency was: "+(1-graph.energyTot/graph.energyIn));
+		console.log("Efficiency was: "+(graph.energyOut/graph.energyIn));
 	}
 
 	graph.customBGDraw = function(){
