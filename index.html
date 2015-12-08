@@ -6,11 +6,11 @@
     <title>Fluid Power</title>
   	<link rel="stylesheet" href="style.css"></link>
   	<hard-ware serialport="usbserial">
-  		<in-put id="coolP" type="analog" pin="0" report="30" low="94" hi="1011" result="#coolGraph.newY"></in-put>
-  		<in-put id="coolV" type="analog" pin="1" report="30" hi="974" low="200" result="#coolGraph.newX"></in-put>
-  		<in-put id="warmP" type="analog" pin="2" report="30" low="94" hi="1011" result="#warmGraph.newY"></in-put>
-  		<in-put id="warmV" type="analog" pin="3" report="30" low="90" hi="986" result="#warmGraph.newX"></in-put>
-      <in-put id="resetButton" type="digital" debounce="100" pin="2"></in-put>
+  		<in-put id="coolP" type="analog" pin="0" report="30" low="94" hi="898" result="#coolGraph.newY"></in-put>
+  		<in-put id="coolV" type="analog" pin="1" report="30" hi="974" low="172" result="#coolGraph.newX"></in-put>
+  		<in-put id="warmP" type="analog" pin="2" report="30" low="94" hi="898" result="#warmGraph.newY"></in-put>
+  		<in-put id="warmV" type="analog" pin="3" report="30" hi="130" low="947" result="#warmGraph.newX"></in-put>
+        <in-put id="resetButton" type="digital" debounce="100" pin="2"></in-put>
   	</hard-ware>
     <config-file file="data/config.xml"></config-file>
   </head>
@@ -36,9 +36,9 @@
   		<div class="bar"></div>
   		<div class="data right">
   			<canvas class="trace rightNull" title="Pressure vs. Air Volume" id="cool" temp="#coolTemp">
-  				<canvas id="coolGraph" is="muse-graph" class="graph" xMin="0" xMax="20" yMin="0" yMax="200" xDiv="10" yDiv="10" flip="y"></canvas>
+  				<canvas id="coolGraph" is="muse-graph" class="graph" xMin="0" xMax="14" yMin="0" yMax="200" xDiv="7" yDiv="10" flip="y"></canvas>
         </canvas>
-  			<canvas class="temp leftNull" id="coolTemp" t1="72" p1="15" v1="20" tMin="40" tMax="140" divs="10"></canvas>
+  			<canvas class="temp leftNull" id="coolTemp" t1="72" p1="15" v1="14" tMin="40" tMax="140" divs="10"></canvas>
         <div class="graphTap right">Tap to Explore</div>
       </div>
   		<flip-book class="instPanel left" src="data/cool.xml">
@@ -52,9 +52,9 @@
   		<div class="bar"></div>
   		<div class="data left">
   			<canvas class="trace leftNull"  title="Pressure vs. Air Volume" id="warm" temp="#warmTemp">
-  				<canvas id="warmGraph" is="muse-graph" class="graph" xMin="0" xMax="20" yMin="0" yMax="200" xDiv="10" yDiv="10" flip="xy"></canvas>
+  				<canvas id="warmGraph" is="muse-graph" class="graph" xMin="0" xMax="14" yMin="0" yMax="200" xDiv="7" yDiv="10" flip="y"></canvas>
         </canvas>
-  			<canvas class="temp rightNull" id="warmTemp" t1="72" p1="15" v1="20" tMin="40" tMax="140" divs="10"></canvas>
+  			<canvas class="temp rightNull" id="warmTemp" t1="72" p1="15" v1="14" tMin="40" tMax="140" divs="10"></canvas>
         <div class="graphTap left">Tap to Explore</div>
       </div>
   		<flip-book class="instPanel right" src="data/warm.xml">

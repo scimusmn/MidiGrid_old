@@ -68,6 +68,7 @@ function tempGraph(elem){
 		var t2 = (t1*(p1+parseFloat(pnt.y))*parseFloat(pnt.x))/(p1*v1);
 
 		//var rel = .75*(t2-t1)/(maxTemp-t1)+1/4;
+        elem.temp = t2;
 		var rel = (t2-minTemp)/(maxTemp-minTemp);
 		if(rel>highTemp) highTemp=rel;
 		if(rel<0) rel=0;

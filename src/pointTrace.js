@@ -52,8 +52,7 @@ function pointTrace(elem){
 	}
 
 	this.efficiency = function () {
-		graph.efficiency();
-		return (1-graph.energyOut/graph.energyIn)*100;
+		return graph.efficiency()*100;
 	}
 
 	this.color="#f00";
@@ -90,14 +89,16 @@ function pointTrace(elem){
 		graph.energyTot = 0;
 		for (var i = 0; i < graph.points.length-1; i++) {
 			var diff = graph.points[i].x - graph.points[i + 1].x;
-			var aPlusB = (graph.points[i].y + graph.points[i + 1].y)/2;
-			if(sign(diff)>0) graph.energyOut-=diff*aPlusB;
-			else if(sign(diff)<0) graph.energyIn+=diff*aPlusB;
+			var aPlusB = ((1-graph.points[i].y) + (1-graph.points[i + 1].y))/2;
+			if(sign(diff)>0) graph.energyIn-=diff*aPlusB;
+			else if(sign(diff)<0) graph.energyOut+=diff*aPlusB;
 			graph.energyTot+=diff*aPlusB;
 		}
 		console.log("Energy in was: "+graph.energyIn);
 		console.log("Energy out was: "+graph.energyOut);
 		console.log("Efficiency was: "+(graph.energyOut/graph.energyIn));
+        
+        return (graph.energyOut/graph.energyIn);
 	}
 
 	graph.customBGDraw = function(){
