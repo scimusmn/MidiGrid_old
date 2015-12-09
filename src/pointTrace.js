@@ -206,7 +206,7 @@ function pointTrace(elem){
 
 		//var em1 = window.innerHeight/100;
 
-		 var label = this.canvas.getAttribute("title");
+		 var label = this.canvas.getAttribute("main");
 		ctx.font = "lighter 3vh sans-serif";
 		ctx.fillStyle = "#666";
 		var txtSz = ctx.measureText(label);
