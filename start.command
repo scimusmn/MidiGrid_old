@@ -1,5 +1,5 @@
-#rm -r ~/Documents/chromeTemp
-#cp -r ~/Documents/chromeData ~/Documents/chromeTemp
+rm -r ~/Documents/chromeTemp
+cp -r ~/Documents/chromeData ~/Documents/chromeTemp
 
 #ping -c 10 127.0.0.1
 
@@ -13,4 +13,4 @@
 
 #ping -c 5 127.0.0.1
 
-open /Applications/Google\ Chrome.app --args --user-data-dir="/Users/admin/Documents/chromeData" --load-and-launch-app="/Users/admin/Desktop/fluidPower"
+open /Applications/Google\ Chrome.app --args --user-data-dir="/Users/admin/Documents/chromeTemp" --load-and-launch-app="/Users/admin/Desktop/fluidPower"
