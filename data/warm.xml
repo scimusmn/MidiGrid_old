@@ -1,15 +1,25 @@
 <flip-book>
-  <!--<div class="instPage skip" target="nextPage">
-    Compressed air energy storage is a promising technology which may allow us to store energy gathered from renewable sources
-    for later use. <br/><br/>However, it's not a perfect storage solution; compressing air generates heat which might be lost, and expanding
-    compressed air to reclaim energy requires heat to reach max efficiency. <br/><br/>If the heat from compression can be stored
-    for use during expansion, the efficiency of the system can increase dramatically.
-    <br/>
-    <br/>
-    Use the air compressors to either side to explore one way that researchers are trying to store heat for later use.
-  </div>-->
   <div class="instPage" target="none">
     <img class="right" src="img/compressLeft.png"></img>
+    <b>Compress air in the Traditional Compressor</b><br />
+    and hold the lever down 1..2..3.. Let go.<br /><br />
+    · Watch the Air Pressure gauge<br />
+    · Look at the red area in the<br /> Air Pressure vs Air Volume graph<br />
+    · Repeat and watch the Air Temperature thermometer<br /><br />
+
+    Notice the air pressure rises high at maximum compression
+    but drops as you hold for 1..2..3..<br /><br />
+
+    <img class='left' src='img/anim.gif'></img>
+    <b>What’s happening?</b><br /><br />
+
+    When you compress the air you generate <b>pressure</b> and <b>heat</b>.
+    <br /><br />
+    The pressure drops as some of that heat escapes through the cylinder walls.
+    <br /><br />
+     The wasted work area on the graph is large.<br /><br />
+    <b>Heat lost is wasted work.</b>
+    <!-- <img class="right" src="img/compressLeft.png"></img>
     <b>Compress air in the Left Compressor…</b><br/><br/> and hold
 
       for 1, 2, 3. Watch the Graph and the
@@ -33,7 +43,7 @@
 
     into the surrounding air, the pressure drops a
 
-    bit.
+    bit. -->
   </div>
   <div class="instPage" target="none">
     <b>Expand air in the Left Cylinder.</b><br/> Watch the Left
