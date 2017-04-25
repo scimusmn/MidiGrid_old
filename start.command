@@ -11,6 +11,6 @@ cp -r ~/Documents/chromeData ~/Documents/chromeTemp
 #cd ~/Desktop/fluidPower/serialApp
 #nohup node ./serialApp.js &
 
-#ping -c 5 127.0.0.1
+ping -c 10 127.0.0.1
 
-open /Applications/Google\ Chrome.app --args --user-data-dir="/Users/admin/Documents/chromeTemp" --load-and-launch-app="/Users/admin/Desktop/fluidPower"
+open /Applications/Google\ Chrome.app --args --app-id="ncbhapikkjklpgnfemghpgkdkjjmlcoo"

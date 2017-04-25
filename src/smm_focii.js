@@ -88,12 +88,15 @@ include(['src/move.min.js','src/smmAnim.js'], function() {
       var self=this;
       self.ready = false;
       self.lockout =true;
+      self.endTimeout = null;
       var endFunc = function () {
         if(typeof fxnFocus === "function") fxnFocus();
         self.hasFocus = true;
         self.lockout=false;
         self.ready = true;
+	if(self.endTimeout) clearTimeout(self.endTimeout);
       }
+      self.endTimeout = setTimeout(endFunc,2000);
       self.generateMoves(self.moveActions,'in',function () {
         self.generateMoves(self.prepActions,'in',endFunc);
       });
@@ -109,7 +112,9 @@ include(['src/move.min.js','src/smmAnim.js'], function() {
           self.hasFocus = false;
           self.lockout=false;
           self.ready = true;
-        }
+	  if(self.endTimeout) clearTimeout(self.endTimeout);
+      	}
+      	self.endTimeout = setTimeout(endFunc,2000);
         console.log("unfocusing");
         self.generateMoves(self.prepActions,'out',function () {
           self.generateMoves(self.moveActions,'out',endFunc);
@@ -141,6 +146,16 @@ include(['src/move.min.js','src/smmAnim.js'], function() {
         if(foci[i].hasFocus) foci[i].reset(fxn);
       }
     }
+
+    this.locked = function () {
+      var ret = false;
+      for (var i = 0; i < foci.length; i++) {
+        ret = ret || foci[i].lockout;
+      }
+      return ret;
+    } 
+
+
     return this;
   }();
 });

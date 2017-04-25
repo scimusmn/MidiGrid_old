@@ -6,20 +6,20 @@
     and hold the lever down 1..2..3.. Let go. <br /><br />
     · Watch the Air Pressure gauge<br />
     · Look at the red area in the<br /> Air Pressure vs Air Volume graph<br />
-    · Repeat and watch the Air Temperature thermometer<br />
+    · Repeat and watch the Air Temperature<br />
     <br />
-    Notice the air pressure doesn’t rise as high in the Heat-Recovery Compressor,
-    but it also doesn’t fall as far.<br /><br />
+    <b>Notice</b> the air pressure doesn’t rise as high in the Heat-Recovery Compressor,
+    but it also doesn’t fall as far. The wasted work area is small.<br /><br />
 
     <img class='left' src='img/animScreen.gif'></img>
     <b>What’s happening?</b><br /><br />
 
-    Find the heat sink. Water droplets on the screen
+    Find the <b>heat sink</b>. Water droplets on the screen
     store a lot of the heat that without the heat sink
     would raise the temperature of the air inside the
     cylinder. Lower air temperature means less back
     pressure — it’s easier for you to move the piston.
-    Expanding the air recovers the lost heat.<br />
+    Expanding the air recovers the lost heat.<br /><br />
     <b>Smaller heat loss means less work wasted.</b>
   </div>
   <!-- <div class="instPage" target="nextPage">

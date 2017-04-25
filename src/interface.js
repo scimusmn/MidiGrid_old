@@ -87,7 +87,7 @@ include(['src/pointTrace.js', 'src/compCont.js', hardwareJS, 'src/flipBook.js'],
   };
 
   µ('#resetButton').onData = function(val) {
-    if (val && !µ('#attract').hasFocus) {
+    if (val && !µ('#attract').hasFocus && !window.focii.locked()) {
       µ('#attract').reset();
     }
   };
