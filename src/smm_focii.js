@@ -14,7 +14,8 @@
   })
 });*/
 
-include(['src/move.min.js','src/smmAnim.js'], function() {
+include(['src/move.min.js'], function() {
+  console.log('focii');
   fociiAttr.inherits(Array);
   function fociiAttr() {
     var self =this;
@@ -94,7 +95,7 @@ include(['src/move.min.js','src/smmAnim.js'], function() {
         self.hasFocus = true;
         self.lockout=false;
         self.ready = true;
-	if(self.endTimeout) clearTimeout(self.endTimeout);
+	      if(self.endTimeout) clearTimeout(self.endTimeout);
       }
       self.endTimeout = setTimeout(endFunc,2000);
       self.generateMoves(self.moveActions,'in',function () {
@@ -153,7 +154,7 @@ include(['src/move.min.js','src/smmAnim.js'], function() {
         ret = ret || foci[i].lockout;
       }
       return ret;
-    } 
+    }
 
 
     return this;

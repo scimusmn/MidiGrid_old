@@ -1,4 +1,4 @@
-function tempGraph(elem){
+var tempGraph = function(elem) {
 	this.canvas = elem;
 	var ctx = this.canvas.getContext("2d");
 
@@ -93,18 +93,18 @@ function tempGraph(elem){
 		ctx.fill();
 
 		var label = "Air";
-		ctx.font = "lighter 4vh sans-serif";
+		ctx.font = "lighter 2vw sans-serif";
 		//console.log(""+(this.height-graph.h)/3+"pt Arial");
-		ctx.fillStyle = "#666";
+		ctx.fillStyle = "#fff";
 		var txtSz = ctx.measureText(label);
-		ctx.fillText(label,(this.width-txtSz.width)/2,parseInt(ctx.font));
+		ctx.fillText(label,(this.width-txtSz.width)/2,parseInt(ctx.font)+20);
 
 		label = "Temperature";
 		txtSz = ctx.measureText(label);
-		ctx.fillText(label,(this.width-txtSz.width)/2,parseInt(ctx.font)*2);
+		ctx.fillText(label,(this.width-txtSz.width)/2,parseInt(ctx.font)*2+20);
 
 		ctx.font = "lighter 4vh sans-serif";
-		ctx.fillStyle = "#666";
+		ctx.fillStyle = "#fff";
 		this.drawLabels();
 	};
 
@@ -125,4 +125,8 @@ function tempGraph(elem){
 		ctx.stroke();
 		ctx.closePath();
 	};
+
+	return this;
 };
+
+exports.tempGraph = tempGraph;

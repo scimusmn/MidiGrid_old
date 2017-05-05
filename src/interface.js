@@ -4,8 +4,9 @@ if (window.isApp === true) {
   localStore = chrome.storage.local;
   hardwareJS = './hardwareApp.js';
 } else {
-  localStore  = localStorage;
-  hardwareJS = './hardware.js';
+  //localStore  = localStorage;
+  //hardwareJS = './hardware.js';
+  hardwareJS = './hardwareElectron.js';
 }
 
 include(['src/pointTrace.js', 'src/compCont.js', hardwareJS, 'src/flipBook.js'], function() {

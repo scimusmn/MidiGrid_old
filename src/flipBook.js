@@ -1,53 +1,56 @@
-include(['src/smm_focii.js'], function() {
-  var flipProto = Object.create(HTMLElement.prototype);
+if (!window.FlipBook) {
+  obtain(['./src/new_focii.js'], (fci)=> {
+    exports.focii = fci.focii;
 
-  //flipProto.
-  flipProto.createdCallback = function() {
-    var _this = this;
+    var flipProto = Object.create(HTMLElement.prototype);
 
-    ajax(this.getAttribute('src'), function(xml) {
-      _this.innerHTML = xml.querySelector('flip-book').innerHTML;
+    //flipProto.
+    flipProto.createdCallback = function() {
+      var _this = this;
 
-      _this.button = µ('.button', _this);
+      get(this.getAttribute('src')).then(function(xml) {
+        _this.innerHTML = xml.responseXML.querySelector('flip-book').innerHTML;
 
-      _this.button.onmousedown = function() {
-        var targ = _this.currentPage.getAttribute('target');
-        var spl = targ.split(':');
-        if (targ == 'nextPage') {
+        _this.button = µ('.button', _this)[0];
+
+        _this.button.onmousedown = function() {
+          var targ = _this.currentPage.getAttribute('target');
+          var spl = targ.split(':');
+          if (targ == 'nextPage') {
+            _this.currentPage.style.display = 'none';
+            _this.currentPage = _this.currentPage.nextElementSibling;
+            _this.currentPage.style.display = 'block';
+          } else if (spl.length > 1 && spl[0] == 'id') {
+            console.log('clicked');
+            _this.parentElement.loseFocus(function() {µ('#' + spl[1]).focus();});
+          } else if (targ == 'none') {
+            console.log('reset');
+            exports.focii.reset();
+          }
+        };
+
+        _this.currentPage = µ('.instPage', _this)[0];
+
+        _this.resetPages = function() {
           _this.currentPage.style.display = 'none';
-          _this.currentPage = _this.currentPage.nextElementSibling;
+          _this.currentPage = µ('.instPage', _this)[0];
           _this.currentPage.style.display = 'block';
-        } else if (spl.length > 1 && spl[0] == 'id') {
-          console.log('clicked');
-          _this.parentElement.loseFocus(function() {µ('#' + spl[1]).focus();});
-        } else if (targ == 'none') {
-          focii.reset();
-        }
-      };
+        };
 
-      _this.currentPage = µ('.instPage', _this);
+        _this.resetPages();
+      });
 
-      _this.resetPages = function() {
+      this.skipPages = function() {
+      while (_this.currentPage.className.includes('skip')) {
         _this.currentPage.style.display = 'none';
-        _this.currentPage = µ('.instPage', _this);
+        _this.currentPage = _this.currentPage.nextElementSibling;
         _this.currentPage.style.display = 'block';
-      };
+      }
+    };
+    };
 
-      _this.resetPages();
-    });
+    window.FlipBook = document.registerElement('flip-book', { prototype: flipProto });
 
-    /*this.onmousedown = function (e) {
-      if(!this.hasFocus&&!this.lockout) this.focus();
-    }*/
-
-    this.skipPages = function() {
-    while (~_this.currentPage.className.indexOf('skip')) {
-      _this.currentPage.style.display = 'none';
-      _this.currentPage = _this.currentPage.nextElementSibling;
-      _this.currentPage.style.display = 'block';
-    }
-  };
-  };
-
-  var flipBook = document.registerElement('flip-book', {prototype: flipProto});
-});
+    provide(exports);
+  });
+}

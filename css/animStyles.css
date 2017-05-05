@@ -1,0 +1,117 @@
+body {
+  --half-time: all .5s linear .5s;
+  --start-time: all .5s linear 0s;
+}
+
+@keyframes fadeCycle {
+  0%   { opacity: .5; }
+  100% { opacity: 1; }
+}
+
+@keyframes fadeUp {
+  0%   { opacity: .75; }
+  100% { opacity: 0; }
+}
+
+@keyframes heightCycle {
+  from{ top: 10vh; }
+  to{ top: 50vh; }
+}
+
+#warmCont {
+  left: var(--side-offset);
+}
+
+#coolCont {
+  right: var(--side-offset);
+}
+
+#attract.Focused {
+  top: 0;
+  /*opacity: 1;*/
+  /*display: block;*/
+}
+#attract.Unfocused {
+  top: -110vh;
+  /*opacity: 0;*/
+  /*display: none;*/
+}
+
+#attract:-webkit-any( .loseFocus, .gainFocus){
+  /*opacity: 0;*/
+  top: -55vh;
+}
+
+.graphTap {
+  animation: fadeCycle 2s infinite alternate;
+}
+
+#attractWords {
+  animation: heightCycle 15s infinite alternate ease;
+}
+
+.graphCont {
+  --cont-width: 48.5vw;
+  width: var(--cont-width);
+}
+
+.graphCont.blurred {
+  --side-offset: -50vw;
+}
+
+.graphCont:-webkit-any(.Unfocused, .Focused, .gainFocus, .loseFocus){
+  --side-offset: 1vw;
+}
+
+.graphCont:-webkit-any(.Unfocused){
+  --cont-width: 48.5vw;
+}
+
+.graphCont:-webkit-any(.Focused, .gainFocus, .loseFocus){
+  --cont-width: 98vw;
+}
+
+.graphCont:-webkit-any(.loseFocus, .Unfocused, .gainFocus) flip-book {
+  opacity: 0;
+}
+
+.graphCont:-webkit-any(.loseFocus, .Unfocused, .gainFocus) .graphTap{
+  opacity: 1;
+}
+
+.graphCont.Focused flip-book {
+  opacity: 1;
+}
+
+.graphCont.Focused .graphTap{
+  /*animation: fadeUp .25s 1 forwards;*/
+  animation: none;
+  transition: var(--half-time);
+  opacity: 0;
+}
+
+/* Timing Functions */
+
+#attract {
+  transition: all .25s linear 0s;
+}
+
+.graphCont.blurred {
+  transition: var(--start-time);
+}
+
+.graphCont.Unfocused {
+  transition: var(--half-time);
+}
+
+.graphCont.gainFocus {
+  transition: var(--start-time);
+}
+
+.graphCont.loseFocus :-webkit-any(flip-book, .graphTap) {
+  transition: var(--start-time);
+}
+
+.graphCont.Focused :-webkit-any(flip-book, .graphTap) {
+  transition: var(--half-time);
+}

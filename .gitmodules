@@ -1,0 +1,3 @@
+[submodule "src/libraries/muse"]
+	path = src/libraries/muse
+	url = https://github.com/heidgera/Muse
