@@ -207,7 +207,7 @@ obtain(['µ/graph.js', './src/tempGraph.js', 'µ/utilities.js'], (grph, tg, util
       ctx.fillStyle = '#fff';
       ctx.font = 'lighter 1.5vw sans-serif';
       var leftOff = ctx.measureText('200').width + 10;
-      ctx.fillRect(graph.x - leftOff, graph.y, graph.width + leftOff, graph.height +  window.innerHeight * .015 + 10);
+      ctx.fillRect(graph.x - leftOff, graph.y, graph.width + leftOff, graph.height +  window.innerHeight * .015 * 1.5 + 10);
 
       //}
 
@@ -227,7 +227,7 @@ obtain(['µ/graph.js', './src/tempGraph.js', 'µ/utilities.js'], (grph, tg, util
       var xLabel = 'Air Volume (Cubic Inches)';
       ctx.fillStyle = '#fff';
       txtSz = ctx.measureText(xLabel);
-      ctx.fillText(xLabel, graph.x + (graph.width - txtSz.width) / 2, 3 * parseInt(ctx.font) + graph.bot());
+      ctx.fillText(xLabel, graph.x + (graph.width - txtSz.width) / 2, window.innerHeight * .015 * 3 + 20 + graph.bot());
 
       ctx.font = 'lighter 1.5vw sans-serif';
       var yLabel = 'Pressure in Cylinder (PSI)';
