@@ -17,13 +17,22 @@ body {
   from{ top: 10vh; }
   to{ top: 50vh; }
 }
-
 #warmCont {
   left: var(--side-offset);
 }
 
 #coolCont {
   right: var(--side-offset);
+}
+
+#dimScreen.dim {
+  opacity: 0.5;
+  display: inline-block;
+}
+
+#useLeft.dim, #useRight.dim {
+  opacity: 1;
+  display: inline-block;
 }
 
 #attract.Focused {
@@ -91,6 +100,10 @@ body {
 }
 
 /* Timing Functions */
+
+#dimScreen, #useLeft, #useRight {
+  transition: opacity .5s linear 0s;
+}
 
 #attract {
   transition: all .25s linear 0s;

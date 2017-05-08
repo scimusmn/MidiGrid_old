@@ -139,7 +139,7 @@ body {
 #dimScreen {
   display: none;
   background-color: #000;
-  opacity: 0.5;
+  opacity: 0;
   z-index: 999;
   position: fixed;
   top: 0%;
@@ -148,7 +148,7 @@ body {
   height:100%;
 }
 
-#useRight,#useLeft {
+#useRight, #useLeft {
   position: fixed;
   top: 40%;
   left: 0;
@@ -161,7 +161,7 @@ body {
   font-size: 4vh;
   border-radius: 2vh;
   word-wrap: break-word;
-  opacity: 0%;
+  opacity: 0;
   display: none;
   pointer-events: none;
 }

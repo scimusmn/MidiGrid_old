@@ -98,39 +98,42 @@ obtain(['µ/hardware.js', './src/pointTrace.js', './src/flipBook.js'], (hw, pt, 
       }
     };
 
-    µ('.graph', µ('#warm')).onNewPoint = function() {
+    µ('.graph', µ('#warm'))[0].onNewPoint = function() {
+      if (!focii.locked() && µ('#attract').isFocused) {
+        µ('#attract').loseFocus();
+        µ('#attract').refreshTimer();
+      }
+
       warm.autoClear(.95);
       µ('#attract').refreshTimer();
-      if (coolCont.hasFocus && !coolCont.warned) {
+      if (coolCont.isFocused && !coolCont.warned) {
         coolCont.warned = true;
-        µ('#useRight').style.display = 'block';
-        move('#useRight').set('opacity', 1).end();
-        move('#dimScreen').set('opacity', .5).end();
+        µ('#useRight').className = 'dim';
+        µ('#dimScreen').className = 'dim';
         setTimeout(function() {
-          move('#useRight').set('opacity', 0).end();
-          move('#dimScreen').set('opacity', 0).end(function() {
-            µ('#useRight').style.display = 'none';
-          });
+          µ('#useRight').className = '';
+          µ('#dimScreen').className = '';
         }, 4000);
 
         setTimeout(function() { coolCont.warned = false; }, 5000);
       }
     };
 
-    µ('.graph', µ('#cool')).onNewPoint = function() {
-      if (!window.focii.locked() && µ('#attract').hasFocus) µ('#attract').loseFocus();
+    µ('.graph', µ('#cool'))[0].onNewPoint = function() {
+      if (!focii.locked() && µ('#attract').isFocused) {
+        µ('#attract').loseFocus();
+        µ('#attract').refreshTimer();
+      }
+
       cool.autoClear(.95);
       µ('#attract').refreshTimer();
-      if (warmCont.hasFocus && !warmCont.warned) {
+      if (warmCont.isFocused && !warmCont.warned) {
         warmCont.warned = true;
-        µ('#useLeft').style.display = 'block';
-        move('#useLeft').set('opacity', 1).end();
-        move('#dimScreen').set('opacity', .5).end();
+        µ('#useLeft').className = 'dim';
+        µ('#dimScreen').className = 'dim';
         setTimeout(function() {
-          move('#useLeft').set('opacity', 0).end();
-          move('#dimScreen').set('opacity', 0).end(function() {
-            µ('#useLeft').style.display = 'none';
-          });
+          µ('#useLeft').className = '';
+          µ('#dimScreen').className = '';
         }, 4000);
 
         setTimeout(function() { warmCont.warned = false; }, 5000);
