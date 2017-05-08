@@ -34,8 +34,75 @@ exports.focii = new function() {
 }();
 
 if (!window.SmmFocii) {
-  var smmFocii = inheritFrom(HTMLElement, function() {
-    this.attachedCallback = function() {
+  //var smmFocii = inheritFrom(HTMLElement, function() {
+  class SmmFocii extends HTMLElement {
+
+    onGainFocus(e) {};
+
+    gainingFocus(e) {
+      if (this.className.includes('gainFocus')) {
+        if (this.setFallbackTO) this.setFallbackTO();
+        this.className = this.className.replace('gainFocus', 'Focused');
+      }
+    };
+
+    onLoseFocus(e) {};
+
+    losingFocus(e) {
+      if (this.className.includes('loseFocus')) {
+        if (this.setFallbackTO) this.setFallbackTO();
+        this.className = this.className.replace('loseFocus', 'Unfocused');
+      }
+    };
+
+    nextStep() {
+      if (this.className.includes('gainFocus')) {
+        if (this.setFallbackTO) this.setFallbackTO();
+        this.className = this.className.replace('gainFocus', 'Focused');
+      } else if (this.className.includes('loseFocus')) {
+        if (this.setFallbackTO) this.setFallbackTO();
+        this.className = this.className.replace('loseFocus', 'Unfocused');
+      }
+    };
+
+    gainFocus() {
+      if (!this.className.includes('Focused')) {
+        if (this.setFallbackTO) this.setFallbackTO();
+        this.ready = false;
+        this.lockout = true;
+        this.className = this.className.replace('Unfocused', 'gainFocus');
+      }
+    };
+
+    focus(fxnFocus) {
+      if (!exports.focii.locked()) {
+        if (fxnFocus) this.onGainFocus = fxnFocus.bind(this);
+        var focus = µ('smm-focii.Focused')[0];
+        if (focus && focus != this) {
+          focus.priorLoseFocus = focus.onLoseFocus;
+          focus.loseFocus(this.gainFocus);
+        } else this.gainFocus();
+      }
+    };
+
+    loseFocus(fxnBlur) {
+      if (!exports.focii.locked()) {
+        if (fxnBlur) this.onLoseFocus = fxnBlur.bind(this);
+        if (this.className.includes('Focused')) {
+          if (this.setFallbackTO) this.setFallbackTO();
+          this.ready = false;
+          this.lockout = true;
+          this.className = this.className.replace('Focused', 'loseFocus');
+          if (this.className == ' ') this.className = '';
+        }
+      }
+    };
+
+    reset(fxn) {
+      this.loseFocus(fxn);
+    };
+
+    connectedCallback() {
       var _this = this;
       _this.isFocused = false;
       _this.lockout = false;
@@ -44,35 +111,15 @@ if (!window.SmmFocii) {
       _this.moveActions = null;
       _this.priorLoseFocus = null;
 
-      if (_this.className.length) _this.className += ' Unfocused';
-      else _this.className = 'Unfocused';
+      _this.fallbackTO = null;
 
-      _this.onGainFocus = (e)=> {};
-
-      _this.gainingFocus = (e)=> {
-        _this.className = _this.className.replace('gainFocus', 'Focused');
-      };
-
-      _this.onLoseFocus = (e)=> {};
-
-      _this.losingFocus = (e)=> {
-        _this.className = _this.className.replace('loseFocus', 'Unfocused');
-      };
-
-      _this.nextStep = ()=> {
-        _this.className = _this.className.replace('gainFocus', 'Focused');
-        _this.className = _this.className.replace('loseFocus', 'Unfocused');
-      };
-
-      var stripSpaces = (str)=> {
-        while (str.charAt(str.length - 1) == ' ') {
-          str = str.substr(0, str.length - 1);
-        }
-
-        return str;
-      };
+      if (!_this.className.includes('Unfocused')) {
+        if (_this.className.length) _this.className += ' Unfocused';
+        else _this.className = 'Unfocused';
+      }
 
       var onMoveEnd = (e)=> {
+        if (this.fallbackTO) clearTimeout(this.fallbackTO);
         if (_this.className.includes('Focused')) {
           if (!_this.isFocused) {
             _this.onGainFocus(e);
@@ -103,48 +150,19 @@ if (!window.SmmFocii) {
         }
       };
 
+      _this.setFallbackTO = ()=> {
+        if (this.fallbackTO) clearTimeout(this.fallbackTO);
+        this.fallbackTO = setTimeout(onMoveEnd, 2000);
+      };
+
       _this.addEventListener('transitionend', onMoveEnd);
 
       //_this.addEventListener('animationend', onMoveEnd);
-
-      _this.gainFocus = ()=> {
-        if (!_this.className.includes('Focused')) {
-          _this.ready = false;
-          _this.lockout = true;
-          _this.className = _this.className.replace('Unfocused', 'gainFocus');
-        }
-      };
-
-      _this.focus = function(fxnFocus) {
-        if (!exports.focii.locked()) {
-          if (fxnFocus) _this.onGainFocus = fxnFocus.bind(_this);
-          var focus = µ('smm-focii.Focused')[0];
-          if (focus && focus != _this) {
-            focus.priorLoseFocus = focus.onLoseFocus;
-            focus.loseFocus(_this.gainFocus);
-          } else _this.gainFocus();
-        }
-      };
-
-      _this.loseFocus = (fxnBlur)=> {
-        if (!exports.focii.locked()) {
-          if (fxnBlur) _this.onLoseFocus = fxnBlur.bind(_this);
-          if (_this.className.includes('Focused')) {
-            console.log('here');
-            _this.ready = false;
-            _this.lockout = true;
-            _this.className = _this.className.replace('Focused', 'loseFocus');
-            if (_this.className == ' ') _this.className = '';
-          }
-        }
-      };
-
-      _this.reset = function(fxn) {
-        _this.loseFocus(fxn);
-      };
     };
 
-  });
+  }
 
-  window.SmmFocii = document.registerElement('smm-focii', smmFocii);
+  customElements.define('smm-focii', SmmFocii);
+
+  //window.SmmFocii = document.registerElement('smm-focii', smmFocii);
 }
