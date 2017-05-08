@@ -41,8 +41,8 @@ var tempGraph = function(elem) {
 		//graph.w=w;
 		graph.h=h*.75;
 		graph.y=.13*h;
-		graph.w=w/3;
-		graph.x=w/3+w/4;
+		graph.w=2*w/3;
+		graph.x=w/6;
 		this.width=w;
 		this.height=h;
 	}
@@ -93,18 +93,22 @@ var tempGraph = function(elem) {
 		ctx.fill();
 
 		var label = "Air";
-		ctx.font = "lighter 2vw sans-serif";
+		ctx.font = "lighter 3vw sans-serif";
 		//console.log(""+(this.height-graph.h)/3+"pt Arial");
 		ctx.fillStyle = "#fff";
 		var txtSz = ctx.measureText(label);
 		ctx.fillText(label,(this.width-txtSz.width)/2,parseInt(ctx.font)+20);
 
-		label = "Temperature";
+		label = "Temp";
 		txtSz = ctx.measureText(label);
 		ctx.fillText(label,(this.width-txtSz.width)/2,parseInt(ctx.font)*2+20);
 
-		ctx.font = "lighter 4vh sans-serif";
-		ctx.fillStyle = "#fff";
+		label = "(°F)";
+		txtSz = ctx.measureText(label);
+		ctx.fillText(label,(this.width-txtSz.width)/2,parseInt(ctx.font)*3+20);
+
+		ctx.font = "lighter 3vw sans-serif";
+		ctx.fillStyle = "rgba(0,0,0,.75)";
 		this.drawLabels();
 	};
 
@@ -115,7 +119,10 @@ var tempGraph = function(elem) {
 			var lbl = ""+(minTemp+i*(maxTemp-minTemp)/div)+"°";
 			txtSz = ctx.measureText(lbl);
 			//ctx.fillText(lbl,graph.x-txtSz.width,graph.y+graph.h-(i*graph.h/div-txtSz.height/2));
-			ctx.fillText(lbl,graph.x-txtSz.width-graph.w/10,graph.y+graph.h-i*graph.h/div+parseInt(ctx.font)/2);
+			var hOff = -i*graph.h/div+parseInt(ctx.font)/2;
+			if(i==0) hOff = -i*graph.h/div - 5;
+			if(i==div) hOff = -i*graph.h/div+parseInt(ctx.font);
+			ctx.fillText(lbl,graph.x+(graph.w-txtSz.width)/2,graph.y+graph.h+hOff);
 		}
 	};
 

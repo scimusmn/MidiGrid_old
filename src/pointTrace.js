@@ -67,7 +67,7 @@ obtain(['µ/graph.js', './src/tempGraph.js', 'µ/utilities.js'], (grph, tg, util
       _this.height = hgt;
       graph.width = wid * .80;
       graph.height = hgt * .75;
-      graph.x = (wid - graph.width - traceWidth) / 2 * 1.5;
+      graph.x = (wid - graph.width - traceWidth) / 2 * 1.5 + wid * .025;
       graph.y = (hgt - graph.height) / 2;
 
       _this.gauge.refresh();
@@ -178,7 +178,7 @@ obtain(['µ/graph.js', './src/tempGraph.js', 'µ/utilities.js'], (grph, tg, util
       var xDiv = graph.range.x.divs / 2;
       var min = graph.range.x.min;
       var max = graph.range.x.max;
-      for (var i = 0; i < xDiv; i++) {
+      for (var i = 1; i < xDiv; i++) {
         var lbl = '' + (min * 1 + i * (max - min) / xDiv);
         txtSz = ctx.measureText(lbl);
         ctx.fillText(lbl, graph.x + i * graph.width / xDiv - txtSz.width / 2, parseInt(ctx.font) + graph.y + graph.height);
@@ -190,7 +190,7 @@ obtain(['µ/graph.js', './src/tempGraph.js', 'µ/utilities.js'], (grph, tg, util
       var yDiv = graph.range.y.divs / 2;
       var min = graph.range.y.min;
       var max = graph.range.y.max;
-      for (var i = 0; i < yDiv + 1; i++) {
+      for (var i = 1; i < yDiv + 1; i++) {
         var lbl = ('' + (max * 1 + i * (min - max) / yDiv)).split('.')[0];
         txtSz = ctx.measureText(lbl);
         ctx.fillText(lbl, graph.x - (txtSz.width + 5), graph.y + i * graph.height / yDiv + parseInt(ctx.font) / 2);
@@ -203,6 +203,14 @@ obtain(['µ/graph.js', './src/tempGraph.js', 'µ/utilities.js'], (grph, tg, util
 
       if (graph.points.length) this.gauge.draw(this.lastPoint());
 
+      //if (this.isFocused) {
+      ctx.fillStyle = '#fff';
+      ctx.font = 'lighter 1.5vw sans-serif';
+      var leftOff = ctx.measureText('200').width + 10;
+      ctx.fillRect(graph.x - leftOff, graph.y, graph.width + leftOff, graph.height +  window.innerHeight * .015 + 10);
+
+      //}
+
       //graph.drawColorIntegral(ctx);
       //graph.draw(ctx);
       ctx.drawImage(graph, parseInt(graph.x), parseInt(graph.y), parseInt(graph.width), parseInt(graph.height));
@@ -211,31 +219,33 @@ obtain(['µ/graph.js', './src/tempGraph.js', 'µ/utilities.js'], (grph, tg, util
 
       var label = this.canvas.getAttribute('main');
       ctx.font = 'lighter 2vw sans-serif';
-      ctx.fillStyle = '#eee';
+      ctx.fillStyle = '#fff';
       var txtSz = ctx.measureText(label);
       ctx.fillText(label, Math.floor(graph.x + (graph.width - txtSz.width) / 2), Math.floor(graph.y - parseInt(ctx.font) / 2));
 
-      ctx.font = 'lighter 1vw sans-serif';
+      ctx.font = 'lighter 1.5vw sans-serif';
       var xLabel = 'Air Volume (Cubic Inches)';
-      ctx.fillStyle = '#eee';
+      ctx.fillStyle = '#fff';
       txtSz = ctx.measureText(xLabel);
-      ctx.fillText(xLabel, graph.x + (graph.width - txtSz.width) / 2, 2 * parseInt(ctx.font) + graph.bot());
+      ctx.fillText(xLabel, graph.x + (graph.width - txtSz.width) / 2, 3 * parseInt(ctx.font) + graph.bot());
 
-      ctx.font = 'lighter 1vw sans-serif';
+      ctx.font = 'lighter 1.5vw sans-serif';
       var yLabel = 'Pressure in Cylinder (PSI)';
-      ctx.fillStyle = '#eee';
+      ctx.fillStyle = '#fff';
       txtSz = ctx.measureText(yLabel);
       ctx.save();
-      ctx.translate(graph.x - 2.9 * parseInt(ctx.font), graph.y + (graph.height + txtSz.width) / 2);
+      ctx.translate(graph.x - leftOff - window.innerHeight * .015, graph.y + (graph.height + txtSz.width) / 2);
       ctx.rotate(3 * Math.PI / 2);
       ctx.fillText(yLabel, 0, 0);
       ctx.restore();
 
-      if (this.isFocused) {
-        ctx.font = 'lighter 1.5vw sans-serif';
-        _this.drawXLabels();
-        _this.drawYLabels();
-      }
+      //if (this.isFocused) {
+      ctx.fillStyle = 'rgba(0,0,0,.75)';
+      ctx.font = 'lighter 1.5vw sans-serif';
+      _this.drawXLabels();
+      _this.drawYLabels();
+
+      //}
     };
 
     elem.clear = function() {
