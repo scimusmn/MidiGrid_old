@@ -51,20 +51,16 @@ obtain(['µ/hardware.js', './src/pointTrace.js', './src/flipBook.js'], (hw, pt, 
 
     coolCont.losingFocus = (e)=> {
       coolCont.nextStep();
-      focii.deblurOthers(coolCont);
+      warmCont.deblur();
     };
 
     warmCont.losingFocus = (e)=> {
       warmCont.nextStep();
-      focii.deblurOthers(warmCont);
+      coolCont.deblur();
     };
 
     var focusFunc = function() {
       this.seen = true;
-      this.graph.isFocused = true;
-      this.onLoseFocus = ()=> {
-        this.graph.isFocused = false;
-      };
     };
 
     µ('#attract').refreshTimer = function() {
@@ -84,29 +80,31 @@ obtain(['µ/hardware.js', './src/pointTrace.js', './src/flipBook.js'], (hw, pt, 
 
     coolCont.onmousedown = function(e) {
       e.preventDefault();
-      if (!coolCont.isFocused && !focii.locked()) {
+      if (!coolCont.hasFocus) {
         coolCont.focus(focusFunc);
-        focii.blurOthers(coolCont);
+        warmCont.blur();
       }
     };
 
     warmCont.onmousedown = function(e) {
       e.preventDefault();
-      if (!warmCont.isFocused && !focii.locked()) {
+      if (!warmCont.hasFocus) {
+        coolCont.blur();
         warmCont.focus(focusFunc);
-        focii.blurOthers(warmCont);
+
+        //focii.blurOthers(warmCont);
       }
     };
 
     µ('.graph', µ('#warm'))[0].onNewPoint = function() {
-      if (!focii.locked() && µ('#attract').isFocused) {
+      if (!focii.locked() && µ('#attract').hasFocus) {
         µ('#attract').loseFocus();
         µ('#attract').refreshTimer();
       }
 
       warm.autoClear(.95);
       µ('#attract').refreshTimer();
-      if (coolCont.isFocused && !coolCont.warned) {
+      if (coolCont.hasFocus && !coolCont.warned) {
         coolCont.warned = true;
         µ('#useRight').className = 'dim';
         µ('#dimScreen').className = 'dim';
@@ -127,7 +125,7 @@ obtain(['µ/hardware.js', './src/pointTrace.js', './src/flipBook.js'], (hw, pt, 
 
       cool.autoClear(.95);
       µ('#attract').refreshTimer();
-      if (warmCont.isFocused && !warmCont.warned) {
+      if (warmCont.hasFocus && !warmCont.warned) {
         warmCont.warned = true;
         µ('#useLeft').className = 'dim';
         µ('#dimScreen').className = 'dim';

@@ -1,5 +1,5 @@
 if (!window.FlipBook) {
-  obtain(['./src/new_focii.js'], (fci)=> {
+  obtain(['./src/renew_focii.js'], (fci)=> {
     exports.focii = fci.focii;
 
     var flipProto = Object.create(HTMLElement.prototype);

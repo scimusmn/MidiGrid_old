@@ -33,18 +33,18 @@ body {
   opacity: 1;
 }
 
-#attract.Focused {
+#attract[state='Focus'] {
   top: 0;
   /*opacity: 1;*/
   /*display: block;*/
 }
-#attract.Unfocused {
+#attract[state='none'] {
   top: -110vh;
   /*opacity: 0;*/
   /*display: none;*/
 }
 
-#attract:-webkit-any( .loseFocus, .gainFocus){
+#attract:-webkit-any([state='loseFocus'], [state='gainFocus']){
   /*opacity: 0;*/
   top: -55vh;
 }
@@ -62,35 +62,35 @@ body {
   width: var(--cont-width);
 }
 
-.graphCont.blurred {
+.graphCont[state='blur'] {
   --side-offset: -50vw;
 }
 
-.graphCont:-webkit-any(.Unfocused, .Focused, .gainFocus, .loseFocus){
+.graphCont:not([state='blur']){
   --side-offset: 1vw;
 }
 
-.graphCont:-webkit-any(.Unfocused){
+.graphCont[state='none']{
   --cont-width: 48.5vw;
 }
 
-.graphCont:-webkit-any(.Focused, .gainFocus, .loseFocus){
+.graphCont[state*='Focus']{
   --cont-width: 98vw;
 }
 
-.graphCont:-webkit-any(.loseFocus, .Unfocused, .gainFocus) flip-book {
+.graphCont[state*='Focus'] flip-book {
   opacity: 0;
 }
 
-.graphCont:-webkit-any(.loseFocus, .Unfocused, .gainFocus) .graphTap{
+.graphCont[state*='Focus'] .graphTap{
   opacity: 1;
 }
 
-.graphCont.Focused flip-book {
+.graphCont[state='Focus'] flip-book {
   opacity: 1;
 }
 
-.graphCont.Focused .graphTap{
+.graphCont[state='Focus'] .graphTap{
   /*animation: fadeUp .25s 1 forwards;*/
   animation: none;
   transition: var(--half-time);
@@ -107,22 +107,22 @@ body {
   transition: all .25s linear 0s;
 }
 
-.graphCont.blurred {
+.graphCont[state='blur'] {
   transition: var(--start-time);
 }
 
-.graphCont.Unfocused {
+.graphCont[state='none'] {
   transition: var(--half-time);
 }
 
-.graphCont.gainFocus {
+.graphCont[state='gain'] {
   transition: var(--start-time);
 }
 
-.graphCont.loseFocus :-webkit-any(flip-book, .graphTap) {
+.graphCont[state='lose'] :-webkit-any(flip-book, .graphTap) {
   transition: var(--start-time);
 }
 
-.graphCont.Focused :-webkit-any(flip-book, .graphTap) {
+.graphCont[state='focus'] :-webkit-any(flip-book, .graphTap) {
   transition: var(--half-time);
 }
