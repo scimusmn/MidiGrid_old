@@ -35,7 +35,7 @@ body {
 #title {
 	position: absolute;
 	top: 0;
-	width: 100%;
+	width: 95%;
   height: 10vh;
 	text-align: left;
 	padding-left: 2%;
@@ -206,13 +206,13 @@ body {
 }
 
 .graphTitle{
+  display: inline-block;
 	font-size: 4vh;
 	font-weight: 200;
 	color:#fff;
 	text-align: left;
-  padding-left: 1vw;
 	height: 10%;
-  width: calc(var(--cont-width) - 19px);
+  width: 96%;
   overflow: hidden;
 	line-height: 10vh;
   white-space: nowrap;

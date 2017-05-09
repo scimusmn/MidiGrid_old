@@ -1,8 +1,9 @@
 obtain(['µ/hardware.js', './src/pointTrace.js', './src/flipBook.js'], (hw, pt, fb)=> {
-  var focii = fb.focii;
-  document.addEventListener('DOMContentLoaded', function(event) {
+  exports.app = {};
+
+  exports.app.run = ()=> {
+    var focii = fb.focii;
     var pointTrace = pt.pointTrace;
-    function app() {};
 
     var drawTimer;
     var refreshRate = 30; //fps
@@ -35,18 +36,12 @@ obtain(['µ/hardware.js', './src/pointTrace.js', './src/flipBook.js'], (hw, pt, 
 
     coolCont.bind(warmCont, cool, warm);
 
-    //cnt.setMoves(coolCont);
-    //cnt.setMoves(warmCont);
-
-    //µ('#attract').setup();
-
     µ('#cool').refresh();
     µ('#warm').refresh();
 
     document.onmousedown = function(e) {
       e.preventDefault();
-
-      //µ('#attract').refreshTimer();
+      µ('#attract').refreshTimer();
     };
 
     coolCont.losingFocus = (e)=> {
@@ -77,8 +72,6 @@ obtain(['µ/hardware.js', './src/pointTrace.js', './src/flipBook.js'], (hw, pt, 
       if (!warmCont.hasFocus && !focii.locked()) {
         coolCont.blur();
         warmCont.focus(focusFunc);
-
-        //focii.blurOthers(warmCont);
       }
     };
 
@@ -119,7 +112,7 @@ obtain(['µ/hardware.js', './src/pointTrace.js', './src/flipBook.js'], (hw, pt, 
     };
 
     µ('.graph', µ('#cool'))[0].onNewPoint = function() {
-      if (!focii.locked() && µ('#attract').isFocused) {
+      if (!focii.locked() && µ('#attract').hasFocus) {
         µ('#attract').loseFocus();
         µ('#attract').refreshTimer();
       }
@@ -169,7 +162,7 @@ obtain(['µ/hardware.js', './src/pointTrace.js', './src/flipBook.js'], (hw, pt, 
       }
     };
 
-    app.draw = function() {
+    var draw = function() {
       //console.log('draw');
       cool.draw();
       warm.draw();
@@ -180,10 +173,10 @@ obtain(['µ/hardware.js', './src/pointTrace.js', './src/flipBook.js'], (hw, pt, 
       µ('#warm').refresh();
     };
 
-    setTimeout(window.onresize, 1000);
+    setTimeout(window.onresize, 500);
 
-    drawTimer = setInterval(app.draw, 1000 / refreshRate);
-  });
+    drawTimer = setInterval(draw, 1000 / refreshRate);
+  };
 
   provide(exports);
 });
