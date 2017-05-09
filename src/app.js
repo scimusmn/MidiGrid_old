@@ -55,12 +55,31 @@ obtain(['µ/hardware.js', './src/pointTrace.js', './src/flipBook.js'], (hw, pt, 
     };
 
     warmCont.losingFocus = (e)=> {
+      console.log('warm losing');
       warmCont.nextStep();
       coolCont.deblur();
     };
 
     var focusFunc = function() {
       this.seen = true;
+    };
+
+    coolCont.onmousedown = function(e) {
+      e.preventDefault();
+      if (!coolCont.hasFocus && !focii.locked()) {
+        coolCont.focus(focusFunc);
+        warmCont.blur();
+      }
+    };
+
+    warmCont.onmousedown = function(e) {
+      e.preventDefault();
+      if (!warmCont.hasFocus && !focii.locked()) {
+        coolCont.blur();
+        warmCont.focus(focusFunc);
+
+        //focii.blurOthers(warmCont);
+      }
     };
 
     µ('#attract').refreshTimer = function() {
@@ -77,24 +96,6 @@ obtain(['µ/hardware.js', './src/pointTrace.js', './src/flipBook.js'], (hw, pt, 
     };
 
     µ('#attract').focus();
-
-    coolCont.onmousedown = function(e) {
-      e.preventDefault();
-      if (!coolCont.hasFocus) {
-        coolCont.focus(focusFunc);
-        warmCont.blur();
-      }
-    };
-
-    warmCont.onmousedown = function(e) {
-      e.preventDefault();
-      if (!warmCont.hasFocus) {
-        coolCont.blur();
-        warmCont.focus(focusFunc);
-
-        //focii.blurOthers(warmCont);
-      }
-    };
 
     µ('.graph', µ('#warm'))[0].onNewPoint = function() {
       if (!focii.locked() && µ('#attract').hasFocus) {

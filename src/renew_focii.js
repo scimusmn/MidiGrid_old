@@ -112,7 +112,7 @@ if (!window.SmmFocii) {
       }
     };
 
-    loseFocus(fxnBlur) {
+    loseFocus(fxnBlur, auxBlur) {
       if (!exports.focii.locked()) {
         if (fxnBlur) this.onLoseFocus = fxnBlur.bind(this);
         if (this.hasFocus) {
@@ -133,9 +133,6 @@ if (!window.SmmFocii) {
       var _this = this;
       _this.isFocused = false;
       _this.lockout = false;
-      _this.ready = false;
-      _this.prepActions = null;
-      _this.moveActions = null;
       _this.priorLoseFocus = null;
 
       _this.fallbackTO = null;
