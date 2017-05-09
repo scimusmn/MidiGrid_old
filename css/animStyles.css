@@ -44,7 +44,7 @@ body {
   /*display: none;*/
 }
 
-#attract:-webkit-any([state='loseFocus'], [state='gainFocus']){
+#attract[state*='Focus']:not([state='Focus']){
   /*opacity: 0;*/
   top: -55vh;
 }
@@ -78,15 +78,15 @@ body {
   --cont-width: 98vw;
 }
 
-.graphCont[state*='Focus'] flip-book {
+.graphCont flip-book {
   opacity: 0;
 }
 
-.graphCont[state*='Focus'] .graphTap{
+.graphCont[state='Focus'] flip-book {
   opacity: 1;
 }
 
-.graphCont[state='Focus'] flip-book {
+.graphCont .graphTap{
   opacity: 1;
 }
 
@@ -115,14 +115,14 @@ body {
   transition: var(--half-time);
 }
 
-.graphCont[state='gain'] {
+.graphCont[state='gainFocus'] {
   transition: var(--start-time);
 }
 
-.graphCont[state='lose'] :-webkit-any(flip-book, .graphTap) {
+.graphCont[state='loseFocus'] :-webkit-any(flip-book, .graphTap) {
   transition: var(--start-time);
 }
 
-.graphCont[state='focus'] :-webkit-any(flip-book, .graphTap) {
+.graphCont[state='Focus'] :-webkit-any(flip-book, .graphTap) {
   transition: var(--half-time);
 }
