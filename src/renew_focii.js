@@ -102,13 +102,14 @@ if (!window.SmmFocii) {
     }
 
     focus(fxnFocus) {
+      var _this = this;
       if (!exports.focii.locked()) {
         if (fxnFocus) this.onGainFocus = fxnFocus.bind(this);
         var focus = µ('smm-focii[state="Focus"]')[0];
         if (focus && focus != this) {
           focus.priorLoseFocus = focus.onLoseFocus;
           focus.loseFocus(this.gainFocus.bind(this));
-        } else this.gainFocus();
+        } else _this.gainFocus();
       }
     };
 
