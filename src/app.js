@@ -1,182 +1,63 @@
-obtain(['µ/hardware.js', './src/pointTrace.js', './src/flipBook.js'], (hw, pt, fb)=> {
+'use strict';
+
+obtain(['./src/gridControl.js'], ({ Grid })=> {
   exports.app = {};
 
-  exports.app.run = ()=> {
-    var focii = fb.focii;
-    var pointTrace = pt.pointTrace;
+  //var serial = new ser.Serial('|');
+  let grid = new Grid();
 
-    var drawTimer;
-    var refreshRate = 30; //fps
+  var clips = [];
+  clips[2] = new Audio('audio/a3.mp3');
+  clips[1] = new Audio('audio/b3.mp3');
+  clips[0] = new Audio('audio/c4.mp3');
 
-    console.log(µ('#cool'));
+  //console.log('started 1');
 
-    µ('hard-ware')[0].begin();
+  var cells = [];
 
-    var cool = new pointTrace(µ('#cool'));
-    var warm = new pointTrace(µ('#warm'));
+  var reqTimer = null;
+  var pulseTimer = null;
+  var pulseCount = 0;
+  var colRead = 0;
 
-    compCont = (elem)=> {
-      var _this = elem;
-      elem.other = null;
-      elem.graph = null;
-      elem.seen = false;
+  exports.app.start = ()=> {
+    grid.setup();
 
-      elem.bind = function(other, graf, grapf) {
-        _this.other = other;
-        _this.other.other = _this;
-        _this.other.graph = grapf;
-        _this.graph = graf;
-      };
+    grid.onUpdateCount = ()=> {
+      console.log('Updated column count');
+      for (var i = 0; i < grid.states.length; i++) {
+        var col = µ('+div', µ('#grid'));
+        col.className = 'col';
+        col.style.width = 'calc(90vw / ' + grid.states.length + ' )';
+        cells[i] = [];
+        for (var j = 0; j < clips.length; j++) {
+          cells[i][j] = µ('+div', col);
+          cells[i][j].clip = clips[j].cloneNode(true);
 
-      return elem;
-    };
-
-    var coolCont = compCont(µ('#coolCont'));
-    var warmCont = compCont(µ('#warmCont'));
-
-    coolCont.bind(warmCont, cool, warm);
-
-    µ('#cool').refresh();
-    µ('#warm').refresh();
-
-    document.onmousedown = function(e) {
-      e.preventDefault();
-      µ('#attract').refreshTimer();
-    };
-
-    coolCont.losingFocus = (e)=> {
-      coolCont.nextStep();
-      warmCont.deblur();
-    };
-
-    warmCont.losingFocus = (e)=> {
-      console.log('warm losing');
-      warmCont.nextStep();
-      coolCont.deblur();
-    };
-
-    var focusFunc = function() {
-      this.seen = true;
-    };
-
-    coolCont.onmousedown = function(e) {
-      e.preventDefault();
-      if (!coolCont.hasFocus && !focii.locked()) {
-        coolCont.focus(focusFunc);
-        warmCont.blur();
+        }
       }
     };
 
-    warmCont.onmousedown = function(e) {
-      e.preventDefault();
-      if (!warmCont.hasFocus && !focii.locked()) {
-        coolCont.blur();
-        warmCont.focus(focusFunc);
-      }
+    grid.onReady = ()=> {
+      setInterval(grid.setNextActive, 500);
     };
 
-    µ('#attract').refreshTimer = function() {
-      if (µ('#attract').timeout) clearTimeout(µ('#attract').timeout);
-      µ('#attract').timeout = setTimeout(µ('#attract').focus, 120000);
+    grid.onNextActive = (data, which)=> {
+      data.forEach(function (value, ind, arr) {
+        if (!value) {
+          console.log('strike!');
+          cells[which][ind].clip.currentTime = 0;
+          cells[which][ind].clip.play();
+        }
+      });
     };
 
-    µ('#attract').onclick = function(e) {
-      e.preventDefault();
-      µ('#cool').clear();
-      µ('#warm').clear();
-      focii.reset();
-      µ('#attract').refreshTimer();
+    grid.onCellChange = (col, row, val)=> {
+      cells[which][ind].classList.toggle('occ', val);
     };
 
-    µ('#attract').focus();
-
-    µ('.graph', µ('#warm'))[0].onNewPoint = function() {
-      if (!focii.locked() && µ('#attract').hasFocus) {
-        µ('#attract').loseFocus();
-        µ('#attract').refreshTimer();
-      }
-
-      warm.autoClear(.95);
-      µ('#attract').refreshTimer();
-      if (coolCont.hasFocus && !coolCont.warned) {
-        coolCont.warned = true;
-        µ('#useRight').className = 'dim';
-        µ('#dimScreen').className = 'dim';
-        setTimeout(function() {
-          µ('#useRight').className = '';
-          µ('#dimScreen').className = '';
-        }, 4000);
-
-        setTimeout(function() { coolCont.warned = false; }, 5000);
-      }
-    };
-
-    µ('.graph', µ('#cool'))[0].onNewPoint = function() {
-      if (!focii.locked() && µ('#attract').hasFocus) {
-        µ('#attract').loseFocus();
-        µ('#attract').refreshTimer();
-      }
-
-      cool.autoClear(.95);
-      µ('#attract').refreshTimer();
-      if (warmCont.hasFocus && !warmCont.warned) {
-        warmCont.warned = true;
-        µ('#useLeft').className = 'dim';
-        µ('#dimScreen').className = 'dim';
-        setTimeout(function() {
-          µ('#useLeft').className = '';
-          µ('#dimScreen').className = '';
-        }, 4000);
-
-        setTimeout(function() { warmCont.warned = false; }, 5000);
-      }
-    };
-
-    µ('#resetButton').onData = function(val) {
-      if (val && !µ('#attract').hasFocus && !focii.locked()) {
-        µ('#attract').focus();
-      }
-    };
-
-    document.onkeydown = function(e) {
-      switch (e.which) {
-        case 'E'.charCodeAt(0):        //if the send button was pressed
-          µ('#coolEff').innerHTML = cool.efficiency();
-          µ('#warmEff').innerHTML = warm.efficiency();
-          break;
-        case 32:
-          cool.clear();
-          warm.clear();
-          warmTemp.clear();
-          break;
-        case 9:
-
-          //console.log(focii);
-          //focii.reset();
-          break;
-        case 13:
-          µ('#attract').focus();
-          break;
-        default:
-          break;
-      }
-    };
-
-    var draw = function() {
-      //console.log('draw');
-      cool.draw();
-      warm.draw();
-    };
-
-    window.onresize = function(x, y) {
-      µ('#cool').refresh();
-      µ('#warm').refresh();
-    };
-
-    setTimeout(window.onresize, 500);
-
-    drawTimer = setInterval(draw, 1000 / refreshRate);
+    console.log('started');
   };
 
-  provide(exports);
+  //provide(exports);
 });
