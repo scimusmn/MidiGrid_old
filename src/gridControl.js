@@ -144,7 +144,7 @@ obtain(['µ/serial.js'], (ser)=> {
     };
 
     _this.setup = ()=> {
-      serial.open('usbserial', 9600);
+      serial.open({manufacturer: 'FTDI', baud: 9600});
     };
 
   };
