@@ -3,15 +3,12 @@
 obtain(['./src/gridControl.js'], ({ Grid })=> {
   exports.app = {};
 
-  //var serial = new ser.Serial('|');
   let grid = new Grid();
 
   var clips = [];
   clips[2] = new Audio('audio/a3.mp3');
   clips[1] = new Audio('audio/b3.mp3');
   clips[0] = new Audio('audio/c4.mp3');
-
-  //console.log('started 1');
 
   var cells = [];
 
@@ -53,7 +50,7 @@ obtain(['./src/gridControl.js'], ({ Grid })=> {
     };
 
     grid.onCellChange = (col, row, val)=> {
-      cells[which][ind].classList.toggle('occ', val);
+      cells[col][row].classList.toggle('occ', val);
     };
 
     console.log('started');
